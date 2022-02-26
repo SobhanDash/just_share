@@ -232,7 +232,7 @@ const useForm = (validation) => {
   };
 
   const getPost = async () => {
-    const userpost = await fetch("/getposts", {
+    const userpost = await fetch("/api/posts/getposts", {
       method: "GET",
       headers: {
         "auth-token": localStorage.getItem("token"),
