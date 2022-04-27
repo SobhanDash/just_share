@@ -21,7 +21,7 @@ const UserProfilePage = React.lazy(() => {
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
-  title: "Kyōyū",
+  title: "JustShare",
 });
 
 const LoginComponent = WithPageTitle({

@@ -93,7 +93,7 @@
   right: 0;
   width: 4px;
   height: 20px;
-  background-image: linear-gradient(var(--ternary-2), var(--secondary-1));
+  background-image: linear-gradient(var(--secondary-2), var(--secondary-1));
 }
 
 .menu a:hover,

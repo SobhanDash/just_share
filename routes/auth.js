@@ -63,7 +63,7 @@ router.post(
 
       const salt = await bcrypt.genSalt(10);
       const securePassword = await bcrypt.hash(req.body.password, salt);
-      user = await User.create({
+      let user = await User.create({
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
@@ -155,8 +155,8 @@ router.get("/profile", fetchUser, async (req, res) => {
     return res.json({ success, user, status: 200 });
   } catch (err) {
     success = false;
-    console.log(`Error in profile route: ${err}`);
-    return res.json({ success, error: `Internal Server Error`, status: 500 });
+    console.log(`Error in profile route: ${err.message}`);
+    return res.json({ success, error: err.message, status: 500 });
   }
 });
 
@@ -378,6 +378,33 @@ router.put(
       const savedUser = await user.save();
       success = true;
       res.end({ success, savedUser, status: 200 });
+    } catch (err) {
+      success = false;
+      console.log(`Error in adddp route: ${err}`);
+      res.send({ success, error: "Internal Server Error", status: 500 });
+    }
+  }
+);
+
+// ROUTE-9: Search for users by their username using: GET "/api/auth/users/${username}". Require Login
+router.get(
+  "/users/:username",fetchUser,
+  async (req, res) => {
+    let success = false;
+    try {
+      const userId = req.user.id;
+      let user = await User.findById(userId);
+      if (!user) {
+        success = false;
+        res.send({ success, error: "Not Found", status: 404 });
+      }
+
+      const username = req.params.username;
+      let users = await User.find({username: username});
+
+      success = true;
+      return res.json({success, users, status: 200});
+      
     } catch (err) {
       success = false;
       console.log(`Error in adddp route: ${err}`);

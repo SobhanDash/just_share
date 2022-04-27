@@ -90,7 +90,7 @@ const useForm = (validation) => {
     }
     // API END-POINT { /api/auth/login }
     try {
-      const res = await axios.post("/api/auth/login", {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
         email: values.email,
         password: values.password,
       });
@@ -158,7 +158,7 @@ const useForm = (validation) => {
       });
     }
     try {
-      const res = await axios.post("/api/auth/register", {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
         username: rvalues.username,
         name: rvalues.name,
         email: rvalues.email,
@@ -214,9 +214,10 @@ const useForm = (validation) => {
   const getProfile = async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
-      const res = await axios.get("/api/auth/profile", {
+      const res = await axios.get("http://localhost:5000/api/auth/profile", {
         headers: { "auth-token": token },
       });
+      // console.log(res.data);
       setProfile({
         username: res.data.user.username,
         name: res.data.user.name,

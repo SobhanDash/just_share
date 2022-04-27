@@ -45,8 +45,7 @@ const UserSchema = new Schema(
     about: {
       profilepic: {
         type: String,
-        default:
-          "https://res.cloudinary.com/kyoyu/image/upload/v1645412082/kyoyu-cloudinary/nodp_feqfob.jpg",
+        default: null,
       },
       bio: {
         type: String,

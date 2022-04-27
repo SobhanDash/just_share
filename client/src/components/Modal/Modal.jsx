@@ -83,9 +83,9 @@ const Modal = ({ show, setShow }) => {
   const postDetails = () => {
     const data = new FormData();
     data.append("file", image);
-    data.append("upload_preset", "kyoyu-cloudinary");
-    data.append("cloud_name", "kyoyu");
-    fetch("https://api.cloudinary.com/v1_1/kyoyu/image/upload", {
+    data.append("upload_preset", "just-social-media");
+    data.append("cloud_name", "trilochansahoo");
+    fetch("https://api.cloudinary.com/v1_1/trilochansahoo/image/upload", {
       method: "post",
       body: data,
     })

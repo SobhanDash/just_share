@@ -92,7 +92,7 @@
   width: 6rem;
   border: none;
   outline: none;
-  background: linear-gradient(150deg, var(--primary), var(--ternary-2));
+  background: linear-gradient(150deg, var(--primary), var(--secondary-1));
   color: var(--white-2);
   font-size: 1rem;
 }
@@ -153,7 +153,7 @@
   width: 6rem;
   border: none;
   outline: none;
-  background: linear-gradient(150deg, var(--primary), var(--ternary-2));
+  background: linear-gradient(150deg, var(--primary), var(--secondary-1));
   color: var(--white-2);
   font-size: 1rem;
 }

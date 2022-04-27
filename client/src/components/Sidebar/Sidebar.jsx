@@ -11,7 +11,7 @@ import {
 import css from "./Sidebar.module.css";
 import useForm from "../../services/useForm";
 import nodpImg from "../../images/nodp.jpg";
-import logo from "../../images/logo2.svg";
+// import logo from "../../images/logo2.svg";
 import { UserContext } from "../../App";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
@@ -40,7 +40,7 @@ const Sidebar = ({ setShow, isProfile }) => {
     <>
       <div className={css.sidebar}>
         <div className={css.logo}>
-          <img src={logo} alt="logo" />
+          {/* <img src={logo} alt="logo" /> */}
         </div>
         {/* profile details */}
         {!isProfile && (

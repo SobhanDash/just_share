@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 
 const PageTitle = ({ title }) => {
-  let defaultTitle = "Kyōyū - Keep Sharing";
+  let defaultTitle = "JustShare - Post and Share";
   return (
     <Helmet>
       <title>{title ? title : defaultTitle}</title>

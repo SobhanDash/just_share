@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { MONGO_URI } = require("./config/keys");
-const mongoURI = MONGO_URI || "mongodb://localhost:27017/kyōyū";
+const mongoURI = MONGO_URI || "mongodb://localhost:27017/justdb";
 
 const connectToMongo = () => {
   try {
