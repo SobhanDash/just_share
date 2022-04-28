@@ -175,7 +175,7 @@ router.put(
     }
     try {
       const userId = req.user.id;
-      const user = await User.findById(userId);
+      let user = await User.findById(userId);
       let followedUser = await User.findById(req.body.adduser);
 
       if (userId === req.body.adduser) {
@@ -222,9 +222,7 @@ router.put(
       const followedUser = await User.findById(req.body.removeuser);
       if (user.following.includes(req.body.removeuser)) {
         const savedUser = await user.updateOne({$pull: { following: req.body.removeuser } }, {new: true});
-        const savedFollower = await followedUser.updateOne({
-          $pull: { followers: userId },
-        });
+        const savedFollower = await followedUser.updateOne({$pull: { followers: userId }},{new: true});
         success = true;
         return res.json({ success, savedUser, status: 200 });
       } else {
@@ -247,12 +245,12 @@ router.get("/getSuggestion", fetchUser, async (req, res) => {
     let suggestedUsers = [];
     const allUsers = await User.find();
     for(let i=0; i<allUsers.length; i++) {
-      if (!user.following.includes(suggest)) {
-        suggestedUsers.push(suggest);
+      if (!user.following.includes(allUsers[i]._id.toString())) {
+        suggestedUsers.push(allUsers[i]._id.toString());
       }
     }
     success = true;
-    return res.json({success, suggestedUsers, status:200});
+    return res.json({success, suggestedUsers, status: 200});
   } catch (err) {
     success = false;
     console.log(`Error in getSugesstion route: ${err.message}`);
@@ -314,11 +312,11 @@ router.put(
       let { username, name, email, phone } = req.body;
 
       let newuser = {
-        profilepic: "",
-        username: "",
-        name: "",
-        email: "",
-        phone: "",
+        profilepic: user.about.profilepic,
+        username: user.username,
+        name: user.name,
+        email: user.email,
+        phone: user.phone
       };
 
       if (req.body.profilepic) {
