@@ -16,7 +16,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [getProfile]);
 
   useEffect(() => {
     fetch("/api/posts/getsubpost", {

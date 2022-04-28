@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useForm from "../../services/useForm";
 import css from "./form.module.css";
 
 const EditProfileForm = () => {
-  const { handleRegisterChange, handleRegister } = useForm();
+  const { profileChange, editProfile, getProfile, editUserProfile } = useForm();
+
+  console.log(editProfile);
+  useEffect(()=> {
+    getProfile();
+  }, [getProfile]);
 
   return (
     <>
@@ -16,7 +21,8 @@ const EditProfileForm = () => {
               placeholder="Enter Your Username"
               id="username"
               name="username"
-              onChange={handleRegisterChange}
+              value={editProfile.username}
+              onChange={profileChange}
             />
           </div>
           <div className={css.name}>
@@ -26,7 +32,8 @@ const EditProfileForm = () => {
               placeholder="Enter Your Name"
               id="name"
               name="name"
-              onChange={handleRegisterChange}
+              value={editProfile.name}
+              onChange={profileChange}
             />
           </div>
           <div className={css.mobileNo}>
@@ -36,7 +43,8 @@ const EditProfileForm = () => {
               placeholder="Enter Your Mobile No."
               id="mobile"
               name="mobile"
-              onChange={handleRegisterChange}
+              value={editProfile.phone}
+              onChange={profileChange}
             />
           </div>
           <div className={css.email}>
@@ -46,16 +54,18 @@ const EditProfileForm = () => {
               placeholder="email@example.com"
               id="email"
               name="email"
-              onChange={handleRegisterChange}
+              value={editProfile.email}
+              onChange={profileChange}
             />
           </div>
-          <div className={css.password}>
+          {/* <div className={css.password}>
             <label htmlFor="Password">Password</label>
             <input
               type="password"
               placeholder="Enter Password"
               id="password"
               name="password"
+              value={profile.username}
               onChange={handleRegisterChange}
             />
           </div>
@@ -68,8 +78,8 @@ const EditProfileForm = () => {
               name="confirmPassword"
               onChange={handleRegisterChange}
             />
-          </div>
-          <button className={css.saveChanges} onClick={handleRegister}>
+          </div> */}
+          <button className={css.saveChanges} onClick={editUserProfile}>
             Save Changes
           </button>
         </main>

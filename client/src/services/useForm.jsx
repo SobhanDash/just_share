@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -28,12 +28,20 @@ const useForm = (validation) => {
     username: "",
     name: "",
     email: "",
-    phone: 0,
+    phone: "",
     followers: [],
     following: [],
     posts: [],
     profilePic: "",
     bio: "",
+  });
+
+  const [editProfile, setEditProfile] = useState({
+    username: "",
+    name: "",
+    email: "",
+    phone: "",
+    profilePic: "",
   });
 
   const [emailValues, setEmailValues] = useState({
@@ -60,6 +68,14 @@ const useForm = (validation) => {
 
     setPasswordValue({
       ...passwordValues,
+      [name]: value,
+    });
+  };
+
+  const profileChange = (e) => {
+    const { name, value } = e.target;
+    setEditProfile({
+      ...editProfile,
       [name]: value,
     });
   };
@@ -211,13 +227,13 @@ const useForm = (validation) => {
     }
   };
 
-  const getProfile = async () => {
+  const getProfile = useCallback(async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
       const res = await axios.get("http://localhost:5000/api/auth/profile", {
         headers: { "auth-token": token },
       });
-      // console.log(res.data);
+      console.log(res.data);
       setProfile({
         username: res.data.user.username,
         name: res.data.user.name,
@@ -229,8 +245,56 @@ const useForm = (validation) => {
         profilePic: res.data.user.about.profilepic,
         bio: res.data.user.about.bio,
       });
+      setEditProfile({
+        username: res.data.user.username,
+        name: res.data.user.name,
+        email: res.data.user.email,
+        phone: res.data.user.phone,
+        profilePic: res.data.user.about.profilepic
+      });
     }
-  };
+  }, []);
+
+  const editUserProfile = useCallback(async () => {
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      const res = await axios.put(
+        "http://localhost:5000/api/auth/editProfile",
+        {
+          username: editProfile.username,
+          name: editProfile.name,
+          email: editProfile.email,
+          phone: editProfile.phone,
+          profilepic: editProfile.profilePic,
+        },
+        {
+          headers: { "auth-token": token },
+        }
+      );
+      // console.log(res.data);
+
+      if(res.data.success) {
+        setProfile({
+          username: res.data.user.username,
+          name: res.data.user.name,
+          email: res.data.user.email,
+          phone: res.data.user.phone,
+          followers: res.data.user.followers,
+          following: res.data.user.following,
+          posts: res.data.user.posts,
+          profilePic: res.data.user.about.profilepic,
+          bio: res.data.user.about.bio,
+        });
+        setEditProfile({
+          username: res.data.user.username,
+          name: res.data.user.name,
+          email: res.data.user.email,
+          phone: res.data.user.phone,
+          profilePic: res.data.user.about.profilepic
+        });
+      }
+    }
+  }, [editProfile]);
 
   const getPost = async () => {
     const userpost = await fetch("/api/posts/getposts", {
@@ -251,7 +315,7 @@ const useForm = (validation) => {
     handleRegisterChange,
     handleLogin,
     handleRegister,
-
+    profileChange,
     values,
     rvalues,
     emailValues,
@@ -263,6 +327,9 @@ const useForm = (validation) => {
     getPost,
     userposts,
     setUserPosts,
+    editProfile,
+    setEditProfile,
+    editUserProfile
   };
 };
 
