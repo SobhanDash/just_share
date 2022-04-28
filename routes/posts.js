@@ -134,8 +134,9 @@ router.delete("/deletepost/:id", fetchUser, async (req, res) => {
       { $pull: { posts: req.params.id } },
       { new: true }
     );
+    const posts = await Post.find();
     success = true;
-    return res.json({ success, user, post, status: 200 });
+    return res.json({ success, user, posts, post, status: 200 });
   } catch (err) {
     success = false;
     console.log("Error in deletepost route:", err);
@@ -153,8 +154,9 @@ router.put("/like/:id", fetchUser, async (req, res) => {
       return res.json({ success, error: "Post not Found", status: 404 });
     }
     post = await Post.findByIdAndUpdate(req.params.id, { $push: { likes: req.user.id } }, { new: true });
+    const posts = await Post.find();
     success = true;
-    return res.json({ success, post, status: 200 });
+    return res.json({ success, posts, post, status: 200 });
 
   } catch (error) {
     success = false;
@@ -173,8 +175,9 @@ router.put("/unlike/:id", fetchUser, async (req, res) => {
       return res.json({ success, error: "Post not Found", status: 404 });
     }
     post = await Post.findByIdAndUpdate(req.params.id, { $pull: { likes: req.user.id } }, { new: true });
+    const posts = await Post.find();
     success = true;
-    return res.json({ success, post, status: 200 });
+    return res.json({ success, posts, post, status: 200 });
 
   } catch (error) {
     success = false;

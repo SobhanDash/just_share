@@ -6,14 +6,15 @@ export const register = ({username,name,email,phone,password})=> async(dispatch)
     });
 
     try {
-        const res = await axios.post("http:localhost:5000/api/auth/register", {username,name,email,phone,password});
+        const res = await axios.post("http://localhost:5000/api/auth/register", {username,name,email,phone,password});
 
         if(res.data.success) {
             localStorage.setItem("just_token",res.data.authToken);
             dispatch({
                 type: 'register',
                 payload: {
-                    user: res.data.authToken
+                    user: res.data.authToken,
+                    error: null
                 }
             });
         }
@@ -45,14 +46,15 @@ export const login = ({email,password})=> async(dispatch)=> {
     });
 
     try {
-        const res = await axios.post("http:localhost:5000/api/auth/login", {email,password});
+        const res = await axios.post("http://localhost:5000/api/auth/login", {email,password});
 
         if(res.data.success) {
             localStorage.setItem("just_token",res.data.authToken);
             dispatch({
                 type: 'login',
                 payload: {
-                    user: res.data.authToken
+                    user: res.data.authToken,
+                    error: null
                 }
             });
         }
@@ -85,14 +87,15 @@ export const getProfile = ()=> async(dispatch)=> {
 
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.get("http:localhost:5000/api/auth/profile", {headers: {"auth-token": token}});
+        const res = await axios.get("http://localhost:5000/api/auth/profile", {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.user));
             dispatch({
                 type: 'profile',
                 payload: {
-                    profile: res.data.user
+                    profile: res.data.user,
+                    error: null
                 }
             });
         }
@@ -125,14 +128,15 @@ export const editProfile = ({username,name,email,phone,profilePic})=> async(disp
 
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put("http:localhost:5000/api/auth/editProfile", {username,name,email,phone,profilePic} , {headers: {"auth-token": token}});
+        const res = await axios.put("http://localhost:5000/api/auth/editProfile", {username,name,email,phone,profilePic} , {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.user));
             dispatch({
                 type: 'edit-profile',
                 payload: {
-                    profile: res.data.user
+                    profile: res.data.user,
+                    error: null
                 }
             });
         }
@@ -165,14 +169,15 @@ export const follow = (adduser)=> async(dispatch)=> {
 
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put("http:localhost:5000/api/auth/follow", {adduser} , {headers: {"auth-token": token}});
+        const res = await axios.put("http://localhost:5000/api/auth/follow", {adduser} , {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.savedUser));
             dispatch({
                 type: 'follow',
                 payload: {
-                    profile: res.data.savedUser
+                    profile: res.data.savedUser,
+                    error: null
                 }
             });
         }
@@ -205,14 +210,15 @@ export const unfollow = (removeuser)=> async(dispatch)=> {
 
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put("http:localhost:5000/api/auth/unfollow", {removeuser} , {headers: {"auth-token": token}});
+        const res = await axios.put("http://localhost:5000/api/auth/unfollow", {removeuser} , {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.savedUser));
             dispatch({
                 type: 'unfollow',
                 payload: {
-                    profile: res.data.savedUser
+                    profile: res.data.savedUser,
+                    error: null
                 }
             });
         }
@@ -241,14 +247,15 @@ export const unfollow = (removeuser)=> async(dispatch)=> {
 export const getSuggestion = ()=> async(dispatch)=> {
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.get("http:localhost:5000/api/auth/getSuggestion", {headers: {"auth-token": token}});
+        const res = await axios.get("http://localhost:5000/api/auth/getSuggestion", {headers: {"auth-token": token}});
 
         if(res.data.success) {
-            // localStorage.setItem("just_suggestion",JSON.stringify(res.data.suggestedUsers));
+            localStorage.setItem("just_suggestions",JSON.stringify(res.data.suggestedUsers));
             dispatch({
                 type: 'get-suggestion',
                 payload: {
-                    suggestedUsers: res.data.suggestedUsers
+                    suggestedUsers: res.data.suggestedUsers,
+                    error: null
                 }
             });
         }
@@ -281,14 +288,15 @@ export const addDp = (image)=> async(dispatch)=> {
 
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put("http:localhost:5000/api/auth/adddp", {image} , {headers: {"auth-token": token}});
+        const res = await axios.put("http://localhost:5000/api/auth/adddp", {image} , {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.savedUser));
             dispatch({
                 type: 'add-dp',
                 payload: {
-                    profile: res.data.savedUser
+                    profile: res.data.savedUser,
+                    error: null
                 }
             });
         }
@@ -321,13 +329,14 @@ export const searchUsers = (username)=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.get(`http:localhost:5000/api/auth/users/${username}`, {headers: {"auth-token": token}});
+        const res = await axios.get(`http://localhost:5000/api/auth/users/${username}`, {headers: {"auth-token": token}});
 
         if(res.data.success) {
             dispatch({
                 type: 'search-users',
                 payload: {
-                    searchedUsers: res.data.users
+                    searchedUsers: res.data.users,
+                    error: null
                 }
             });
         }
@@ -362,14 +371,15 @@ export const getPosts = ()=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.get("http:localhost:5000/api/posts/getposts", {headers: {"auth-token": token}});
+        const res = await axios.get("http://localhost:5000/api/posts/getposts", {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
             dispatch({
                 type: 'get-posts',
                 payload: {
-                    posts: res.data.posts
+                    posts: res.data.posts,
+                    error: null
                 }
             });
         }
@@ -403,13 +413,14 @@ export const getPosts = ()=> async(dispatch)=> {
     
 //     const token = localStorage.getItem("just_token");
 //     try {
-//         const res = await axios.get("http:localhost:5000/api/posts/getsubpost", {headers: {"auth-token": token}});
+//         const res = await axios.get("http://localhost:5000/api/posts/getsubpost", {headers: {"auth-token": token}});
 
 //         if(res.data.success) {
 //             dispatch({
 //                 type: 'get-subpost',
 //                 payload: {
-//                     posts: res.data.posts
+//                     posts: res.data.posts,
+//                     error: null
 //                 }
 //             });
 //         }
@@ -442,7 +453,7 @@ export const addPost = ({image,caption})=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.post("http:localhost:5000/api/posts/addpost", {image,caption} , {headers: {"auth-token": token}});
+        const res = await axios.post("http://localhost:5000/api/posts/addpost", {image,caption} , {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_profile", JSON.stringify(res.data.user));
@@ -451,7 +462,8 @@ export const addPost = ({image,caption})=> async(dispatch)=> {
                 type: 'add-post',
                 payload: {
                     profile: res.data.user,
-                    mypost: res.data.savedPost
+                    mypost: res.data.savedPost,
+                    error: null
                 }
             });
         }
@@ -484,14 +496,15 @@ export const updatePost = ({id,image,caption})=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put(`http:localhost:5000/api/posts/updatepost/${id}`, {image,caption} , {headers: {"auth-token": token}});
+        const res = await axios.put(`http://localhost:5000/api/posts/updatepost/${id}`, {image,caption} , {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
             dispatch({
                 type: 'update-post',
                 payload: {
-                    posts: res.data.posts
+                    posts: res.data.posts,
+                    error: null
                 }
             });
         }
@@ -524,16 +537,17 @@ export const deletePost = (id)=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.delete(`http:localhost:5000/api/posts/deletepost/${id}`,{headers: {"auth-token": token}});
+        const res = await axios.delete(`http://localhost:5000/api/posts/deletepost/${id}`,{headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_profile", JSON.stringify(res.data.user));
-            // localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
             dispatch({
                 type: 'delete-post',
                 payload: {
                     profile: res.data.user,
-                    deletedPost: res.data.post
+                    posts: res.data.posts,
+                    error: null
                 }
             });
         }
@@ -566,14 +580,16 @@ export const likePost = (id)=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put(`http:localhost:5000/api/posts/like/${id}`,{headers: {"auth-token": token}});
+        const res = await axios.put(`http://localhost:5000/api/posts/like/${id}`,{headers: {"auth-token": token}});
 
         if(res.data.success) {
-            // localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
             dispatch({
                 type: 'like-post',
                 payload: {
-                    mypost: res.data.post
+                    posts: res.data.posts,
+                    mypost: res.data.post,
+                    error: null
                 }
             });
         }
@@ -606,14 +622,16 @@ export const unlikePost = (id)=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put(`http:localhost:5000/api/posts/unlike/${id}`,{headers: {"auth-token": token}});
+        const res = await axios.put(`http://localhost:5000/api/posts/unlike/${id}`,{headers: {"auth-token": token}});
 
         if(res.data.success) {
-            // localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
             dispatch({
                 type: 'unlike-post',
                 payload: {
-                    mypost: res.data.post
+                    posts: res.data.posts,
+                    mypost: res.data.post,
+                    error: null
                 }
             });
         }
@@ -646,14 +664,16 @@ export const addComment = (id)=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put(`http:localhost:5000/api/posts/comment/${id}`,{headers: {"auth-token": token}});
+        const res = await axios.put(`http://localhost:5000/api/posts/comment/${id}`,{headers: {"auth-token": token}});
 
         if(res.data.success) {
-            // localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
             dispatch({
                 type: 'add-comment',
                 payload: {
-                    mypost: res.data.post
+                    posts: res.data.posts,
+                    mypost: res.data.post,
+                    error: null
                 }
             });
         }

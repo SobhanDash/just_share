@@ -246,7 +246,7 @@ router.get("/getSuggestion", fetchUser, async (req, res) => {
     const allUsers = await User.find();
     for(let i=0; i<allUsers.length; i++) {
       if (!user.following.includes(allUsers[i]._id.toString())) {
-        suggestedUsers.push(allUsers[i]._id.toString());
+        suggestedUsers.push(allUsers[i]);
       }
     }
     success = true;
