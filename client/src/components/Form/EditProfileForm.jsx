@@ -1,14 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
 import useForm from "../../services/useForm";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import css from "./form.module.css";
 
 const EditProfileForm = () => {
-  const { profileChange, editProfile, getProfile, editUserProfile } = useForm();
+  // const { profileChange, editProfile, getProfile, editUserProfile } = useForm();
+  const dispatch = useDispatch();
+  const {profile, isLoading} = useSelector(state=> state.userReducer,shallowEqual);
+  const [editProfile, setEditProfile] = useState({
+    username: profile && profile.username,
+    name: profile && profile.name,
+    email: profile && profile.email,
+    phone: profile && profile.phone,
+    profilepic: profile && profile.about.profilepic,
+  });
 
-  console.log(editProfile);
+  const profileChange = (e) => {
+    const { name, value } = e.target;
+    setEditProfile({
+      ...editProfile,
+      [name]: value,
+    });
+  };
+
+  const editUserProfile = ()=> {
+    dispatch(actionCreators.editProfile(editProfile));
+  }
+
+  // console.log(editProfile);
   useEffect(()=> {
-    getProfile();
-  }, [getProfile]);
+    dispatch(actionCreators.getProfile());
+  }, [dispatch]);
+
+  if(isLoading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <>

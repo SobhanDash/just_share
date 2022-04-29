@@ -13,6 +13,8 @@ import useForm from "../../services/useForm";
 import nodpImg from "../../images/nodp.jpg";
 // import logo from "../../images/logo2.svg";
 import { UserContext } from "../../App";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const addPostIcon = <FontAwesomeIcon icon={faPlus} />;
@@ -20,19 +22,22 @@ const profileIcon = <FontAwesomeIcon icon={faUser} />;
 const logout = <FontAwesomeIcon icon={faSignOutAlt} />;
 const editProfileIcon = <FontAwesomeIcon icon={faCog} />;
 
-const Sidebar = ({ setShow, isProfile }) => {
-  const { state, dispatch } = useContext(UserContext);
+const Sidebar = () => {
+  const dispatch = useDispatch();
+  const {profile,user} = useSelector(state=> state.userReducer,shallowEqual);
+  // const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
-  const { getProfile, profile } = useForm();
+  // const { getProfile, profile } = useForm();
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    if(user) {
+      dispatch(actionCreators.getProfile());
+    }
+  }, [dispatch]);
 
   const onLogout = () => {
-    localStorage.clear();
-    dispatch({ type: "CLEAR" });
+    dispatch(actionCreators.logout());
     history.push("/login");
   };
 
@@ -43,13 +48,13 @@ const Sidebar = ({ setShow, isProfile }) => {
           {/* <img src={logo} alt="logo" /> */}
         </div>
         {/* profile details */}
-        {!isProfile && (
+        {profile && (
           <div className={css.sideProf}>
             {/* profile img */}
             <div className={css.profile}>
               <div className={css.profile_img}>
-                {profile.profilePic !== null ? (
-                  <img src={profile.profilePic} alt={profile.username} />
+                {profile.about.profilepic !== null ? (
+                  <img src={profile.about.profilepic} alt={profile.username} />
                 ) : (
                   <img src={nodpImg} alt={profile.username} />
                 )}
@@ -99,8 +104,8 @@ const Sidebar = ({ setShow, isProfile }) => {
             <span className={css.icon}>{editProfileIcon}</span>
             <div className={css.icon_func}>Edit Profile</div>
           </Link>
-          {!isProfile && (
-            <Link to={location.pathname} onClick={() => setShow(true)}>
+          {profile && (
+            <Link to={location.pathname}>
               <span className={css.icon}>{addPostIcon}</span>
               <div className={css.icon_func}>Add Post</div>
             </Link>

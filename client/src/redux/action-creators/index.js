@@ -7,9 +7,9 @@ export const register = ({username,name,email,phone,password})=> async(dispatch)
 
     try {
         const res = await axios.post("http://localhost:5000/api/auth/register", {username,name,email,phone,password});
-
         if(res.data.success) {
             localStorage.setItem("just_token",res.data.authToken);
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'register',
                 payload: {
@@ -50,6 +50,7 @@ export const login = ({email,password})=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_token",res.data.authToken);
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'login',
                 payload: {
@@ -91,6 +92,7 @@ export const getProfile = ()=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.user));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'profile',
                 payload: {
@@ -122,9 +124,9 @@ export const getProfile = ()=> async(dispatch)=> {
 }
 
 export const editProfile = ({username,name,email,phone,profilePic})=> async(dispatch)=> {
-    // dispatch({
-    //     type: "set-loading"
-    // });
+    dispatch({
+        type: "set-loading"
+    });
 
     const token = localStorage.getItem("just_token");
     try {
@@ -132,6 +134,7 @@ export const editProfile = ({username,name,email,phone,profilePic})=> async(disp
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.user));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'edit-profile',
                 payload: {
@@ -173,6 +176,7 @@ export const follow = (adduser)=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.savedUser));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'follow',
                 payload: {
@@ -214,6 +218,7 @@ export const unfollow = (removeuser)=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.savedUser));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'unfollow',
                 payload: {
@@ -251,6 +256,7 @@ export const getSuggestion = ()=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_suggestions",JSON.stringify(res.data.suggestedUsers));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'get-suggestion',
                 payload: {
@@ -292,6 +298,7 @@ export const addDp = (image)=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.savedUser));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'add-dp',
                 payload: {
@@ -332,6 +339,7 @@ export const searchUsers = (username)=> async(dispatch)=> {
         const res = await axios.get(`http://localhost:5000/api/auth/users/${username}`, {headers: {"auth-token": token}});
 
         if(res.data.success) {
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'search-users',
                 payload: {
@@ -375,6 +383,7 @@ export const getPosts = ()=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'get-posts',
                 payload: {
@@ -405,46 +414,54 @@ export const getPosts = ()=> async(dispatch)=> {
     }
 }
 
-// *********** This method is not required ********\\
-// export const getSubPost = ()=> async(dispatch)=> {
-//     dispatch({
-//         type: "set-loading"
-//     });
+export const logout = ()=> async(dispatch)=> {
+    localStorage.clear();
+    dispatch({
+        type: "logout"
+    });
     
-//     const token = localStorage.getItem("just_token");
-//     try {
-//         const res = await axios.get("http://localhost:5000/api/posts/getsubpost", {headers: {"auth-token": token}});
+}
 
-//         if(res.data.success) {
-//             dispatch({
-//                 type: 'get-subpost',
-//                 payload: {
-//                     posts: res.data.posts,
-//                     error: null
-//                 }
-//             });
-//         }
+export const fetchPost = (id)=> async(dispatch)=> {
+    dispatch({
+        type: "set-loading"
+    });
+    
+    const token = localStorage.getItem("just_token");
+    try {
+        const res = await axios.get(`http://localhost:5000/api/posts/${id}`, {headers: {"auth-token": token}});
 
-//         if(res.data.error) {
-//             localStorage.setItem("just_error",res.data.error);
-//             dispatch({
-//                 type: 'get-subpost',
-//                 payload: {
-//                     error: res.data.error
-//                 }
-//             });
-//         }
+        if(res.data.success) {
+            localStorage.removeItem("just_error");
+            dispatch({
+                type: 'fetch-post',
+                payload: {
+                    post: res.data.post,
+                    error: null
+                }
+            });
+        }
 
-//     } catch (error) {
-//         // console.log(error.message);
-//         dispatch({
-//             type: 'get-subpost',
-//             payload: {
-//                 error: error.message
-//             }
-//         });
-//     }
-// }
+        if(res.data.error) {
+            localStorage.setItem("just_error",res.data.error);
+            dispatch({
+                type: 'fetch-post',
+                payload: {
+                    error: res.data.error
+                }
+            });
+        }
+
+    } catch (error) {
+        // console.log(error.message);
+        dispatch({
+            type: 'fetch-post',
+            payload: {
+                error: error.message
+            }
+        });
+    }
+}
 
 export const addPost = ({image,caption})=> async(dispatch)=> {
     dispatch({
@@ -457,6 +474,7 @@ export const addPost = ({image,caption})=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_profile", JSON.stringify(res.data.user));
+            localStorage.removeItem("just_error");
             // localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
             dispatch({
                 type: 'add-post',
@@ -500,6 +518,7 @@ export const updatePost = ({id,image,caption})=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'update-post',
                 payload: {
@@ -542,6 +561,7 @@ export const deletePost = (id)=> async(dispatch)=> {
         if(res.data.success) {
             localStorage.setItem("just_profile", JSON.stringify(res.data.user));
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'delete-post',
                 payload: {
@@ -584,6 +604,7 @@ export const likePost = (id)=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'like-post',
                 payload: {
@@ -626,6 +647,7 @@ export const unlikePost = (id)=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'unlike-post',
                 payload: {
@@ -668,6 +690,7 @@ export const addComment = (id)=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.removeItem("just_error");
             dispatch({
                 type: 'add-comment',
                 payload: {

@@ -1,20 +1,30 @@
 import React, { useEffect } from "react";
-import css from "./container.module.css";
-import useForm from "../../services/useForm";
+import { useHistory } from "react-router-dom";
+// import useForm from "../../services/useForm";
 import PostItem from "../PostItem/PostItem";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
+
+import css from "./container.module.css";
 
 const Container = () => {
-  const { getProfile, profile, getPost, userposts } = useForm();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const {user, profile} = useSelector(state=> state.userReducer,shallowEqual);
+  // const { getProfile, profile, getPost, userposts } = useForm();
 
   useEffect(() => {
-    getProfile();
-    getPost();
-  }, []);
+    if(user) {
+      dispatch(actionCreators.getProfile());
+      dispatch(actionCreators.getPosts());
+    }
+  }, [dispatch]);
+
   return (
     <>
       <section className={css.feed}>
         {profile &&
-          userposts.map((post) => {
+          profile.posts.map((post) => {
             return (
               <PostItem
                 key={post._id}

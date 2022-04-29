@@ -12,7 +12,7 @@ const Index = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    if (!localStorage.getItem("just_token")) {
       history.push("/login");
     }
   }, [history]);

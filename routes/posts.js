@@ -9,14 +9,12 @@ const fetchUser = require("../middleware/fetchUser");
 router.get("/getposts", fetchUser, async (req, res) => {
   let success = false;
   try {
-    Post.find()
+    const posts = await Post.find()
       .populate("user", "_id username name about")
       .populate("comments.user", "_id username name")
       .sort("-createdAt")
-      .then((posts) => {
-        success = true;
-        return res.json({ success, posts, status: 200 });
-      });
+    success = true;
+    return res.json({ success, posts, status: 200 });
   } catch (err) {
     success = false;
     console.log("Error in getposts route:", err.message);
@@ -232,6 +230,23 @@ router.put("/comment/:id", [
     return res.json({ success, error: error.message, status: 422 });
   }
 
+});
+
+// ROUTE-9: Get a particular post by id using: GET "/api/posts/posts/:id". Require Login
+router.put("/:id", fetchUser, async (req, res) => {
+  let success = false;
+  try {
+    const post = await Post.findById(req.params.id)
+      .populate("user", "_id username name about")
+      .populate("comments.user", "_id username name")
+      .sort("-createdAt")
+    success = true;
+    return res.json({ success, post, status: 200 });
+  } catch (err) {
+    success = false;
+    console.log("Error in getposts route:", err.message);
+    return res.json({ success, error: err.message, status: 500 });
+  }
 });
 
 

@@ -9,96 +9,47 @@ import {
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import FeatModal from "../Modal/FeatModal";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import UpdateModal from "../Modal/UpdateModal";
-import useForm from "../../services/useForm";
-import { UserContext } from "../../App";
+// import useForm from "../../services/useForm";
+// import { UserContext } from "../../App";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
 
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const commentIcon = <FontAwesomeIcon icon={faComment} />;
 const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
 const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
+  // const history = useHistory();
+  const dispatch = useDispatch();
+  const {user,profile} = useSelector(state=> state.userReducer);
   const [show, setShow] = useState(false);
   const [fshow, setFShow] = useState(false);
   const [ushow, setUShow] = useState(false);
-  const { userposts, setUserPosts } = useForm();
+  // const { userposts, setUserPosts } = useForm();
   // eslint-disable-next-line no-unused-vars
-  const { state, dispatch } = useContext(UserContext);
-
-  useEffect(() => {
-    const getPost = async () => {
-      const userpost = await fetch("/api/posts/getposts", {
-        method: "GET",
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-        },
-      });
-
-      const json = await userpost.json();
-
-      const { posts } = json;
-      setUserPosts(posts);
-    };
-    getPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // const { state, dispatch } = useContext(UserContext);
 
   function handleModalClose() {
     setFShow(!fshow);
   }
-  const likePost = (id) => {
-    fetch("/api/posts/like", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
-      },
-      body: JSON.stringify({ postid: id }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        const newData = userposts.map((item) => {
-          if (item._id == result._id) {
-            return result;
-          } else {
-            return item;
-          }
-        });
-        setUserPosts(newData);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const likePost = () => {
+    dispatch(actionCreators.likePost(postid));
   };
 
   const unlikePost = (id) => {
-    fetch("/api/posts/unlike", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
-      },
-      body: JSON.stringify({ postid: id }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        const newData = userposts.map((item) => {
-          if (item._id == result._id) {
-            return result;
-          } else {
-            return item;
-          }
-        });
-        setUserPosts(newData);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(actionCreators.likePost(postid));
   };
+
+  useEffect(() => {
+    if(user) {
+      dispatch(actionCreators.fetchPost(postid));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
   return (
     <>
       <Modal show={show} setShow={setShow} />
@@ -123,12 +74,10 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
           </figcaption>
           <div className={css.post_icons}>
             <div className={css.post_icon}>
-              {post.likes.includes(state._id) ? (
+              {post.likes.includes(profile._id) ? (
                 <button
                   type="button"
-                  onClick={() => {
-                    unlikePost(postid);
-                  }}
+                  onClick={unlikePost}
                   className={css.icon}
                 >
                   <i className={css.active}>{likeHeart}</i>
@@ -137,9 +86,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
               ) : (
                 <button
                   type="button"
-                  onClick={() => {
-                    likePost(postid);
-                  }}
+                  onClick={likePost}
                   className={css.icon}
                 >
                   <i>{likeHeart}</i>

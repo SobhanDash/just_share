@@ -1,10 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
+// import { useNavigate } from "react-router";
+import { useHistory } from "react-router-dom";
+
 import css from "./form.module.css";
-import useForm from "../../services/useForm";
-import validation from "../../utils/validation";
 
 const Register = () => {
-  const { handleRegisterChange, handleRegister } = useForm(validation);
+  const user = useSelector(state=> state.userReducer.user);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [isError, setIsError] = useState({status: false, message: ""});
+  const [rvalues, setRvalues] = useState({
+    username: "",
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleRegisterChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setRvalues({
+      ...rvalues,
+      [name]: value,
+    });
+  };
+
+  const onRegister = (e) => {
+    e.preventDefault();
+    if(rvalues.password === rvalues.confirmPassword) {
+      dispatch(actionCreators.register(rvalues));
+      setRvalues({
+        username: "",
+        name: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      // navigate('/', {replace: true});
+      history.push('/');
+    }
+    else {
+      setIsError({status: true, message: "Password and confirm password must be same!"});
+    }
+  }
+
+  useEffect(()=> {
+    if(user) {
+      history.push("/");
+    }
+  },[user]);
 
   return (
     <>
@@ -35,12 +84,12 @@ const Register = () => {
             />
           </div>
           <div className={css.mobileNo}>
-            <label htmlFor="Mobile No">Mobile No.</label>
+            <label htmlFor="phone">Mobile No.</label>
             <input
               type="text"
               placeholder="Enter Your Mobile No."
-              id="mobile"
-              name="mobile"
+              id="phone"
+              name="phone"
               onChange={handleRegisterChange}
             />
           </div>
@@ -74,9 +123,10 @@ const Register = () => {
               onChange={handleRegisterChange}
             />
           </div>
-          <button className={css.register_btn} onClick={handleRegister}>
+          <button className={css.register_btn} onClick={onRegister}>
             Register
           </button>
+          {isError.status === true && <h4>{isError.message}</h4>}
         </main>
         <footer className={css.register_form_footer}>
           <div>

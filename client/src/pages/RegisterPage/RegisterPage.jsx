@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import css from "./register.module.css";
 import Register from "../../components/Form/Register";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const history = useHistory();
 
   if (localStorage.getItem("token")) {
@@ -26,4 +26,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

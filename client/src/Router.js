@@ -58,9 +58,9 @@ const RouteConfig = ({ UserContext }) => {
   // eslint-disable-next-line no-unused-vars
   const { state, dispatch } = useContext(UserContext);
   const tokenFetch = async () => {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem("just_token");
     if (token) {
-      const res = await axios.get("/api/auth/profile", {
+      const res = await axios.get("http://localhost:5000/api/auth/profile", {
         headers: { "auth-token": token },
       });
       if (res.data.user) {

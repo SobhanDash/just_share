@@ -17,7 +17,7 @@ router.post(
     body("username", "Enter a valid username").isLength({ min: 5 }),
     body("name", "Enter a valid name").isLength({ min: 3 }),
     body("email", "Enter a valid email").isEmail(),
-    body("phone", "Enter a valid phone number").isLength({ min: 10 }),
+    body("phone", "Enter a valid phone number").isLength({ min: 10, max: 10 }),
     body("password", "Enter a valid password")
       .isLength({ min: 8 })
       .matches(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/),

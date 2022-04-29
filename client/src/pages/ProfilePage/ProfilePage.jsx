@@ -1,47 +1,58 @@
-import React, { useEffect, useState } from "react";
-import useForm from "../../services/useForm";
+import React, { useEffect } from "react";
+// import useForm from "../../services/useForm";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh, faCamera } from "@fortawesome/free-solid-svg-icons";
 import nodpImg from "../../images/nodp.jpg";
 import css from "./profile.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { actionCreators } from "../../redux";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const camera = <FontAwesomeIcon icon={faCamera} />;
 
 const ProfilePage = () => {
   // eslint-disable-next-line no-unused-vars
-  const [isProfile, setIsProfile] = useState(true);
-  const { getProfile, profile, userposts, setUserPosts } = useForm();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const {user,profile} = useSelector(state=> state.userReducer);
+  // const [isProfile, setIsProfile] = useState(true);
+  // const { getProfile, profile, userposts, setUserPosts } = useForm();
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    if(!user) {
+      history.push('/login');
+    }
+    else {
+      dispatch(actionCreators.getProfile());
+    }
+  }, [dispatch,history,user]);
 
-  useEffect(() => {
-    fetch("/api/posts/getsubpost", {
-      method: "GET",
-      headers: {
-        "auth-token": localStorage.getItem("token"),
-      },
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        setUserPosts(result.posts);
-      });
-  }, [setUserPosts]);
+  // useEffect(() => {
+  //   fetch("/api/posts/getsubpost", {
+  //     method: "GET",
+  //     headers: {
+  //       "auth-token": localStorage.getItem("token"),
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((result) => {
+  //       setUserPosts(result.posts);
+  //     });
+  // }, [setUserPosts]);
 
   return (
     <section className={css.profileContainer}>
       <div>
-        <Sidebar isProfile={isProfile} />
+        <Sidebar isProfile={profile} />
       </div>
       <div className={css.profileData}>
         {/* Profile Image */}
         <div className={css.profile}>
           <div className={css.profileImg}>
-            {profile.profilePic !== null ? (
-              <img src={profile.profilePic} alt="" />
+            {profile.about.profilepic !== null ? (
+              <img src={profile.about.profilepic} alt="" />
             ) : (
               <img src={nodpImg} alt={profile.username} />
             )}
@@ -76,7 +87,7 @@ const ProfilePage = () => {
           </h4>
           <div className={css.postContainer}>
             {profile.posts.length !== 0 &&
-              userposts.map((post) => {
+              profile.posts.map((post) => {
                 return (
                   <div className={css.card} key={post._id}>
                     <img src={post.image} alt={post.caption} />

@@ -48,6 +48,25 @@ const postReducer = (state=initState,action)=> {
         }
     }
 
+    else if(action.type === "fetch-post") {
+        const {post,error} = action.payload;
+        if(error) {
+            return {
+                ...state,
+                error: error,
+                isLoading: false
+            }
+        }
+        else {
+            return {
+                ...state,
+                mypost: post,
+                isLoading: false,
+                error: null
+            }
+        }
+    }
+
     else if(action.type === "add-post") {
         const {mypost,error} = action.payload;
         if(error) {
