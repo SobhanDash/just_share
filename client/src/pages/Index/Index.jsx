@@ -6,28 +6,45 @@ import Feed from "../../components/Feed/Container";
 import Modal from "../../components/Modal/Modal";
 
 import css from "./index.module.css";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
 
 const Index = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const {user, profile, isLoading} = useSelector(state=> state.userReducer,shallowEqual);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("just_token")) {
+    // console.log(isLoading);
+    if (!user) {
       history.push("/login");
     }
-  }, [history]);
+    else {
+      dispatch(actionCreators.getProfile());
+    }
+  }, [dispatch,history,user]);
+
+  // console.log(typeof(profile));
+  // console.log(profile === []);
+  // console.log(Object.keys(profile).length === 0);
+
+  if(isLoading && Object.keys(profile).length === 0) {
+    return <LoadingSpinner />
+  }
 
   return (
     <>
-      <Modal show={show} setShow={setShow} />
-      <div className={css.index_container}>
+      {(user && Object.keys(profile).length > 0) && <Modal show={show} setShow={setShow} />}
+      {(user && Object.keys(profile).length > 0) && <div className={css.index_container}>
         <div className={css.sidebar}>
-          <Sidebar setShow={setShow} />
+          <Sidebar />
         </div>
         <div className={css.feed}>
           <Feed />
         </div>
-      </div>
+      </div>}
     </>
   );
 };

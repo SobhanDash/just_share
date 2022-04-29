@@ -1,29 +1,30 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
-// import useForm from "../../services/useForm";
 import PostItem from "../PostItem/PostItem";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
 
 import css from "./container.module.css";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const Container = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const {user, profile} = useSelector(state=> state.userReducer,shallowEqual);
-  // const { getProfile, profile, getPost, userposts } = useForm();
+  const isLoading = useSelector(state=> state.postReducer.isLoading,shallowEqual);
 
   useEffect(() => {
     if(user) {
-      dispatch(actionCreators.getProfile());
       dispatch(actionCreators.getPosts());
     }
-  }, [dispatch]);
+  }, [dispatch,user]);
+
+  if(isLoading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <>
       <section className={css.feed}>
-        {profile &&
+        {profile.length !== {} &&
           profile.posts.map((post) => {
             return (
               <PostItem

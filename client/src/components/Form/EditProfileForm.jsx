@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
-import useForm from "../../services/useForm";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import css from "./form.module.css";
 
 const EditProfileForm = () => {
-  // const { profileChange, editProfile, getProfile, editUserProfile } = useForm();
   const dispatch = useDispatch();
   const {profile, isLoading} = useSelector(state=> state.userReducer,shallowEqual);
   const [editProfile, setEditProfile] = useState({
@@ -29,7 +27,6 @@ const EditProfileForm = () => {
     dispatch(actionCreators.editProfile(editProfile));
   }
 
-  // console.log(editProfile);
   useEffect(()=> {
     dispatch(actionCreators.getProfile());
   }, [dispatch]);
@@ -40,7 +37,7 @@ const EditProfileForm = () => {
 
   return (
     <>
-      <form className={css.eform}>
+      <form className={css.eform} onSubmit={editUserProfile}>
         <main className={css.eform_main}>
           <div className={css.username}>
             <label htmlFor="username">Username</label>
@@ -107,7 +104,7 @@ const EditProfileForm = () => {
               onChange={handleRegisterChange}
             />
           </div> */}
-          <button className={css.saveChanges} onClick={editUserProfile}>
+          <button className={css.saveChanges}>
             Save Changes
           </button>
         </main>

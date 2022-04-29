@@ -8,6 +8,7 @@ import css from "./profile.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { actionCreators } from "../../redux";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const camera = <FontAwesomeIcon icon={faCamera} />;
@@ -16,7 +17,7 @@ const ProfilePage = () => {
   // eslint-disable-next-line no-unused-vars
   const history = useHistory();
   const dispatch = useDispatch();
-  const {user,profile} = useSelector(state=> state.userReducer);
+  const {user,profile,isLoading} = useSelector(state=> state.userReducer);
   // const [isProfile, setIsProfile] = useState(true);
   // const { getProfile, profile, userposts, setUserPosts } = useForm();
 
@@ -29,18 +30,9 @@ const ProfilePage = () => {
     }
   }, [dispatch,history,user]);
 
-  // useEffect(() => {
-  //   fetch("/api/posts/getsubpost", {
-  //     method: "GET",
-  //     headers: {
-  //       "auth-token": localStorage.getItem("token"),
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((result) => {
-  //       setUserPosts(result.posts);
-  //     });
-  // }, [setUserPosts]);
+  if(isLoading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <section className={css.profileContainer}>
@@ -56,7 +48,6 @@ const ProfilePage = () => {
             ) : (
               <img src={nodpImg} alt={profile.username} />
             )}
-            {/* <img src={nodpImg} alt={profile.username} /> */}
           </div>
           <div className={css.name}>
             <h1>{profile.name}</h1>

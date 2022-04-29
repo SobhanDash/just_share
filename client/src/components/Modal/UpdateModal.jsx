@@ -61,7 +61,7 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
           console.log(err);
         });
     }
-  }, [ushow]);
+  }, [ushow,cap,post._id]);
 
   if (!ushow) {
     return null;

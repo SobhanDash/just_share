@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
 import { toast } from "react-toastify";
 import validation from "../../utils/validation";
@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
 const Login = () => {
-  const user = useSelector(state=> state.userReducer.user);
+  const {user,isLoading} = useSelector(state=> state.userReducer,shallowEqual);
   const history = useHistory();
   const dispatch = useDispatch();
   const [lValues, setLValues] = useState({email: "", password: ""});
@@ -42,16 +42,15 @@ const Login = () => {
     else {
       dispatch(actionCreators.login(lValues));
       setLValues({email: "", password: ""});
-      history.push('/');
     }
     
   };
 
   useEffect(()=> {
-    if(user) {
+    if(!isLoading && user) {
       history.push("/");
     }
-  },[user]);
+  },[user,isLoading,history]);
 
   return (
     <>

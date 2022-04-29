@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
 // import { useNavigate } from "react-router";
 import { useHistory } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import css from "./form.module.css";
 
 const Register = () => {
-  const user = useSelector(state=> state.userReducer.user);
+  const {user,isLoading} = useSelector(state=> state.userReducer,shallowEqual);
   const dispatch = useDispatch();
   const history = useHistory();
   const [isError, setIsError] = useState({status: false, message: ""});
@@ -41,8 +41,6 @@ const Register = () => {
         password: "",
         confirmPassword: "",
       });
-      // navigate('/', {replace: true});
-      history.push('/');
     }
     else {
       setIsError({status: true, message: "Password and confirm password must be same!"});
@@ -50,10 +48,10 @@ const Register = () => {
   }
 
   useEffect(()=> {
-    if(user) {
+    if(!isLoading && user) {
       history.push("/");
     }
-  },[user]);
+  },[user,isLoading,history]);
 
   return (
     <>

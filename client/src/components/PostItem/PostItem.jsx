@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import css from "./post.module.css";
 import nodpImg from "../../images/nodp.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,7 @@ import {
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import FeatModal from "../Modal/FeatModal";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import UpdateModal from "../Modal/UpdateModal";
 // import useForm from "../../services/useForm";

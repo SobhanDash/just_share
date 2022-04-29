@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,12 +9,12 @@ import {
   faCog,
 } from "@fortawesome/free-solid-svg-icons";
 import css from "./Sidebar.module.css";
-import useForm from "../../services/useForm";
 import nodpImg from "../../images/nodp.jpg";
 // import logo from "../../images/logo2.svg";
-import { UserContext } from "../../App";
+// import { UserContext } from "../../App";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
+// import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const addPostIcon = <FontAwesomeIcon icon={faPlus} />;
@@ -24,22 +24,25 @@ const editProfileIcon = <FontAwesomeIcon icon={faCog} />;
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const {profile,user} = useSelector(state=> state.userReducer,shallowEqual);
+  const {profile} = useSelector(state=> state.userReducer,shallowEqual);
   // const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
   // const { getProfile, profile } = useForm();
 
-  useEffect(() => {
-    if(user) {
-      dispatch(actionCreators.getProfile());
-    }
-  }, [dispatch]);
-
   const onLogout = () => {
     dispatch(actionCreators.logout());
     history.push("/login");
   };
+
+  // useEffect(()=> {
+  //   dispatch(actionCreators.getProfile());
+  // },[dispatch]);
+
+  // console.log(isLoading);
+  // if(isLoading) {
+  //   return <LoadingSpinner />
+  // }
 
   return (
     <>
@@ -48,8 +51,9 @@ const Sidebar = () => {
           {/* <img src={logo} alt="logo" /> */}
         </div>
         {/* profile details */}
-        {profile && (
-          <div className={css.sideProf}>
+        {/* {console.log(profile)} */}
+      {profile.length !== {} && (
+        <div className={css.sideProf}>
             {/* profile img */}
             <div className={css.profile}>
               <div className={css.profile_img}>

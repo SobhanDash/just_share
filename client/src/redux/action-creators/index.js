@@ -9,6 +9,7 @@ export const register = ({username,name,email,phone,password})=> async(dispatch)
         const res = await axios.post("http://localhost:5000/api/auth/register", {username,name,email,phone,password});
         if(res.data.success) {
             localStorage.setItem("just_token",res.data.authToken);
+            // localStorage.setItem("just_profile",JSON.stringify(res.data.user));
             localStorage.removeItem("just_error");
             dispatch({
                 type: 'register',
@@ -50,6 +51,7 @@ export const login = ({email,password})=> async(dispatch)=> {
 
         if(res.data.success) {
             localStorage.setItem("just_token",res.data.authToken);
+            // localStorage.setItem("just_profile",JSON.stringify(res.data.user));
             localStorage.removeItem("just_error");
             dispatch({
                 type: 'login',

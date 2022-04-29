@@ -3,14 +3,13 @@ import css from "./commentsPage.module.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Modal from "../../components/Modal/Modal";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import PostItem from "../../components/PostItem/PostItem";
 import Comments from "../../components/Comments/Comments";
 import useForm from "../../services/useForm";
 
 const CommentsPage = () => {
   const [show, setShow] = useState(false);
-  const { setProfile, getProfile, profile, setUserPosts, userposts } =
+  const { getProfile, profile, setUserPosts, userposts } =
     useForm();
   const { postid } = useParams();
 
