@@ -24,7 +24,7 @@ const more = <FontAwesomeIcon icon={faEllipsisV} />;
 const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
   // const history = useHistory();
   const dispatch = useDispatch();
-  const {user,profile} = useSelector(state=> state.userReducer);
+  const {profile} = useSelector(state=> state.userReducer);
   const [show, setShow] = useState(false);
   const [fshow, setFShow] = useState(false);
   const [ushow, setUShow] = useState(false);
@@ -39,16 +39,14 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
     dispatch(actionCreators.likePost(postid));
   };
 
-  const unlikePost = (id) => {
-    dispatch(actionCreators.likePost(postid));
+  const unlikePost = () => {
+    dispatch(actionCreators.unlikePost(postid));
   };
 
-  useEffect(() => {
-    if(user) {
-      dispatch(actionCreators.fetchPost(postid));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(actionCreators.fetchPost(postid));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [dispatch]);
 
   return (
     <>

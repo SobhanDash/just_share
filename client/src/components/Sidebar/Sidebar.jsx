@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,6 +14,7 @@ import nodpImg from "../../images/nodp.jpg";
 // import { UserContext } from "../../App";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
+import Modal from "../Modal/Modal";
 // import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
@@ -23,6 +24,7 @@ const logout = <FontAwesomeIcon icon={faSignOutAlt} />;
 const editProfileIcon = <FontAwesomeIcon icon={faCog} />;
 
 const Sidebar = () => {
+  const [show,setShow] = useState(false);
   const dispatch = useDispatch();
   const {profile} = useSelector(state=> state.userReducer,shallowEqual);
   // const { state, dispatch } = useContext(UserContext);
@@ -43,6 +45,10 @@ const Sidebar = () => {
   // if(isLoading) {
   //   return <LoadingSpinner />
   // }
+
+  if(show) {
+    return <Modal show={show} setShow={setShow} />
+  }
 
   return (
     <>
@@ -109,7 +115,7 @@ const Sidebar = () => {
             <div className={css.icon_func}>Edit Profile</div>
           </Link>
           {profile && (
-            <Link to={location.pathname}>
+            <Link to="" onClick={()=> setShow(true)}>
               <span className={css.icon}>{addPostIcon}</span>
               <div className={css.icon_func}>Add Post</div>
             </Link>

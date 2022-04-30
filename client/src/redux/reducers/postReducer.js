@@ -10,7 +10,7 @@ if (localStorage.getItem("just_posts") === null) {
 if (localStorage.getItem("just_error") === null) {
     isError = null;
 } else {
-    isError = JSON.parse(localStorage.getItem("just_error"));
+    isError = localStorage.getItem("just_error");
 }
 
 const initState = {

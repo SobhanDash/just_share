@@ -149,7 +149,7 @@ router.get("/profile", fetchUser, async (req, res) => {
   let success = false;
   try {
     const userId = req.user.id;
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate("posts", "_id image caption likes comments");
     // TODO: Might add followers and following
     success = true;
     return res.json({ success, user, status: 200 });

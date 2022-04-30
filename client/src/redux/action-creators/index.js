@@ -465,7 +465,7 @@ export const fetchPost = (id)=> async(dispatch)=> {
     }
 }
 
-export const addPost = ({image,caption})=> async(dispatch)=> {
+export const addPost = (image,caption)=> async(dispatch)=> {
     dispatch({
         type: "set-loading"
     });
@@ -602,7 +602,7 @@ export const likePost = (id)=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put(`http://localhost:5000/api/posts/like/${id}`,{headers: {"auth-token": token}});
+        const res = await axios.put(`http://localhost:5000/api/posts/like/${id}`, {} ,{headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
@@ -645,7 +645,7 @@ export const unlikePost = (id)=> async(dispatch)=> {
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put(`http://localhost:5000/api/posts/unlike/${id}`,{headers: {"auth-token": token}});
+        const res = await axios.put(`http://localhost:5000/api/posts/unlike/${id}`, {} ,{headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));

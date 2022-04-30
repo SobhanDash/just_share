@@ -8,33 +8,37 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const Container = () => {
   const dispatch = useDispatch();
-  const {user, profile} = useSelector(state=> state.userReducer,shallowEqual);
-  const isLoading = useSelector(state=> state.postReducer.isLoading,shallowEqual);
+  const {profile} = useSelector(state=> state.userReducer,shallowEqual);
+  const {posts, isLoading} = useSelector(state=> state.postReducer,shallowEqual);
 
   useEffect(() => {
-    if(user) {
-      dispatch(actionCreators.getPosts());
-    }
-  }, [dispatch,user]);
+    dispatch(actionCreators.getPosts());
+    // if(isLoading) {
+    //   return <LoadingSpinner />
+    // }
+  }, [dispatch]);
 
   if(isLoading) {
     return <LoadingSpinner />
   }
-
+  // console.log(profile);
+  // console.log(profile.posts);
+  
   return (
     <>
       <section className={css.feed}>
-        {profile.length !== {} &&
-          profile.posts.map((post) => {
+        {posts.length > 0 &&
+          posts.map((post) => {
+            // console.log(post);
             return (
               <PostItem
                 key={post._id}
                 post={post}
                 postid={post._id}
-                userid={post.user._id}
-                username={post.user.username}
+                userid={profile._id}
+                username={profile.username}
                 caption={post.caption}
-                dp={post.user.about.profilepic}
+                dp={profile.about.profilepic}
                 pic={post.image}
               />
             );
