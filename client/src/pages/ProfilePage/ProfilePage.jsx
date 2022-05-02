@@ -18,8 +18,10 @@ const ProfilePage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const {user,profile,isLoading} = useSelector(state=> state.userReducer);
-  // const [isProfile, setIsProfile] = useState(true);
-  // const { getProfile, profile, userposts, setUserPosts } = useForm();
+
+  const redirectToPost = (id)=> {
+    history.push(`/post/${id}`);
+  }
 
   useEffect(() => {
     if(!user) {
@@ -80,7 +82,7 @@ const ProfilePage = () => {
             {profile.posts.length !== 0 &&
               profile.posts.map((post) => {
                 return (
-                  <div className={css.card} key={post._id}>
+                  <div className={css.card} key={post._id} onClick={()=> redirectToPost(post._id)}>
                     <img src={post.image} alt={post.caption} />
                   </div>
                 );
