@@ -1,37 +1,31 @@
-import React, { useEffect, useState } from "react";
-import css from "./commentsPage.module.css";
+import React, { Fragment, useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Modal from "../../components/Modal/Modal";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import PostItem from "../../components/PostItem/PostItem";
 import Comments from "../../components/Comments/Comments";
 import useForm from "../../services/useForm";
 
+import css from "./commentsPage.module.css";
+import { actionCreators } from "../../redux";
+
 const CommentsPage = () => {
+  const dispatch = useDispatch();
+  const {profile} = useSelector(state=> state.userReducer,shallowEqual);
+  const {posts} = useSelector(state=> state.postReducer,shallowEqual);
   const [show, setShow] = useState(false);
-  const { getProfile, profile, setUserPosts, userposts } =
-    useForm();
+  // const { getProfile, profile, setUserPosts, userposts } =
+  //   useForm();
   const { postid } = useParams();
 
   useEffect(() => {
-    const getPost = async () => {
-      const userpost = await fetch("/api/posts/getposts", {
-        method: "GET",
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-        },
-      });
-
-      const json = await userpost.json();
-
-      const { posts } = json;
-      setUserPosts(posts);
-    };
-    getProfile();
-    getPost();
+    dispatch(actionCreators.fetchPost(postid));
+    dispatch(actionCreators.getProfile());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const filterData = userposts.filter((item) => {
+  }, [dispatch]);
+
+  const filterData = posts.filter((item) => {
     return item._id === postid;
   });
 
@@ -48,7 +42,7 @@ const CommentsPage = () => {
           {profile &&
             filterData.map((post) => {
               return (
-                <>
+                <Fragment key={post._id}>
                   <PostItem
                     key={post._id}
                     post={post}
@@ -62,10 +56,8 @@ const CommentsPage = () => {
                   <Comments
                     post={post}
                     profile={profile}
-                    userposts={userposts}
-                    setUserPosts={setUserPosts}
                   />
-                </>
+                </Fragment>
               );
             })}
         </div>

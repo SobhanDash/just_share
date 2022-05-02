@@ -5,7 +5,7 @@ import Comment from "../Comments/Comment";
 import { UserContext } from "../../App";
 
 
-const Comments = ({ profile, userposts, post, setUserPosts }) => {
+const Comments = ({ profile, post }) => {
   // eslint-disable-next-line no-unused-vars
   const { state, dispatch } = useContext(UserContext);
 
@@ -16,18 +16,17 @@ const Comments = ({ profile, userposts, post, setUserPosts }) => {
       <CommentForm
         submitLabel="Post"
         profile={profile}
-        userposts={userposts}
         post={post}
-        setUserPosts={setUserPosts}
       />
       <div className={css.comments_container}>
-        {post.comments.map((rootComment) => (
-          <Comment
+        {post.comments.map((rootComment) => {
+          // console.log(rootComment);
+          return (<Comment
             key={rootComment._id}
             comment={rootComment}
-            currentUserId={state._id}
-          />
-        ))}
+            currentUserId={rootComment.user._id}
+          />);
+        } )}
       </div>
     </div>
   );

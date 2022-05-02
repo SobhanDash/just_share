@@ -91,7 +91,7 @@ export const getProfile = ()=> async(dispatch)=> {
     const token = localStorage.getItem("just_token");
     try {
         const res = await axios.get("http://localhost:5000/api/auth/profile", {headers: {"auth-token": token}});
-
+        // console.log(res.data);
         if(res.data.success) {
             localStorage.setItem("just_profile",JSON.stringify(res.data.user));
             localStorage.removeItem("just_error");
@@ -432,7 +432,7 @@ export const fetchPost = (id)=> async(dispatch)=> {
     const token = localStorage.getItem("just_token");
     try {
         const res = await axios.get(`http://localhost:5000/api/posts/${id}`, {headers: {"auth-token": token}});
-
+        // console.log(res.data);
         if(res.data.success) {
             localStorage.removeItem("just_error");
             dispatch({
@@ -477,12 +477,12 @@ export const addPost = (image,caption)=> async(dispatch)=> {
         if(res.data.success) {
             localStorage.setItem("just_profile", JSON.stringify(res.data.user));
             localStorage.removeItem("just_error");
-            // localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+            localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
             dispatch({
                 type: 'add-post',
                 payload: {
                     profile: res.data.user,
-                    mypost: res.data.savedPost,
+                    posts: res.data.posts,
                     error: null
                 }
             });
@@ -681,14 +681,14 @@ export const unlikePost = (id)=> async(dispatch)=> {
     }
 }
 
-export const addComment = (id)=> async(dispatch)=> {
+export const addComment = (id,text)=> async(dispatch)=> {
     dispatch({
         type: "set-loading"
     });
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.put(`http://localhost:5000/api/posts/comment/${id}`,{headers: {"auth-token": token}});
+        const res = await axios.put(`http://localhost:5000/api/posts/comment/${id}`, {text: text} ,{headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.setItem("just_posts", JSON.stringify(res.data.posts));

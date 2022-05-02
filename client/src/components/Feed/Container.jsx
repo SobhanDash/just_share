@@ -13,16 +13,11 @@ const Container = () => {
 
   useEffect(() => {
     dispatch(actionCreators.getPosts());
-    // if(isLoading) {
-    //   return <LoadingSpinner />
-    // }
   }, [dispatch]);
 
   if(isLoading) {
     return <LoadingSpinner />
   }
-  // console.log(profile);
-  // console.log(profile.posts);
   
   return (
     <>
@@ -38,7 +33,7 @@ const Container = () => {
                 userid={profile._id}
                 username={profile.username}
                 caption={post.caption}
-                dp={profile.about.profilepic}
+                dp={post.user.about.profilepic}
                 pic={post.image}
               />
             );

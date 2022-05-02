@@ -15,7 +15,7 @@ if (localStorage.getItem("just_error") === null) {
 
 const initState = {
     posts: isPosts,
-    mypost: [],
+    post: [],
     error: isError,
     isLoading: false
 }
@@ -60,7 +60,7 @@ const postReducer = (state=initState,action)=> {
         else {
             return {
                 ...state,
-                mypost: post,
+                post: post,
                 isLoading: false,
                 error: null
             }
@@ -68,7 +68,7 @@ const postReducer = (state=initState,action)=> {
     }
 
     else if(action.type === "add-post") {
-        const {mypost,error} = action.payload;
+        const {posts,error} = action.payload;
         if(error) {
             return {
                 ...state,
@@ -79,10 +79,7 @@ const postReducer = (state=initState,action)=> {
         else {
             return {
                 ...state,
-                posts: [
-                    ...state.posts,
-                    mypost
-                ],
+                posts: posts,
                 isLoading: false,
                 error: null
             }

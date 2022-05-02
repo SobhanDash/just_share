@@ -19,6 +19,7 @@ const Comment = ({ comment, currentUserId }) => {
 
   return (
     <div key={comment.id} className={css.comment}>
+      {console.log(comment)}
       <div className={css.comment_image_container}>
         <img src={nodpImg} alt="" />
       </div>

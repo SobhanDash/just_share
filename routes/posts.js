@@ -65,7 +65,7 @@ router.post(
       });
       const savedPost = await post.save();
       const user = await User.findByIdAndUpdate(req.user.id, { $push: { posts: savedPost } }, { new: true });
-      const posts = await Post.find();
+      const posts = await Post.find().populate("user","_id username name about");
       success = true;
       res.json({ success, posts, savedPost, user, status: 200 });
     } catch (err) {
@@ -152,8 +152,12 @@ router.put("/like/:id", fetchUser, async (req, res) => {
       success = false;
       return res.json({ success, error: "Post not Found", status: 404 });
     }
+    if(post.likes.includes(req.user.id)) {
+      success = false;
+      return res.json({success, error: "A user can only like a particular post once!", status: 400});
+    }
     post = await Post.findByIdAndUpdate(req.params.id, { $push: { likes: req.user.id } }, { new: true });
-    const posts = await Post.find();
+    const posts = await Post.find().populate("user","_id username name about");
     success = true;
     return res.json({ success, posts, post, status: 200 });
 
@@ -174,7 +178,7 @@ router.put("/unlike/:id", fetchUser, async (req, res) => {
       return res.json({ success, error: "Post not Found", status: 404 });
     }
     post = await Post.findByIdAndUpdate(req.params.id, { $pull: { likes: req.user.id } }, { new: true });
-    const posts = await Post.find();
+    const posts = await Post.find().populate("user","_id username name about");
     success = true;
     return res.json({ success, posts, post, status: 200 });
 
@@ -217,11 +221,11 @@ router.put("/comment/:id", [
       {
         new: true,
       }
-    )
-      .populate("comments.user", "_id username name")
-      .populate("user", "_id username name")
+    );
     
-    const posts = await Post.find();  
+    const posts = await Post.find()
+      .populate("comments.user", "_id username name")
+      .populate("user", "_id username name about");  
 
     success = true;
     console.log(post);
@@ -234,7 +238,7 @@ router.put("/comment/:id", [
 });
 
 // ROUTE-9: Get a particular post by id using: GET "/api/posts/posts/:id". Require Login
-router.put("/:id", fetchUser, async (req, res) => {
+router.get("/:id", fetchUser, async (req, res) => {
   let success = false;
   try {
     const post = await Post.findById(req.params.id)
