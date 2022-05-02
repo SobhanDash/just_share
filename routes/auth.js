@@ -82,10 +82,10 @@ router.post(
       return res.json({ success, authToken, status: 200 });
     } catch (err) {
       success = false;
-      console.log(`Error in registering user: ${err}`);
-      res.send({
+      console.log(`Error in registering user: ${err.message}`);
+      return res.json({
         success,
-        error: `Internal Server Error`,
+        error: err.message,
         status: 500,
       });
     }
@@ -138,8 +138,8 @@ router.post(
       return res.json({ success, authToken, status: 200 });
     } catch (err) {
       success = false;
-      console.log(`Error in login route: ${err}`);
-      res.send({ success, error: `Internal Server Error`, status: 500 });
+      console.log(`Error in login route: ${err.message}`);
+      return res.json({ success, error: err.message, status: 500 });
     }
   }
 );
