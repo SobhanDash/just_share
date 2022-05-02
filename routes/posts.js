@@ -228,7 +228,7 @@ router.put("/comment/:id", [
       .populate("user", "_id username name about");  
 
     success = true;
-    console.log(post);
+    // console.log(post);
     res.json({ success, posts, post, status: 200 });
   } catch (error) {
     console.log("Error in comment route:", error.message);

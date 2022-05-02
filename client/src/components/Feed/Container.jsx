@@ -31,7 +31,7 @@ const Container = () => {
                 post={post}
                 postid={post._id}
                 userid={profile._id}
-                username={profile.username}
+                username={post.user.username}
                 caption={post.caption}
                 dp={post.user.about.profilepic}
                 pic={post.image}
