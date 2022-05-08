@@ -407,9 +407,9 @@ router.put(
   }
 );
 
-// ROUTE-9: Search for users by their username using: GET "/api/auth/users/${username}". Require Login
+// ROUTE-9: Search for users by their name using: GET "/api/auth/users/${name}". Require Login
 router.get(
-  "/users/:username",fetchUser,
+  "/users/:name",fetchUser,
   async (req, res) => {
     let success = false;
     try {
@@ -420,8 +420,8 @@ router.get(
         res.send({ success, error: "Not Found", status: 404 });
       }
 
-      const username = req.params.username;
-      let users = await User.find({username: username});
+      const name = req.params.name;
+      let users = await User.find({name: new RegExp(name,'i')});
 
       success = true;
       return res.json({success, users, status: 200});

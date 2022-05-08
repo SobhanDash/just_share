@@ -96,6 +96,7 @@
   width: 17.5vw;
   margin-bottom: 2.5vh;
   cursor: pointer;
+  /* border: 0.1rem solid var(--primary); */
 }
 
 .card:hover {
@@ -107,6 +108,10 @@
   width: 17.5vw;
   object-fit: cover;
 }
+
+/* .card p {
+  color: white;
+} */
 
 .noPost {
   font-size: 1.7rem;

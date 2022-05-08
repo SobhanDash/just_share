@@ -17,22 +17,22 @@ const ProfilePage = () => {
   // eslint-disable-next-line no-unused-vars
   const history = useHistory();
   const dispatch = useDispatch();
-  const {user,profile,isLoading} = useSelector(state=> state.userReducer);
+  const { user, profile, isLoading } = useSelector(state => state.userReducer);
 
-  const redirectToPost = (id)=> {
+  const redirectToPost = (id) => {
     history.push(`/post/${id}`);
   }
 
   useEffect(() => {
-    if(!user) {
+    if (!user) {
       history.push('/login');
     }
     else {
       dispatch(actionCreators.getProfile());
     }
-  }, [dispatch,history,user]);
+  }, [dispatch, history, user]);
 
-  if(isLoading) {
+  if (isLoading) {
     return <LoadingSpinner />
   }
 
@@ -81,9 +81,15 @@ const ProfilePage = () => {
           <div className={css.postContainer}>
             {profile.posts.length !== 0 &&
               profile.posts.map((post) => {
+                // const timeDif = (new Date().getTime() - post.createdAt);
                 return (
-                  <div className={css.card} key={post._id} onClick={()=> redirectToPost(post._id)}>
+                  <div className={css.card} key={post._id} onClick={() => redirectToPost(post._id)}>
                     <img src={post.image} alt={post.caption} />
+                    {/* {timeDif < 60000 && <p>{((new Date().getTime() - post.createdAt) / 1000).toFixed(0)} seconds ago</p>}
+                    {(timeDif >= 60000 && timeDif < 3.6e+6) && <p>{((new Date().getTime() - post.createdAt) / 60000).toFixed(0)} minutes ago</p>}
+                    {(timeDif >= 3.6e+6 && timeDif < 8.64e+7) && <p>{((new Date().getTime() - post.createdAt) / 3.6e+6).toFixed(0)} hours ago</p>}
+                    {(timeDif >= 8.64e+7 && timeDif < 6.048e+8) && <p>{((new Date().getTime() - post.createdAt) / 8.64e+7).toFixed(0)} days ago</p>}
+                    {timeDif >= 6.048e+8 && <p>{((new Date().getTime() - post.createdAt) / 6.048e+8).toFixed(0)} weeks ago</p>} */}
                   </div>
                 );
               })}

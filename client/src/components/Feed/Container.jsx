@@ -11,6 +11,9 @@ const Container = () => {
   const {profile} = useSelector(state=> state.userReducer,shallowEqual);
   const {posts, isLoading} = useSelector(state=> state.postReducer,shallowEqual);
 
+  let orderedPosts = posts && [...posts].reverse();
+  // console.log(orderedPosts);
+
   useEffect(() => {
     dispatch(actionCreators.getPosts());
   }, [dispatch]);
@@ -22,8 +25,8 @@ const Container = () => {
   return (
     <>
       <section className={css.feed}>
-        {posts.length > 0 &&
-          posts.map((post) => {
+        {orderedPosts.length > 0 &&
+          orderedPosts.map((post) => {
             // console.log(post);
             return (
               <PostItem

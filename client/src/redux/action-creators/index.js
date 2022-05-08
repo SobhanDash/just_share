@@ -331,14 +331,14 @@ export const addDp = (image)=> async(dispatch)=> {
     }
 }
 
-export const searchUsers = (username)=> async(dispatch)=> {
+export const searchUsers = (name)=> async(dispatch)=> {
     dispatch({
         type: "set-loading"
     });
     
     const token = localStorage.getItem("just_token");
     try {
-        const res = await axios.get(`http://localhost:5000/api/auth/users/${username}`, {headers: {"auth-token": token}});
+        const res = await axios.get(`http://localhost:5000/api/auth/users/${name}`, {headers: {"auth-token": token}});
 
         if(res.data.success) {
             localStorage.removeItem("just_error");
