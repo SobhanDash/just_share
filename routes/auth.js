@@ -27,7 +27,9 @@ router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       success = false;
-      console.log(`Error in register route: Body is empty ${errors.array()[0].msg}`);
+      console.log(
+        `Error in register route: Body is empty ${errors.array()[0].msg}`
+      );
       return res.json({ success, errors: errors.array()[0].msg, status: 400 });
     }
     try {
@@ -104,7 +106,9 @@ router.post(
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       success = false;
-      console.log(`Error in login route: Body is empty ${errors.array()[0].msg}`);
+      console.log(
+        `Error in login route: Body is empty ${errors.array()[0].msg}`
+      );
       return res.json({ success, error: errors.array()[0].msg, status: 400 });
     }
 
@@ -149,7 +153,10 @@ router.get("/profile", fetchUser, async (req, res) => {
   let success = false;
   try {
     const userId = req.user.id;
-    const user = await User.findById(userId).populate("posts", "_id image caption likes comments");
+    const user = await User.findById(userId).populate(
+      "posts",
+      "_id image caption likes comments"
+    );
     // TODO: Might add followers and following
     success = true;
     return res.json({ success, user, status: 200 });
@@ -170,7 +177,9 @@ router.put(
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       success = false;
-      console.log(`Error in follow route: Body is empty ${errors.array()[0].msg}`);
+      console.log(
+        `Error in follow route: Body is empty ${errors.array()[0].msg}`
+      );
       return res.json({ success, error: errors.array()[0].msg, status: 400 });
     }
     try {
@@ -213,7 +222,9 @@ router.put(
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       success = false;
-      console.log(`Error in unfollow route: Body is empty ${errors.array()[0].msg}`);
+      console.log(
+        `Error in unfollow route: Body is empty ${errors.array()[0].msg}`
+      );
       return res.json({ success, error: errors.array()[0].msg, status: 400 });
     }
     try {
@@ -221,13 +232,23 @@ router.put(
       const user = await user.findById(userId);
       const followedUser = await User.findById(req.body.removeuser);
       if (user.following.includes(req.body.removeuser)) {
-        const savedUser = await user.updateOne({$pull: { following: req.body.removeuser } }, {new: true});
-        const savedFollower = await followedUser.updateOne({$pull: { followers: userId }},{new: true});
+        const savedUser = await user.updateOne(
+          { $pull: { following: req.body.removeuser } },
+          { new: true }
+        );
+        const savedFollower = await followedUser.updateOne(
+          { $pull: { followers: userId } },
+          { new: true }
+        );
         success = true;
         return res.json({ success, savedUser, status: 200 });
       } else {
         success = false;
-        return res.json({ success, error: "Not following this user!", status: 400 });
+        return res.json({
+          success,
+          error: "Not following this user!",
+          status: 400,
+        });
       }
     } catch (err) {
       success = false;
@@ -244,13 +265,13 @@ router.get("/getSuggestion", fetchUser, async (req, res) => {
     const user = await User.findById(userId);
     let suggestedUsers = [];
     const allUsers = await User.find();
-    for(let i=0; i<allUsers.length; i++) {
+    for (let i = 0; i < allUsers.length; i++) {
       if (!user.following.includes(allUsers[i]._id.toString())) {
         suggestedUsers.push(allUsers[i]);
       }
     }
     success = true;
-    return res.json({success, suggestedUsers, status: 200});
+    return res.json({ success, suggestedUsers, status: 200 });
   } catch (err) {
     success = false;
     console.log(`Error in getSugesstion route: ${err.message}`);
@@ -273,7 +294,9 @@ router.put(
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       success = false;
-      console.log(`Error in editProfile route: Body is empty ${errors.array()[0].msg}`);
+      console.log(
+        `Error in editProfile route: Body is empty ${errors.array()[0].msg}`
+      );
       return res.json({ success, error: errors.array()[0].msg, status: 400 });
     }
     try {
@@ -316,7 +339,7 @@ router.put(
         username: user.username,
         name: user.name,
         email: user.email,
-        phone: user.phone
+        phone: user.phone,
       };
 
       if (req.body.profilepic) {
@@ -374,7 +397,9 @@ router.put(
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       success = false;
-      console.log(`Error in adddp route: Body is empty ${errors.array()[0].msg}`);
+      console.log(
+        `Error in adddp route: Body is empty ${errors.array()[0].msg}`
+      );
       return res.json({ success, error: errors.array()[0].msg, status: 400 });
     }
     try {
@@ -433,5 +458,19 @@ router.get(
     }
   }
 );
+
+router.get("/users", fetchUser, async (req, res) => {
+  let success = false;
+  try {
+    const users = await User.find();
+    // console.log(users);
+    success = true;
+    return res.json({ success, users, status: 200 });
+  } catch (err) {
+    success = false;
+    console.log(`Error in users route: ${err}`);
+    res.send({ success, error: "Internal Server Error", status: 500 });
+  }
+});
 
 module.exports = router;

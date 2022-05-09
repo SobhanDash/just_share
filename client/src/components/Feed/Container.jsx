@@ -5,29 +5,29 @@ import { actionCreators } from "../../redux";
 
 import css from "./container.module.css";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import SearchBar from "../SearchBar/SearchBar";
 
 const Container = () => {
   const dispatch = useDispatch();
-  const {profile} = useSelector(state=> state.userReducer,shallowEqual);
-  const {posts, isLoading} = useSelector(state=> state.postReducer,shallowEqual);
-
-  let orderedPosts = posts && [...posts].reverse();
-  // console.log(orderedPosts);
+  const { profile } = useSelector((state) => state.userReducer, shallowEqual);
+  const { posts, isLoading } = useSelector(
+    (state) => state.postReducer,
+    shallowEqual
+  );
 
   useEffect(() => {
     dispatch(actionCreators.getPosts());
   }, [dispatch]);
 
-  if(isLoading) {
-    return <LoadingSpinner />
-  }
-  
+  // if (isLoading) {
+  //   return <LoadingSpinner />;
+  // }
   return (
     <>
+      <SearchBar />
       <section className={css.feed}>
-        {orderedPosts.length > 0 &&
-          orderedPosts.map((post) => {
-            // console.log(post);
+        {posts.length > 0 &&
+          posts.map((post) => {
             return (
               <PostItem
                 key={post._id}
