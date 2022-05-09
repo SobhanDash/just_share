@@ -16,5 +16,7 @@ export default function validation(values) {
     errors.confirmPassword = "password must match";
   }
 
+  // TODO: Add validation for registering
+
   return errors;
 }

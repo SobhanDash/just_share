@@ -12,6 +12,7 @@ router.get("/getposts", fetchUser, async (req, res) => {
     const posts = await Post.find()
       .populate("user", "_id username name about")
       .populate("comments.user", "_id username name")
+      .sort("-createdAt");
     // console.log(posts);
     success = true;
     return res.json({ success, posts, status: 200 });
@@ -55,7 +56,11 @@ router.post(
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         success = false;
-        return res.json({ success, errors: errors.array()[0].msg, status: 400 });
+        return res.json({
+          success,
+          errors: errors.array()[0].msg,
+          status: 400,
+        });
       }
       const post = new Post({
         image,
@@ -63,8 +68,15 @@ router.post(
         user: req.user.id,
       });
       const savedPost = await post.save();
-      const user = await User.findByIdAndUpdate(req.user.id, { $push: { posts: savedPost } }, { new: true });
-      const posts = await Post.find().populate("user","_id username name about");
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        { $push: { posts: savedPost } },
+        { new: true }
+      );
+      const posts = await Post.find().populate(
+        "user",
+        "_id username name about"
+      );
       success = true;
       res.json({ success, posts, savedPost, user, status: 200 });
     } catch (err) {
@@ -151,15 +163,22 @@ router.put("/like/:id", fetchUser, async (req, res) => {
       success = false;
       return res.json({ success, error: "Post not Found", status: 404 });
     }
-    if(post.likes.includes(req.user.id)) {
+    if (post.likes.includes(req.user.id)) {
       success = false;
-      return res.json({success, error: "A user can only like a particular post once!", status: 400});
+      return res.json({
+        success,
+        error: "A user can only like a particular post once!",
+        status: 400,
+      });
     }
-    post = await Post.findByIdAndUpdate(req.params.id, { $push: { likes: req.user.id } }, { new: true });
-    const posts = await Post.find().populate("user","_id username name about");
+    post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { $push: { likes: req.user.id } },
+      { new: true }
+    );
+    const posts = await Post.find().populate("user", "_id username name about");
     success = true;
     return res.json({ success, posts, post, status: 200 });
-
   } catch (error) {
     success = false;
     console.log("Error in like route:", error.message);
@@ -176,11 +195,14 @@ router.put("/unlike/:id", fetchUser, async (req, res) => {
       success = false;
       return res.json({ success, error: "Post not Found", status: 404 });
     }
-    post = await Post.findByIdAndUpdate(req.params.id, { $pull: { likes: req.user.id } }, { new: true });
-    const posts = await Post.find().populate("user","_id username name about");
+    post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { likes: req.user.id } },
+      { new: true }
+    );
+    const posts = await Post.find().populate("user", "_id username name about");
     success = true;
     return res.json({ success, posts, post, status: 200 });
-
   } catch (error) {
     success = false;
     console.log("Error in unlike route:", error.message);
@@ -189,52 +211,56 @@ router.put("/unlike/:id", fetchUser, async (req, res) => {
 });
 
 // ROUTE-8: Add comment on a existing post using: PUT "/api/posts/comment". Require Login
-router.put("/comment/:id", [
-  body("text", "Comment cannot be empty!").exists()
-], fetchUser, async (req, res) => {
-  let success = false;
-  const errors = validationResult(req.body);
-  if (!errors.isEmpty()) {
-    success = false;
-    console.log(`Error in comment route: Body is empty ${errors.array()[0].msg}`);
-    return res.json({ success, error: errors.array()[0].msg, status: 400 });
-  }
-
-  try {
-    const comm = {
-      text: req.body.text,
-      user: req.user.id,
-    };
-    // console.log(req.user.id);
-    let post = await Post.findById(req.params.id);
-    if (!post) {
+router.put(
+  "/comment/:id",
+  [body("text", "Comment cannot be empty!").exists()],
+  fetchUser,
+  async (req, res) => {
+    let success = false;
+    const errors = validationResult(req.body);
+    if (!errors.isEmpty()) {
       success = false;
-      return res.json({ success, error: "Post not found", status: 404 });
+      console.log(
+        `Error in comment route: Body is empty ${errors.array()[0].msg}`
+      );
+      return res.json({ success, error: errors.array()[0].msg, status: 400 });
     }
 
-    post = await Post.findByIdAndUpdate(
-      req.params.id,
-      {
-        $push: { comments: comm },
-      },
-      {
-        new: true,
+    try {
+      const comm = {
+        text: req.body.text,
+        user: req.user.id,
+      };
+      // console.log(req.user.id);
+      let post = await Post.findById(req.params.id);
+      if (!post) {
+        success = false;
+        return res.json({ success, error: "Post not found", status: 404 });
       }
-    );
-    
-    const posts = await Post.find()
-      .populate("comments.user", "_id username name")
-      .populate("user", "_id username name about");  
 
-    success = true;
-    // console.log(post);
-    res.json({ success, posts, post, status: 200 });
-  } catch (error) {
-    console.log("Error in comment route:", error.message);
-    return res.json({ success, error: error.message, status: 422 });
+      post = await Post.findByIdAndUpdate(
+        req.params.id,
+        {
+          $push: { comments: comm },
+        },
+        {
+          new: true,
+        }
+      );
+
+      const posts = await Post.find()
+        .populate("comments.user", "_id username name")
+        .populate("user", "_id username name about");
+
+      success = true;
+      console.log(post);
+      res.json({ success, posts, post, status: 200 });
+    } catch (error) {
+      console.log("Error in comment route:", error.message);
+      return res.json({ success, error: error.message, status: 422 });
+    }
   }
-
-});
+);
 
 // ROUTE-9: Get a particular post by id using: GET "/api/posts/posts/:id". Require Login
 router.get("/:id", fetchUser, async (req, res) => {
@@ -243,7 +269,7 @@ router.get("/:id", fetchUser, async (req, res) => {
     const post = await Post.findById(req.params.id)
       .populate("user", "_id username name about")
       .populate("comments.user", "_id username name")
-      .sort("-createdAt")
+      .sort("-createdAt");
     success = true;
     return res.json({ success, post, status: 200 });
   } catch (err) {
@@ -252,6 +278,5 @@ router.get("/:id", fetchUser, async (req, res) => {
     return res.json({ success, error: err.message, status: 500 });
   }
 });
-
 
 module.exports = router;

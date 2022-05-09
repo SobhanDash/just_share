@@ -20,7 +20,6 @@ const Comments = ({ profile, post }) => {
       />
       <div className={css.comments_container}>
         {post.comments.map((rootComment) => {
-          // console.log(rootComment);
           return (<Comment
             key={rootComment._id}
             comment={rootComment}
