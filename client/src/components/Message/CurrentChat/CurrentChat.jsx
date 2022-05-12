@@ -1,0 +1,166 @@
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import css from "./currchat.module.css";
+import nodp from "../../../images/nodp.jpg";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../../redux";
+import { io } from "socket.io-client";
+import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
+const sendicon = <FontAwesomeIcon icon="fa-solid fa-paper-plane-top" />;
+
+const CurrentChat = ({
+  profile,
+  receiver,
+  setReceiver,
+  sender,
+  setSender,
+  click,
+  setOnlineUsers,
+}) => {
+  const dispatch = useDispatch();
+  const messages = useSelector(
+    (state) => state.messageReducer.messages,
+    shallowEqual
+  );
+  const isLoading = useSelector(
+    (state) => state.messageReducer.isLoading,
+    shallowEqual
+  );
+  const [newmsg, setNewmsg] = useState("");
+  const [arrivedmsg, setArrivedmsg] = useState(null);
+  const socket = useRef();
+  const scrollRef = useRef(null);
+
+  const onMsgChange = (e) => {
+    e.preventDefault();
+    setNewmsg(e.target.value);
+  };
+
+  const onInputClick = (e) => {
+    e.preventDefault();
+    // Check properly Tushar
+    if (receiver?._id === profile._id) {
+      setSender(receiver);
+      setReceiver(sender);
+    }
+  };
+
+  const onSendMsg = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (newmsg !== "") {
+        dispatch(
+          actionCreators.sendMessage({
+            socket,
+            receiverId: receiver?._id,
+            senderId: sender?._id,
+            text: newmsg,
+          })
+        );
+        setNewmsg("");
+      }
+    }
+  };
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:9000");
+    socket.current.on("getMessage", (data) => {
+      setArrivedmsg(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.current.emit("addUser", profile._id);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(users);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile._id, dispatch]);
+
+  useEffect(() => {
+    // console.log("run");
+    if (receiver) {
+      dispatch(actionCreators.getMessages(receiver?._id, sender?._id));
+    }
+    // eslint-disable-next-line
+  }, [dispatch, receiver?._id, sender?._id]);
+
+  useEffect(() => {
+    // console.log("run");
+    // console.log(Date.now(),arrivedMsg);
+    if (arrivedmsg) {
+      dispatch(actionCreators.receiveMessages(receiver?._id, sender?._id));
+    }
+  }, [dispatch, arrivedmsg, receiver?._id, sender?._id]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  return (
+    <div className={css.currentChat}>
+      {click && receiver && messages.length !== 0 && (
+        <div className={css.receiver}>
+          <img src={receiver.profilepic} alt={receiver.username} />
+          <h2>{receiver.name}</h2>
+        </div>
+      )}
+      <div className={css.messageArea}>
+        {click && messages.length !== 0 && receiver ? (
+          messages.map((chat) => {
+            return (
+              <Fragment key={chat._id}>
+                {chat.sender._id === profile._id && (
+                  <div className={css.me} ref={scrollRef}>
+                    {chat.text ? (
+                      <h3>{chat.text}</h3>
+                    ) : (
+                      chat.images !== [] && (
+                        <img src={chat.images[0]} alt="User Media" />
+                      )
+                    )}
+                  </div>
+                )}
+
+                {chat.sender._id === receiver?._id && (
+                  <div className={css.other} ref={scrollRef}>
+                    <img
+                      src={chat.sender.profilepic}
+                      alt={chat.sender.username}
+                      className={css.userpic}
+                    />
+                    <h3>{chat.text}</h3>
+                  </div>
+                )}
+              </Fragment>
+            );
+          })
+        ) : (
+          <div className={css.default}>
+            <h1>Your messages will be displayed here!</h1>
+          </div>
+        )}
+      </div>
+      {click && receiver && messages.length !== 0 && (
+        <div className={css.messageBox} onClick={onInputClick}>
+          <input
+            type="text"
+            name="text"
+            placeholder="Enter your message"
+            value={newmsg}
+            onChange={onMsgChange}
+            onKeyDown={onSendMsg}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CurrentChat;

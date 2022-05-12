@@ -808,3 +808,169 @@ export const addComment = (id, text) => async (dispatch) => {
     });
   }
 };
+
+// *************MESSAGE SECTION******************\\
+export const getConversations = ()=> async (dispatch)=> {
+    // dispatch({
+    //     type: 'msg-loading'
+    // });
+
+    const token = localStorage.getItem("just_token");
+    try {
+        const res = await axios.get('http://localhost:5000/api/message/conversations',{headers: {'auth-token': token}});
+
+        if(res.data.success) {
+            localStorage.setItem("youth_conversations",JSON.stringify(res.data.conversations));
+            dispatch({
+                type: 'get-cnvs',
+                payload: {
+                    cnvs: res.data.conversations,
+                    error: null
+                }
+            });
+        }
+
+        if(res.data.error) {
+            localStorage.setItem("just_error",res.data.error);
+            dispatch({
+                type: 'get-cnvs',
+                payload: {
+                    error: res.data.error
+                }
+            });
+        }
+
+    } catch (error) {
+        dispatch({
+            type: 'get-cnvs',
+            payload: {
+                error: error.message
+            }
+        });
+    }
+}
+
+export const getMessages = (receiverId,senderId)=> async (dispatch)=> {
+    dispatch({
+        type: 'msg-loading'
+    });
+
+    const token = localStorage.getItem("just_token");
+    try {
+        // console.log(senderId);
+        const res = await axios.get(`http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,{headers: {'auth-token': token}});
+        if(res.data.success) {
+            // console.log(res.data);
+            dispatch({
+                type: 'get-msgs',
+                payload: {
+                    msgs: res.data.messages,
+                    error: null
+                }
+            });
+        }
+
+        if(res.data.error) {
+            console.log("error in getMessages");
+            localStorage.setItem("just_error",res.data.error);
+            dispatch({
+                type: 'get-msgs',
+                payload: {
+                    error: res.data.error
+                }
+            });
+        }
+
+    } catch (error) {
+        dispatch({
+            type: 'get-msgs',
+            payload: {
+                error: error.message
+            }
+        });
+    }
+}
+
+export const receiveMessages = (receiverId,senderId)=> async (dispatch)=> {
+    // dispatch({
+    //     type: 'msg-loading'
+    // });
+
+    const token = localStorage.getItem("just_token");
+    try {
+        const res = await axios.get(`http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,{headers: {'auth-token': token}});
+        if(res.data.success) {
+            // console.log(res.data);
+            dispatch({
+                type: 'get-msgs',
+                payload: {
+                    msgs: res.data.messages,
+                    error: null
+                }
+            });
+        }
+
+        if(res.data.error) {
+            console.log("error in receiveMessages");
+            localStorage.setItem("just_error",res.data.error);
+            dispatch({
+                type: 'get-msgs',
+                payload: {
+                    error: res.data.error
+                }
+            });
+        }
+
+    } catch (error) {
+        dispatch({
+            type: 'get-msgs',
+            payload: {
+                error: error.message
+            }
+        });
+    }
+}
+
+export const sendMessage = ({socket,text,images,receiverId,senderId})=> async (dispatch)=> {
+    // dispatch({
+    //     type: 'loading'
+    // });
+
+    const token = localStorage.getItem("just_token");
+    try {
+        // console.log("Sender: ",senderId);
+        // console.log("Receiver: ",receiverId);
+        const res = await axios.post(`http://localhost:5000/api/message/${senderId}/${receiverId}`,
+        {text,images},
+        {headers: {'auth-token': token}});
+
+        if(res.data.success) {
+            socket.current.emit("sendMessage", res.data.message);
+            dispatch({
+                type: 'send-msg',
+                payload: {
+                    msgs: res.data.messages,
+                    error: null
+                }
+            });
+        }
+
+        if(res.data.error) {
+            localStorage.setItem("just_error",res.data.error);
+            dispatch({
+                type: 'send-msg',
+                payload: {
+                    error: res.data.error
+                }
+            });
+        }
+
+    } catch (error) {
+        dispatch({
+            type: 'send-msg',
+            payload: {
+                error: error.message
+            }
+        });
+    }
+}
