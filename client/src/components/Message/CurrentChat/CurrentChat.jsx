@@ -21,11 +21,11 @@ const CurrentChat = ({
 }) => {
   const dispatch = useDispatch();
   const messages = useSelector(
-    (state) => state.messageReducer.messages,
+    (state) => state.messagereducer.messages,
     shallowEqual
   );
   const isLoading = useSelector(
-    (state) => state.messageReducer.isLoading,
+    (state) => state.messagereducer.isLoading,
     shallowEqual
   );
   const [newmsg, setNewmsg] = useState("");

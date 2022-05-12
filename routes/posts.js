@@ -210,59 +210,7 @@ router.put("/unlike/:id", fetchUser, async (req, res) => {
   }
 });
 
-// ROUTE-8: Add comment on a existing post using: PUT "/api/posts/comment". Require Login
-router.put(
-  "/comment/:id",
-  [body("text", "Comment cannot be empty!").exists()],
-  fetchUser,
-  async (req, res) => {
-    let success = false;
-    const errors = validationResult(req.body);
-    if (!errors.isEmpty()) {
-      success = false;
-      console.log(
-        `Error in comment route: Body is empty ${errors.array()[0].msg}`
-      );
-      return res.json({ success, error: errors.array()[0].msg, status: 400 });
-    }
-
-    try {
-      const comm = {
-        text: req.body.text,
-        user: req.user.id,
-      };
-      // console.log(req.user.id);
-      let post = await Post.findById(req.params.id);
-      if (!post) {
-        success = false;
-        return res.json({ success, error: "Post not found", status: 404 });
-      }
-
-      post = await Post.findByIdAndUpdate(
-        req.params.id,
-        {
-          $push: { comments: comm },
-        },
-        {
-          new: true,
-        }
-      );
-
-      const posts = await Post.find()
-        .populate("comments.user", "_id username name")
-        .populate("user", "_id username name about");
-
-      success = true;
-      console.log(post);
-      res.json({ success, posts, post, status: 200 });
-    } catch (error) {
-      console.log("Error in comment route:", error.message);
-      return res.json({ success, error: error.message, status: 422 });
-    }
-  }
-);
-
-// ROUTE-9: Get a particular post by id using: GET "/api/posts/posts/:id". Require Login
+// ROUTE-8: Get a particular post by id using: GET "/api/posts/posts/:id". Require Login
 router.get("/:id", fetchUser, async (req, res) => {
   let success = false;
   try {
