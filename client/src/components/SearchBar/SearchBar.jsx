@@ -59,8 +59,8 @@ const SearchBar = () => {
                 return (
                   <Link
                     className={css.list__li}
-                    onClick={() => this.onClickItem(item)}
                     key={item._id}
+                    to={`/userprofile/${profile._id}`}
                   >
                     <div className={css.li__details}>
                       <img

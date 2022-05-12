@@ -2,22 +2,31 @@ import React, { useEffect, useContext } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import WithPageTitle from "./services/WithPageTitle";
 import axios from "axios";
+// import MessagePage from "./pages/MessagePage/MessagePage";
 
 const LoginPage = React.lazy(() => import("./pages/LoginPage/LoginPage"));
+
 const RegisterPage = React.lazy(() =>
   import("./pages/RegisterPage/RegisterPage")
 );
+
 const IndexPage = React.lazy(() => import("./pages/Index/Index"));
+
 const ProfilePage = React.lazy(() => import("./pages/ProfilePage/ProfilePage"));
+
 const EditProfilePage = React.lazy(() =>
   import("./pages/ProfilePage/EditProfile")
 );
+
 const CommentsPage = React.lazy(() =>
   import("./pages/CommentsPage/CommentsPage")
 );
-const UserProfilePage = React.lazy(() => {
-  import("./pages/ProfilePage/UserProfile");
-});
+
+const UserProfilePage = React.lazy(() =>
+  import("./pages/ProfilePage/UserProfile")
+);
+
+const MsgPage = React.lazy(() => import("./pages/MessagePage/MessagePage"));
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
@@ -48,9 +57,15 @@ const CommentsComponent = WithPageTitle({
   component: CommentsPage,
   title: "Edit Profile",
 });
+
 const UserProfileComponent = WithPageTitle({
   component: UserProfilePage,
   title: "User Profile",
+});
+
+const MsgPageComponent = WithPageTitle({
+  component: MsgPage,
+  title: "Message",
 });
 
 const RouteConfig = ({ UserContext }) => {
@@ -81,6 +96,8 @@ const RouteConfig = ({ UserContext }) => {
       <Route exact path="/login" component={LoginComponent} />
       <Route exact path="/register" component={RegisterComponent} />
       <Route exact path="/profile" component={ProfileComponent} />
+      <Route exact path="/message" component={MsgPageComponent} />
+      {/* <Route exact path="/message" component={MessageComponent} /> */}
       <Route exact path="/editProfile" component={EditProfileComponent} />
       <Route exact path="/post/:postid" component={CommentsComponent} />
       <Route exact path="/profile/:userid" component={UserProfileComponent} />
