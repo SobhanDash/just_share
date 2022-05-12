@@ -11,7 +11,7 @@ router.get("/getposts", fetchUser, async (req, res) => {
   try {
     const posts = await Post.find()
       .populate("user", "_id username name about")
-      .populate("comments.user", "_id username name")
+      .populate("comments", "likes post user")
       .sort("-createdAt");
     // console.log(posts);
     success = true;
