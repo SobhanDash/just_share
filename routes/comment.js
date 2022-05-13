@@ -12,7 +12,7 @@ router.get("/",fetchUser,async (req,res)=> {
     let success = false;
     try {
         let comments = await Comment.find()
-            .populate("user", "_id name username profilepic")
+            .populate("user", "_id name username about")
             .populate("post", "_id");
 
         success = true;
@@ -58,15 +58,17 @@ router.post("/addcomment/:postId",fetchUser,[
         });
 
         const comments = await Comment.find()
-            .populate("user", "_id name username profilepic")
+            .populate("user", "_id name username about")
             .populate("post", "_id");
 
-        post = await Post.findByIdAndUpdate(postId,{$push: {comments: mycomment}},{new: true})
-            .populate("user", "_id name username profilepic")
-            .populate("comments", "_id comment user");
+        post = await Post.findByIdAndUpdate(postId,{$push: {comments: mycomment}},{new: true});
+        
+        const posts = await Post.find()
+            .populate("user", "_id name username about")
+            .populate("comments", "_id comment likes user");
 
         success = true;
-        return res.json({success, post, comments, status: 200});
+        return res.json({success, posts, comments, status: 200});
     } catch (error) {
         success = false;
         return res.json({success, error: error.message, status: 500});
@@ -158,7 +160,7 @@ router.delete("/deletecomment/:postId/:commentId",fetchUser,async (req,res)=> {
 
         const posts = await Post.find()
             .populate("user", "_id name username profilepic")
-            .populate("comments", "_id comment user");
+            .populate("comments", "_id comment likes user");
 
         success = true;
         return res.json({success, posts, comments, status: 200});
@@ -225,6 +227,23 @@ router.put("/unlikecomment/:commentId",fetchUser, async (req,res)=> {
 
         const comments = await Comment.find()
             .populate("user", "_id name username profilepic")
+            .populate("post", "_id");
+
+        success = true;
+        return res.json({success, comments, status: 200});
+    } catch (error) {
+        success = false;
+        return res.json({success, error: error.message, status: 500});
+    }
+});
+
+//ROUTE-7: Fetch all comments of an existing post using GET "/api/comments/post/:id". Login Required.
+router.get("/post/:id",fetchUser,async (req,res)=> {
+    let success = false;
+    const postId = req.params.id;
+    try {
+        let comments = await Comment.find({post: postId})
+            .populate("user", "_id name username about")
             .populate("post", "_id");
 
         success = true;

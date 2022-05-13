@@ -763,6 +763,45 @@ export const unlikePost = (id) => async (dispatch) => {
   }
 };
 
+export const getComments = (id)=> async (dispatch)=> {
+  const token = localStorage.getItem("just_token");
+  try {
+    const res = await axios.get(
+      `http://localhost:5000/api/comments/post/${id}`,
+      { headers: { "auth-token": token } }
+    );
+
+    if (res.data.success) {
+      localStorage.removeItem("just_error");
+      dispatch({
+        type: "get-comments",
+        payload: {
+          comments: res.data.comments,
+          error: null,
+        },
+      });
+    }
+
+    if (res.data.error) {
+      localStorage.setItem("just_error", res.data.error);
+      dispatch({
+        type: "add-comment",
+        payload: {
+          error: res.data.error,
+        },
+      });
+    }
+  } catch (error) {
+    // console.log(error.message);
+    dispatch({
+      type: "add-comment",
+      payload: {
+        error: error.message,
+      },
+    });
+  }
+}
+
 export const addComment = (id, text) => async (dispatch) => {
   dispatch({
     type: "set-loading",
@@ -770,9 +809,9 @@ export const addComment = (id, text) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
-    const res = await axios.put(
-      `http://localhost:5000/api/posts/comment/${id}`,
-      { text: text },
+    const res = await axios.post(
+      `http://localhost:5000/api/comments/addcomment/${id}`,
+      { comment: text },
       { headers: { "auth-token": token } }
     );
 
@@ -783,7 +822,6 @@ export const addComment = (id, text) => async (dispatch) => {
         type: "add-comment",
         payload: {
           posts: res.data.posts,
-          mypost: res.data.post,
           error: null,
         },
       });

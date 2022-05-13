@@ -15,6 +15,7 @@ if (localStorage.getItem("just_error") === null) {
 
 const initState = {
     posts: isPosts,
+    comments: [],
     post: [],
     error: isError,
     isLoading: false
@@ -156,6 +157,25 @@ const postReducer = (state=initState,action)=> {
             return {
                 ...state,
                 posts: posts,
+                isLoading: false,
+                error: null
+            }
+        }
+    }
+
+    else if(action.type === "get-comments") {
+        const {comments,error} = action.payload;
+        if(error) {
+            return {
+                ...state,
+                error: error,
+                isLoading: false
+            }
+        }
+        else {
+            return {
+                ...state,
+                comments: comments,
                 isLoading: false,
                 error: null
             }

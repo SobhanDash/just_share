@@ -11,7 +11,7 @@ router.get("/getposts", fetchUser, async (req, res) => {
   try {
     const posts = await Post.find()
       .populate("user", "_id username name about")
-      .populate("comments", "likes post user")
+      .populate("comments", "_id comment likes post user")
       .sort("-createdAt");
     // console.log(posts);
     success = true;
@@ -73,10 +73,12 @@ router.post(
         { $push: { posts: savedPost } },
         { new: true }
       );
-      const posts = await Post.find().populate(
-        "user",
-        "_id username name about"
-      );
+
+      const posts = await Post.find()
+        .populate("user", "_id username name about")
+        .populate("comments", "_id comment likes post user")
+        .sort("-createdAt");
+
       success = true;
       res.json({ success, posts, savedPost, user, status: 200 });
     } catch (err) {
@@ -108,12 +110,18 @@ router.put("/updatepost/:id", fetchUser, async (req, res) => {
       success = false;
       res.send({ success, error: "Not Allowed", status: 401 });
     }
+
     post = await Post.findByIdAndUpdate(
       req.params.id,
       { $set: newPost },
       { new: true }
     );
-    const posts = await Post.find();
+
+    const posts = await Post.find()
+      .populate("user", "_id username name about")
+      .populate("comments", "_id comment likes post user")
+      .sort("-createdAt");
+
     success = true;
     return res.json({ success, posts, post, status: 200 });
   } catch (err) {
@@ -144,7 +152,12 @@ router.delete("/deletepost/:id", fetchUser, async (req, res) => {
       { $pull: { posts: req.params.id } },
       { new: true }
     );
-    const posts = await Post.find();
+
+    const posts = await Post.find()
+      .populate("user", "_id username name about")
+      .populate("comments", "_id comment likes post user")
+      .sort("-createdAt");
+
     success = true;
     return res.json({ success, user, posts, post, status: 200 });
   } catch (err) {
@@ -176,7 +189,12 @@ router.put("/like/:id", fetchUser, async (req, res) => {
       { $push: { likes: req.user.id } },
       { new: true }
     );
-    const posts = await Post.find().populate("user", "_id username name about");
+
+    const posts = await Post.find()
+      .populate("user", "_id username name about")
+      .populate("comments", "_id comment likes post user")
+      .sort("-createdAt");
+
     success = true;
     return res.json({ success, posts, post, status: 200 });
   } catch (error) {
@@ -200,7 +218,12 @@ router.put("/unlike/:id", fetchUser, async (req, res) => {
       { $pull: { likes: req.user.id } },
       { new: true }
     );
-    const posts = await Post.find().populate("user", "_id username name about");
+
+    const posts = await Post.find()
+      .populate("user", "_id username name about")
+      .populate("comments", "_id comment likes post user")
+      .sort("-createdAt");
+
     success = true;
     return res.json({ success, posts, post, status: 200 });
   } catch (error) {
@@ -216,13 +239,14 @@ router.get("/:id", fetchUser, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
       .populate("user", "_id username name about")
-      .populate("comments.user", "_id username name")
+      .populate("comments", "_id likes comment user")
       .sort("-createdAt");
+    
     success = true;
     return res.json({ success, post, status: 200 });
   } catch (err) {
     success = false;
-    console.log("Error in getposts route:", err.message);
+    console.log("Error in getpost route:", err.message);
     return res.json({ success, error: err.message, status: 500 });
   }
 });
