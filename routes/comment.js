@@ -113,7 +113,7 @@ router.put("/editcomment/:postId/:commentId",fetchUser,[
         mycomment = await Comment.findByIdAndUpdate(commentId,{comment: comment},{new: true});
 
         const comments = await Comment.find()
-            .populate("user", "_id name username profilepic")
+            .populate("user", "_id name username about")
             .populate("post", "_id");
 
         success = true;
@@ -155,11 +155,11 @@ router.delete("/deletecomment/:postId/:commentId",fetchUser,async (req,res)=> {
         comment = await Comment.findByIdAndDelete(commentId,{new: true});
 
         const comments = await Comment.find()
-            .populate("user", "_id name username profilepic")
+            .populate("user", "_id name username about")
             .populate("post", "_id");
 
         const posts = await Post.find()
-            .populate("user", "_id name username profilepic")
+            .populate("user", "_id name username about")
             .populate("comments", "_id comment likes user");
 
         success = true;
@@ -192,7 +192,7 @@ router.put("/likecomment/:commentId",fetchUser, async (req,res)=> {
         comment = await Post.findByIdAndUpdate(commentId,{$push: {likes: user}},{new: true});
 
         const comments = await Comment.find()
-            .populate("user", "_id name username profilepic")
+            .populate("user", "_id name username about")
             .populate("post", "_id");
 
         success = true;
@@ -226,7 +226,7 @@ router.put("/unlikecomment/:commentId",fetchUser, async (req,res)=> {
         comment = await Post.findByIdAndUpdate(commentId,{$pull: {likes: user}},{new: true});
 
         const comments = await Comment.find()
-            .populate("user", "_id name username profilepic")
+            .populate("user", "_id name username about")
             .populate("post", "_id");
 
         success = true;

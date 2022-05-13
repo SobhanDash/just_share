@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const ConversationSchema = new Schema(
     {
-        recipients: [{ type: mongoose.Types.ObjectId, ref: 'user' }],
+        recipients: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
         text: String,
         media: Array,
     },

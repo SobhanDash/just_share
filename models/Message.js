@@ -16,11 +16,11 @@ const MessageSchema = new Schema({
     ],
     sender: {
         type: Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'User'
     },
     receiver: {
         type: Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'User'
     },
     createdAt: Number,
     updatedAt: Number
