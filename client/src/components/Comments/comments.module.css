@@ -30,6 +30,7 @@
 
 .comment {
   display: flex;
+  align-items: center;
   margin-bottom: 28px;
   margin-top: 2rem;
   color: var(--white-1);

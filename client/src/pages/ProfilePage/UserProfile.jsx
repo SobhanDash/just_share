@@ -18,19 +18,6 @@ const UserProfile = () => {
     getProfile();
   }, [getProfile]);
 
-  useEffect(() => {
-    fetch("/api/posts/getsubpost", {
-      method: "GET",
-      headers: {
-        "auth-token": localStorage.getItem("token"),
-      },
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        setUserPosts(result.posts);
-      });
-  }, [setUserPosts]);
-
   return (
     <section className={css.profileContainer}>
       <div>
