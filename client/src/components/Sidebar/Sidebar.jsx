@@ -6,7 +6,7 @@ import {
   faPlus,
   faUser,
   faSignOutAlt,
-  faCog,
+  faMessage,
 } from "@fortawesome/free-solid-svg-icons";
 import css from "./Sidebar.module.css";
 import nodpImg from "../../images/nodp.jpg";
@@ -21,7 +21,7 @@ const feed = <FontAwesomeIcon icon={faTh} />;
 const addPostIcon = <FontAwesomeIcon icon={faPlus} />;
 const profileIcon = <FontAwesomeIcon icon={faUser} />;
 const logout = <FontAwesomeIcon icon={faSignOutAlt} />;
-const editProfileIcon = <FontAwesomeIcon icon={faCog} />;
+const messageIcon = <FontAwesomeIcon icon={faMessage} />;
 
 const Sidebar = () => {
   const [show,setShow] = useState(false);
@@ -108,11 +108,11 @@ const Sidebar = () => {
             <div className={css.icon_func}>Profile</div>
           </Link>
           <Link
-            to="/editProfile"
-            className={location.pathname === "/editProfile" ? css.active : ""}
+            to="/message"
+            className={location.pathname === "/message" ? css.active : ""}
           >
-            <span className={css.icon}>{editProfileIcon}</span>
-            <div className={css.icon_func}>Edit Profile</div>
+            <span className={css.icon}>{messageIcon}</span>
+            <div className={css.icon_func}>Message</div>
           </Link>
           {profile && (
             <Link to="" onClick={()=> setShow(true)}>

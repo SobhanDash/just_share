@@ -14,29 +14,28 @@ const Conversations = ({
   setSender,
 }) => {
   const dispatch = useDispatch();
-  // const { conversations, messages } = useSelector(
-  //   (state) => state.messageReducer,
-  //   shallowEqual
-  // );
-  // const myconvos =
-  //   conversations &&
-  //   [...conversations].filter(
-  //     (cnv) =>
-  //       cnv.recipients[0]._id === profile._id ||
-  //       cnv.recipients[1]._id === profile._id
-  //   );
+  const { conversations, messages } = useSelector(
+    (state) => state.messagereducer,
+    shallowEqual
+  );
 
-  // const cnvLength = [...myconvos].length;
+  const myconvos =
+    conversations &&
+    [...conversations].filter(
+      (cnv) =>
+        cnv.recipients[0]._id === profile._id ||
+        cnv.recipients[1]._id === profile._id
+    );
 
-  // useEffect(() => {
-  //   dispatch(actionCreators.getConversations());
-  // }, [messages, cnvLength, dispatch]);
+  useEffect(() => {
+    dispatch(actionCreators.getConversations());
+  }, [messages, conversations.length, dispatch]);
 
-  // const onCnvClick = (receiver, sender) => {
-  //   setReceiver(receiver);
-  //   setSender(sender);
-  //   setClick(true);
-  // };
+  const onCnvClick = (receiver, sender) => {
+    setReceiver(receiver);
+    setSender(sender);
+    setClick(true);
+  };
 
   return (
     <div className={css.convos}>
@@ -47,21 +46,48 @@ const Conversations = ({
           <h3>{profile.username}</h3>
         </div>
         <div className={css.bottom}>
-          <div className={css.cflex}>
-            <div className={css.cnv}>
-              <img src={nodp} alt="" />
-              <div className={css.cnvflex}>
-                <h2>
-                  {"Name" ? (
-                    <span className={css.online}>{oncircle}</span>
-                  ) : (
-                    <span className={css.offline}>{oncircle}</span>
-                  )}
-                </h2>
-                <p>You</p>
+          {conversations.length === 0 && <h2>No Conversations to show!</h2>}
+          {conversations.length > 0 && conversations.map((cnv) => {
+            return (
+              <div className={css.cflex}>
+                <div className={css.cnv} onClick={() => onCnvClick(cnv.recipients[1], cnv.recipients[0])}>
+                  <img
+                    src={
+                      cnv.recipients[0]._id === profile._id
+                        ? cnv.recipients[1].profilepic
+                          ? cnv.recipients[1].profilepic
+                          : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                        : cnv.recipients[0].profilepic
+                          ? cnv.recipients[0].profilepic
+                          : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                    }
+                    alt=""
+                  />
+                  <div className={css.cnvflex}>
+                    <h2>
+                      {cnv.recipients[0]._id === profile._id
+                        ? cnv.recipients[1].name
+                          ? cnv.recipients[1].name
+                          : "Deleted User"
+                        : cnv.recipients[0].name
+                          ? cnv.recipients[0].name
+                          : "Deleted User"}
+                      {/* {onlineUsers.includes(
+                        cnv.recipients[0]._id === profile._id
+                          ? cnv.recipients[1]._id
+                          : cnv.recipients[1]._id
+                      ) ? (
+                        <FiberManualRecordIcon style={{ color: "green" }} />
+                      ) : (
+                        <FiberManualRecordIcon style={{ color: "red" }} />
+                      )} */}
+                    </h2>
+                    <p>{cnv.recipients[0]._id === profile._id ? "You" : cnv.recipients[0].username} : {cnv.text}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </div>
