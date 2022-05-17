@@ -116,26 +116,45 @@ const CurrentChat = ({
           messages.map((chat) => {
             return (
               <Fragment key={chat._id}>
-                {chat.sender._id === profile._id && (
+                {chat.sender._id === profile._id ? (
                   <div className={css.me} ref={scrollRef}>
                     {chat.text ? (
                       <h3>{chat.text}</h3>
                     ) : (
-                      chat.images !== [] && (
-                        <img src={chat.images[0]} alt="User Media" />
-                      )
+                      <div className={css.image_container}>
+                        {chat.images.length > 0 &&
+                          chat.images.map((image, index) => {
+                            return (
+                              <img
+                                key={index}
+                                src={image}
+                                alt="User Media"
+                                className={css.media}
+                              />
+                            );
+                          })}
+                      </div>
                     )}
                   </div>
-                )}
-
-                {chat.sender._id === receiver?._id && (
+                ) : (
                   <div className={css.other} ref={scrollRef}>
-                    <img
-                      src={chat.sender.profilepic}
-                      alt={chat.sender.username}
-                      className={css.userpic}
-                    />
-                    <h3>{chat.text}</h3>
+                    {chat.text ? (
+                      <h3>{chat.text}</h3>
+                    ) : (
+                      chat.images.length > 0 &&
+                      chat.images.map((image, index) => {
+                        return (
+                          <div className={css.image_container}>
+                            <img
+                              key={index}
+                              src={image}
+                              alt="User Media"
+                              className={css.media}
+                            />
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
                 )}
               </Fragment>

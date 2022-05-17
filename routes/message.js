@@ -111,7 +111,7 @@ router.post("/:senderId/:receiverId",fetchUser, async (req,res)=> {
             },
             {
                 recipients: [sender._id, receiver._id],
-                text,
+                text: text ? text : 'Sent an image',
                 images
             },
             {new: true, upsert: true}

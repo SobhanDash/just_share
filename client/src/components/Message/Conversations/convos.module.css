@@ -13,6 +13,7 @@
   top: 0;
   padding: 0.5rem;
   width: 100%;
+  max-height: 12vh;
   display: flex;
   align-items: center;
   justify-content: center;

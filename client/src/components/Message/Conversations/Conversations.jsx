@@ -41,15 +41,14 @@ const Conversations = ({
     <div className={css.convos}>
       <div>
         <div className={css.top}>
-          <img src={nodp} alt={profile.username} />
-          {/* <img src={profile.about.profilePic} alt={profile.username} /> */}
+          <img src={profile.about.profilepic} alt={profile.username} />
           <h3>{profile.username}</h3>
         </div>
         <div className={css.bottom}>
           {conversations.length === 0 && <h2>No Conversations to show!</h2>}
           {conversations.length > 0 && conversations.map((cnv) => {
             return (
-              <div className={css.cflex}>
+              <div className={css.cflex} key={cnv._id}>
                 <div className={css.cnv} onClick={() => onCnvClick(cnv.recipients[1], cnv.recipients[0])}>
                   <img
                     src={
