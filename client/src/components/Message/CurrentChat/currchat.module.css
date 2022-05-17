@@ -37,7 +37,6 @@
   flex-direction: column;
   overflow-y: scroll;
   scroll-behavior: smooth;
-  min-height: 56vh;
 }
 
 .userpic,
@@ -51,7 +50,7 @@
 
 .messageBox {
   position: sticky;
-  bottom: 0;
+  top: 0;
   width: 100%;
   min-height: 12vh;
   display: flex;

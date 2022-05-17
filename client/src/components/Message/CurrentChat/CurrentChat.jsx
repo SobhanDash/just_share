@@ -105,14 +105,14 @@ const CurrentChat = ({
 
   return (
     <div className={css.currentChat}>
-      {click && receiver && messages.length !== 0 && (
+      {click && receiver && (
         <div className={css.receiver}>
-          <img src={receiver.profilepic} alt={receiver.username} />
+          <img src={receiver.about.profilepic} alt={receiver.username} />
           <h2>{receiver.name}</h2>
         </div>
       )}
       <div className={css.messageArea}>
-        {click && messages.length !== 0 && receiver ? (
+        {click && receiver ? (
           messages.map((chat) => {
             return (
               <Fragment key={chat._id}>
@@ -147,7 +147,7 @@ const CurrentChat = ({
           </div>
         )}
       </div>
-      {click && receiver && messages.length !== 0 && (
+      {click && receiver && (
         <div className={css.messageBox} onClick={onInputClick}>
           <input
             type="text"
