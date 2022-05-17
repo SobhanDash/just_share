@@ -82,7 +82,7 @@ const Conversations = ({
                         <FiberManualRecordIcon style={{ color: "red" }} />
                       )} */}
                     </h2>
-                    {cnv.text !== null && cnv.media.length !== 0 ? <p>{cnv.recipients[0]._id === profile._id ? "You" : cnv.recipients[0].username} : {cnv.text}</p> : <p className={css.newcnv}>Send message to start conversation!</p>}
+                    {cnv.text !== null || cnv.media.length !== 0 ? <p>{cnv.recipients[0]._id === profile._id ? "You" : cnv.recipients[0].username} : {cnv.text}</p> : <p className={css.newcnv}>Send message to start conversation!</p>}
                   </div>
                 </div>
               </div>
