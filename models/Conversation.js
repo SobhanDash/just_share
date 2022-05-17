@@ -6,6 +6,8 @@ const ConversationSchema = new Schema(
         recipients: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
         text: String,
         media: Array,
+        createdAt: Number,
+        updatedAt: Number
     },
     {
         timestamps: true,
