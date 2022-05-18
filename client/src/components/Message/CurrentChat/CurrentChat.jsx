@@ -138,6 +138,11 @@ const CurrentChat = ({
                   </div>
                 ) : (
                   <div className={css.other} ref={scrollRef}>
+                    <img
+                      src={chat.sender.about.profilepic}
+                      alt={chat.sender.username}
+                      className={css.userpic}
+                    />
                     {chat.text ? (
                       <h3>{chat.text}</h3>
                     ) : (
