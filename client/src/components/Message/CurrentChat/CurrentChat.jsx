@@ -6,9 +6,8 @@ import { actionCreators } from "../../../redux";
 import { io } from "socket.io-client";
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-
-const sendicon = <FontAwesomeIcon icon="fa-solid fa-paper-plane-top" />;
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+const sendicon = <FontAwesomeIcon icon={faPaperPlane} />;
 
 const CurrentChat = ({
   profile,
@@ -105,14 +104,14 @@ const CurrentChat = ({
 
   return (
     <div className={css.currentChat}>
-      {click && receiver && (
+      {click && receiver && messages.length !== 0 && (
         <div className={css.receiver}>
           <img src={receiver.about.profilepic} alt={receiver.username} />
           <h2>{receiver.name}</h2>
         </div>
       )}
       <div className={css.messageArea}>
-        {click && receiver ? (
+        {click && messages.length !== 0 && receiver ? (
           messages.map((chat) => {
             return (
               <Fragment key={chat._id}>
@@ -171,7 +170,7 @@ const CurrentChat = ({
           </div>
         )}
       </div>
-      {click && receiver && (
+      {click && receiver && messages.length !== 0 && (
         <div className={css.messageBox} onClick={onInputClick}>
           <input
             type="text"

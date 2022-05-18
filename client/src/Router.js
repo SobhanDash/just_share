@@ -30,7 +30,7 @@ const MsgPage = React.lazy(() => import("./pages/MessagePage/MessagePage"));
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
-  title: "JustShare",
+  title: "JustConnect",
 });
 
 const LoginComponent = WithPageTitle({

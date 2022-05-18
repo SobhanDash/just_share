@@ -317,13 +317,13 @@ export const getSuggestion = () => async (dispatch) => {
     if (res.data.success) {
       localStorage.setItem(
         "just_suggestions",
-        JSON.stringify(res.data.suggestedUsers)
+        JSON.stringify(res.data.suggestions)
       );
       localStorage.removeItem("just_error");
       dispatch({
         type: "get-suggestion",
         payload: {
-          suggestedUsers: res.data.suggestedUsers,
+          suggestions: res.data.suggestions,
           error: null,
         },
       });
@@ -858,7 +858,7 @@ export const getConversations = ()=> async (dispatch)=> {
         const res = await axios.get('http://localhost:5000/api/message/conversations',{headers: {'auth-token': token}});
 
         if(res.data.success) {
-            localStorage.setItem("youth_conversations",JSON.stringify(res.data.conversations));
+            localStorage.setItem("just_conversations",JSON.stringify(res.data.conversations));
             dispatch({
                 type: 'get-cnvs',
                 payload: {

@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import css from "./post.module.css";
 import nodpImg from "../../images/nodp.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,7 +24,7 @@ const more = <FontAwesomeIcon icon={faEllipsisV} />;
 const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
   // const history = useHistory();
   const dispatch = useDispatch();
-  const { profile } = useSelector(state => state.userReducer);
+  const { profile } = useSelector((state) => state.userReducer);
   const [show, setShow] = useState(false);
   const [fshow, setFShow] = useState(false);
   const [ushow, setUShow] = useState(false);
@@ -66,20 +66,12 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
           <div className={css.post_icons}>
             <div className={css.post_icon}>
               {post.likes.includes(profile._id) ? (
-                <button
-                  type="button"
-                  onClick={unlikePost}
-                  className={css.icon}
-                >
+                <button type="button" onClick={unlikePost} className={css.icon}>
                   <i className={css.active}>{likeHeart}</i>
                   <span className={css.ispan}>{post.likes.length}</span>
                 </button>
               ) : (
-                <button
-                  type="button"
-                  onClick={likePost}
-                  className={css.icon}
-                >
+                <button type="button" onClick={likePost} className={css.icon}>
                   <i>{likeHeart}</i>
                   <span className={css.ispan}>{post.likes.length}</span>
                 </button>

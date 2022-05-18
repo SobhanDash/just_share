@@ -77,10 +77,14 @@
 
 .online {
   color: green;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
 }
 
 .offline {
   color: grey;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
 }
 
 .newcnv {

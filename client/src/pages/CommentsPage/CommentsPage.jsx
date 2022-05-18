@@ -5,18 +5,15 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import PostItem from "../../components/PostItem/PostItem";
 import Comments from "../../components/Comments/Comments";
-import useForm from "../../services/useForm";
 
 import css from "./commentsPage.module.css";
 import { actionCreators } from "../../redux";
 
 const CommentsPage = () => {
   const dispatch = useDispatch();
-  const {profile} = useSelector(state=> state.userReducer,shallowEqual);
-  const {posts} = useSelector(state=> state.postReducer,shallowEqual);
+  const { profile } = useSelector((state) => state.userReducer, shallowEqual);
+  const { posts } = useSelector((state) => state.postReducer, shallowEqual);
   const [show, setShow] = useState(false);
-  // const { getProfile, profile, setUserPosts, userposts } =
-  //   useForm();
   const { postid } = useParams();
 
   useEffect(() => {
@@ -53,10 +50,7 @@ const CommentsPage = () => {
                     dp={post.user.about.profilepic}
                     pic={post.image}
                   />
-                  <Comments
-                    post={post}
-                    profile={profile}
-                  />
+                  <Comments post={post} profile={profile} />
                 </Fragment>
               );
             })}
