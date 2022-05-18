@@ -4,16 +4,13 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
 
 import css from "./container.module.css";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+// import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import SearchBar from "../SearchBar/SearchBar";
 
 const Container = () => {
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.userReducer, shallowEqual);
-  const { posts, isLoading } = useSelector(
-    (state) => state.postReducer,
-    shallowEqual
-  );
+  const { posts } = useSelector((state) => state.postReducer, shallowEqual);
 
   useEffect(() => {
     dispatch(actionCreators.getPosts());

@@ -3,7 +3,6 @@ import { shallowEqual, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import css from "./msgpage.module.css";
 import Message from "../../components/Message/Message";
-import Sidebar from "../../components/Sidebar/Sidebar";
 
 const MessagePage = () => {
   const history = useHistory();

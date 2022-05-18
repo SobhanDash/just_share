@@ -12,7 +12,7 @@ const camera = <FontAwesomeIcon icon={faCamera} />;
 const UserProfile = () => {
   // eslint-disable-next-line no-unused-vars
   const [isProfile, setIsProfile] = useState(true);
-  const { getProfile, profile, userposts, setUserPosts } = useForm();
+  const { getProfile, profile, userposts } = useForm();
 
   useEffect(() => {
     getProfile();
