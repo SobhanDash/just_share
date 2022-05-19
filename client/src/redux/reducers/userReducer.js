@@ -33,6 +33,7 @@ const initState = {
   isLoading: false,
   error: isError,
   suggestions: isSuggestions,
+  otherUser: null,
   searchedUsers: [],
 };
 
@@ -139,7 +140,7 @@ const userReducer = (state = initState, action) => {
       };
     }
   } else if (action.type === "get-suggestion") {
-    const { suggestedUsers, error } = action.payload;
+    const { suggestions, error } = action.payload;
     if (error) {
       return {
         ...state,
@@ -149,7 +150,7 @@ const userReducer = (state = initState, action) => {
     } else {
       return {
         ...state,
-        suggestions: suggestedUsers,
+        suggestions: suggestions,
         isLoading: false,
         error: null,
       };
@@ -214,6 +215,22 @@ const userReducer = (state = initState, action) => {
       return {
         ...state,
         profile: profile,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } else if (action.type === "get-user") {
+    const { otherUser, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        otherUser: otherUser,
         isLoading: false,
         error: null,
       };

@@ -11,7 +11,6 @@ import {
 import css from "./Sidebar.module.css";
 import nodpImg from "../../images/nodp.jpg";
 // import logo from "../../images/logo2.svg";
-// import { UserContext } from "../../App";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
 import Modal from "../Modal/Modal";
@@ -30,7 +29,6 @@ const Sidebar = () => {
   // const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
-  // const { getProfile, profile } = useForm();
 
   const onLogout = () => {
     dispatch(actionCreators.logout());

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-// import useForm from "../../services/useForm";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh, faCamera } from "@fortawesome/free-solid-svg-icons";

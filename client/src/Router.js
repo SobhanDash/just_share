@@ -97,10 +97,9 @@ const RouteConfig = ({ UserContext }) => {
       <Route exact path="/register" component={RegisterComponent} />
       <Route exact path="/profile" component={ProfileComponent} />
       <Route exact path="/message" component={MsgPageComponent} />
-      {/* <Route exact path="/message" component={MessageComponent} /> */}
       <Route exact path="/editProfile" component={EditProfileComponent} />
       <Route exact path="/post/:postid" component={CommentsComponent} />
-      <Route exact path="/profile/:userid" component={UserProfileComponent} />
+      <Route exact path="/userprofile/:userid" component={UserProfileComponent} />
     </Switch>
   );
 };
