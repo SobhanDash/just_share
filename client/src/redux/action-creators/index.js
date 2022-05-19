@@ -216,7 +216,7 @@ export const editProfile =
     }
   };
 
-export const follow = (adduser) => async (dispatch) => {
+export const follow = (id) => async (dispatch) => {
   // dispatch({
   //     type: "set-loading"
   // });
@@ -224,18 +224,18 @@ export const follow = (adduser) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
-      "http://localhost:5000/api/auth/follow",
-      { adduser },
+      `http://localhost:5000/api/auth/follow/${id}`,
+      {},
       { headers: { "auth-token": token } }
     );
 
     if (res.data.success) {
-      localStorage.setItem("just_profile", JSON.stringify(res.data.savedUser));
+      localStorage.setItem("just_profile", JSON.stringify(res.data.user));
       localStorage.removeItem("just_error");
       dispatch({
         type: "follow",
         payload: {
-          profile: res.data.savedUser,
+          profile: res.data.user,
           error: null,
         },
       });
@@ -261,7 +261,7 @@ export const follow = (adduser) => async (dispatch) => {
   }
 };
 
-export const unfollow = (removeuser) => async (dispatch) => {
+export const unfollow = (id) => async (dispatch) => {
   // dispatch({
   //     type: "set-loading"
   // });
@@ -269,18 +269,18 @@ export const unfollow = (removeuser) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
-      "http://localhost:5000/api/auth/unfollow",
-      { removeuser },
+      `http://localhost:5000/api/auth/unfollow/${id}`,
+      {},
       { headers: { "auth-token": token } }
     );
 
     if (res.data.success) {
-      localStorage.setItem("just_profile", JSON.stringify(res.data.savedUser));
+      localStorage.setItem("just_profile", JSON.stringify(res.data.user));
       localStorage.removeItem("just_error");
       dispatch({
         type: "unfollow",
         payload: {
-          profile: res.data.savedUser,
+          profile: res.data.user,
           error: null,
         },
       });

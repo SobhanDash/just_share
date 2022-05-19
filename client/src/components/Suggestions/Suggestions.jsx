@@ -6,14 +6,16 @@ import { actionCreators } from "../../redux";
 
 const Suggestions = () => {
   const dispatch = useDispatch();
-  const { suggestions } = useSelector(
-    (state) => state.userReducer,
-    shallowEqual
-  );
+  const { profile, suggestions } = useSelector((state) => state.userReducer,shallowEqual);
+
+  const follow = (e,id)=> {
+    e.preventDefault();
+    dispatch(actionCreators.follow(id));
+  }
 
   useEffect(() => {
     dispatch(actionCreators.getSuggestion());
-  }, [dispatch]);
+  }, [dispatch,profile.following.length]);
 
   return (
     <>
@@ -37,7 +39,7 @@ const Suggestions = () => {
                     >
                       {person.username}
                     </Link>
-                    <button className={css.follow}>Follow</button>
+                    <button className={css.follow} onClick={(e)=> follow(e,person._id)}>Follow</button>
                   </div>
                 </div>
               );
