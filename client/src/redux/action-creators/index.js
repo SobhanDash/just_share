@@ -437,6 +437,52 @@ export const searchUsers = (name) => async (dispatch) => {
   }
 };
 
+export const getUser = (id) => async (dispatch) => {
+  dispatch({
+    type: "user-loading",
+  });
+  console.log(id, "redux");
+  const token = localStorage.getItem("just_token");
+  try {
+    const res = await axios.get(`http://localhost:5000/api/auth/user/${id}`, {
+      headers: { "auth-token": token },
+    });
+
+    if (res.data.success) {
+      dispatch({
+        type: "get-user",
+        payload: {
+          otherUser: res.data.otherUser,
+          error: null,
+        },
+      });
+    }
+
+    if (res.data.error) {
+      localStorage.setItem("just_error", res.data.error);
+      dispatch({
+        type: "get-user",
+        payload: {
+          error: res.data.error,
+        },
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: "get-user",
+      payload: {
+        error: error.message,
+      },
+    });
+  }
+};
+
+export const logout = () => async (dispatch) => {
+  localStorage.clear();
+  dispatch({
+    type: "logout",
+  });
+};
 // ***************POST SECTION******************\\
 
 export const getPosts = () => async (dispatch) => {
@@ -480,13 +526,6 @@ export const getPosts = () => async (dispatch) => {
       },
     });
   }
-};
-
-export const logout = () => async (dispatch) => {
-  localStorage.clear();
-  dispatch({
-    type: "logout",
-  });
 };
 
 export const fetchPost = (id) => async (dispatch) => {
@@ -763,7 +802,7 @@ export const unlikePost = (id) => async (dispatch) => {
   }
 };
 
-export const getComments = (id)=> async (dispatch)=> {
+export const getComments = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(
@@ -800,7 +839,7 @@ export const getComments = (id)=> async (dispatch)=> {
       },
     });
   }
-}
+};
 
 export const addComment = (id, text) => async (dispatch) => {
   dispatch({
@@ -848,167 +887,179 @@ export const addComment = (id, text) => async (dispatch) => {
 };
 
 // *************MESSAGE SECTION******************\\
-export const getConversations = ()=> async (dispatch)=> {
-    // dispatch({
-    //     type: 'msg-loading'
-    // });
+export const getConversations = () => async (dispatch) => {
+  // dispatch({
+  //     type: 'msg-loading'
+  // });
 
-    const token = localStorage.getItem("just_token");
-    try {
-        const res = await axios.get('http://localhost:5000/api/message/conversations',{headers: {'auth-token': token}});
+  const token = localStorage.getItem("just_token");
+  try {
+    const res = await axios.get(
+      "http://localhost:5000/api/message/conversations",
+      { headers: { "auth-token": token } }
+    );
 
-        if(res.data.success) {
-            localStorage.setItem("just_conversations",JSON.stringify(res.data.conversations));
-            dispatch({
-                type: 'get-cnvs',
-                payload: {
-                    cnvs: res.data.conversations,
-                    error: null
-                }
-            });
-        }
-
-        if(res.data.error) {
-            localStorage.setItem("just_error",res.data.error);
-            dispatch({
-                type: 'get-cnvs',
-                payload: {
-                    error: res.data.error
-                }
-            });
-        }
-
-    } catch (error) {
-        dispatch({
-            type: 'get-cnvs',
-            payload: {
-                error: error.message
-            }
-        });
+    if (res.data.success) {
+      localStorage.setItem(
+        "just_conversations",
+        JSON.stringify(res.data.conversations)
+      );
+      dispatch({
+        type: "get-cnvs",
+        payload: {
+          cnvs: res.data.conversations,
+          error: null,
+        },
+      });
     }
-}
 
-export const getMessages = (receiverId,senderId)=> async (dispatch)=> {
+    if (res.data.error) {
+      localStorage.setItem("just_error", res.data.error);
+      dispatch({
+        type: "get-cnvs",
+        payload: {
+          error: res.data.error,
+        },
+      });
+    }
+  } catch (error) {
     dispatch({
-        type: 'msg-loading'
+      type: "get-cnvs",
+      payload: {
+        error: error.message,
+      },
     });
+  }
+};
 
-    const token = localStorage.getItem("just_token");
-    try {
-        // console.log(senderId);
-        const res = await axios.get(`http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,{headers: {'auth-token': token}});
-        if(res.data.success) {
-            // console.log(res.data);
-            dispatch({
-                type: 'get-msgs',
-                payload: {
-                    msgs: res.data.messages,
-                    error: null
-                }
-            });
-        }
+export const getMessages = (receiverId, senderId) => async (dispatch) => {
+  dispatch({
+    type: "msg-loading",
+  });
 
-        if(res.data.error) {
-            console.log("error in getMessages");
-            localStorage.setItem("just_error",res.data.error);
-            dispatch({
-                type: 'get-msgs',
-                payload: {
-                    error: res.data.error
-                }
-            });
-        }
-
-    } catch (error) {
-        dispatch({
-            type: 'get-msgs',
-            payload: {
-                error: error.message
-            }
-        });
+  const token = localStorage.getItem("just_token");
+  try {
+    // console.log(senderId);
+    const res = await axios.get(
+      `http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,
+      { headers: { "auth-token": token } }
+    );
+    if (res.data.success) {
+      // console.log(res.data);
+      dispatch({
+        type: "get-msgs",
+        payload: {
+          msgs: res.data.messages,
+          error: null,
+        },
+      });
     }
-}
 
-export const receiveMessages = (receiverId,senderId)=> async (dispatch)=> {
-    // dispatch({
-    //     type: 'msg-loading'
-    // });
-
-    const token = localStorage.getItem("just_token");
-    try {
-        const res = await axios.get(`http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,{headers: {'auth-token': token}});
-        if(res.data.success) {
-            // console.log(res.data);
-            dispatch({
-                type: 'get-msgs',
-                payload: {
-                    msgs: res.data.messages,
-                    error: null
-                }
-            });
-        }
-
-        if(res.data.error) {
-            console.log("error in receiveMessages");
-            localStorage.setItem("just_error",res.data.error);
-            dispatch({
-                type: 'get-msgs',
-                payload: {
-                    error: res.data.error
-                }
-            });
-        }
-
-    } catch (error) {
-        dispatch({
-            type: 'get-msgs',
-            payload: {
-                error: error.message
-            }
-        });
+    if (res.data.error) {
+      console.log("error in getMessages");
+      localStorage.setItem("just_error", res.data.error);
+      dispatch({
+        type: "get-msgs",
+        payload: {
+          error: res.data.error,
+        },
+      });
     }
-}
+  } catch (error) {
+    dispatch({
+      type: "get-msgs",
+      payload: {
+        error: error.message,
+      },
+    });
+  }
+};
 
-export const sendMessage = ({socket,text,images,receiverId,senderId})=> async (dispatch)=> {
+export const receiveMessages = (receiverId, senderId) => async (dispatch) => {
+  // dispatch({
+  //     type: 'msg-loading'
+  // });
+
+  const token = localStorage.getItem("just_token");
+  try {
+    const res = await axios.get(
+      `http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,
+      { headers: { "auth-token": token } }
+    );
+    if (res.data.success) {
+      // console.log(res.data);
+      dispatch({
+        type: "get-msgs",
+        payload: {
+          msgs: res.data.messages,
+          error: null,
+        },
+      });
+    }
+
+    if (res.data.error) {
+      console.log("error in receiveMessages");
+      localStorage.setItem("just_error", res.data.error);
+      dispatch({
+        type: "get-msgs",
+        payload: {
+          error: res.data.error,
+        },
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: "get-msgs",
+      payload: {
+        error: error.message,
+      },
+    });
+  }
+};
+
+export const sendMessage =
+  ({ socket, text, images, receiverId, senderId }) =>
+  async (dispatch) => {
     // dispatch({
     //     type: 'loading'
     // });
 
     const token = localStorage.getItem("just_token");
     try {
-        // console.log("Sender: ",senderId);
-        // console.log("Receiver: ",receiverId);
-        const res = await axios.post(`http://localhost:5000/api/message/${senderId}/${receiverId}`,
-        {text,images},
-        {headers: {'auth-token': token}});
+      // console.log("Sender: ",senderId);
+      // console.log("Receiver: ",receiverId);
+      const res = await axios.post(
+        `http://localhost:5000/api/message/${senderId}/${receiverId}`,
+        { text, images },
+        { headers: { "auth-token": token } }
+      );
 
-        if(res.data.success) {
-            socket.current.emit("sendMessage", res.data.message);
-            dispatch({
-                type: 'send-msg',
-                payload: {
-                    msgs: res.data.messages,
-                    error: null
-                }
-            });
-        }
-
-        if(res.data.error) {
-            localStorage.setItem("just_error",res.data.error);
-            dispatch({
-                type: 'send-msg',
-                payload: {
-                    error: res.data.error
-                }
-            });
-        }
-
-    } catch (error) {
+      if (res.data.success) {
+        socket.current.emit("sendMessage", res.data.message);
         dispatch({
-            type: 'send-msg',
-            payload: {
-                error: error.message
-            }
+          type: "send-msg",
+          payload: {
+            msgs: res.data.messages,
+            error: null,
+          },
         });
+      }
+
+      if (res.data.error) {
+        localStorage.setItem("just_error", res.data.error);
+        dispatch({
+          type: "send-msg",
+          payload: {
+            error: res.data.error,
+          },
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: "send-msg",
+        payload: {
+          error: error.message,
+        },
+      });
     }
-}
+  };

@@ -12,8 +12,6 @@ import FeatModal from "../Modal/FeatModal";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import UpdateModal from "../Modal/UpdateModal";
-// import useForm from "../../services/useForm";
-// import { UserContext } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
 

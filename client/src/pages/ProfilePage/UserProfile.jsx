@@ -1,23 +1,41 @@
 import React, { useEffect, useState } from "react";
-import useForm from "../../services/useForm";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh, faCamera } from "@fortawesome/free-solid-svg-icons";
 import nodpImg from "../../images/nodp.jpg";
 import css from "./profile.module.css";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import { useHistory, useParams } from "react-router-dom";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const camera = <FontAwesomeIcon icon={faCamera} />;
 
 const UserProfile = () => {
+  const { userid } = useParams();
   // eslint-disable-next-line no-unused-vars
   const [isProfile, setIsProfile] = useState(true);
-  const { getProfile, profile, userposts } = useForm();
+  const history = useHistory();
+
+  const redirectToPost = (id) => {
+    history.push(`/post/${id}`);
+  };
+
+  const dispatch = useDispatch();
+  const { otherUser, isLoading } = useSelector(
+    (state) => state.userReducer,
+    shallowEqual
+  );
 
   useEffect(() => {
-    getProfile();
-  }, [getProfile]);
+    dispatch(actionCreators.getUser(userid));
+  }, [dispatch, userid]);
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  // return <h1>{console.log(otherUser)} </h1>;
   return (
     <section className={css.profileContainer}>
       <div>
@@ -27,31 +45,31 @@ const UserProfile = () => {
         {/* Profile Image */}
         <div className={css.profile}>
           <div className={css.profileImg}>
-            {profile.profilePic !== null ? (
-              <img src={profile.profilePic} alt="" />
+            {otherUser?.about.profilepic !== null ? (
+              <img src={otherUser?.about.profilepic} alt="" />
             ) : (
-              <img src={nodpImg} alt={profile.username} />
+              <img src={nodpImg} alt={otherUser?.username} />
             )}
             {/* <img src={nodpImg} alt={profile.username} /> */}
           </div>
           <div className={css.name}>
-            <h1>{profile.name}</h1>
+            <h1>{otherUser?.name}</h1>
           </div>
-          <span>@{profile.username}</span>
+          <span>@{otherUser?.username}</span>
         </div>
 
         {/* About */}
         <div className={css.about}>
           <div className={css.box}>
-            <h3>{profile.posts.length}</h3>
+            <h3>{otherUser?.posts.length}</h3>
             <span>Posts</span>
           </div>
           <div className={css.box}>
-            <h3>{profile.followers.length}</h3>
+            <h3>{otherUser?.followers.length}</h3>
             <span>Followers</span>
           </div>
           <div className={css.box}>
-            <h3>{profile.following.length}</h3>
+            <h3>{otherUser?.following.length}</h3>
             <span>Following</span>
           </div>
         </div>
@@ -62,16 +80,20 @@ const UserProfile = () => {
             <span className={css.icon}>{feed}</span> POSTS
           </h4>
           <div className={css.postContainer}>
-            {profile.posts.length !== 0 &&
-              userposts.map((post) => {
+            {otherUser?.posts.length !== 0 &&
+              otherUser?.posts.map((post) => {
                 return (
                   <div className={css.card} key={post._id}>
-                    <img src={post.image} alt={post.caption} />
+                    <img
+                      src={post.image}
+                      alt={post.caption}
+                      onClick={() => redirectToPost(post._id)}
+                    />
                   </div>
                 );
               })}
           </div>
-          {profile.posts.length === 0 && (
+          {otherUser?.posts.length === 0 && (
             <div className={css.no_post_container}>
               <div className={css.cameraContainer}>
                 <span className={css.iconCamera}>{camera}</span>

@@ -23,9 +23,8 @@ const Suggestions = () => {
           {suggestions &&
             suggestions.length > 0 &&
             suggestions.map((person) => {
-              console.log(person);
               return (
-                <div className={css.eachprofile}>
+                <div className={css.eachprofile} key={person._id}>
                   <img
                     src={person.about.profilepic}
                     alt={person.name}
