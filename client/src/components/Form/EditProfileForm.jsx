@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import DpModal from "../Modal/DpModal";
 import css from "./form.module.css";
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
-  const {profile, isLoading} = useSelector(state=> state.userReducer,shallowEqual);
+  const [show, setShow] = useState(false);
+  const { profile, isLoading } = useSelector(
+    (state) => state.userReducer,
+    shallowEqual
+  );
   const [editProfile, setEditProfile] = useState({
     username: profile && profile.username,
     name: profile && profile.name,
@@ -23,22 +28,31 @@ const EditProfileForm = () => {
     });
   };
 
-  const editUserProfile = ()=> {
+  const editUserProfile = () => {
     dispatch(actionCreators.editProfile(editProfile));
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     dispatch(actionCreators.getProfile());
   }, [dispatch]);
 
-  if(isLoading) {
-    return <LoadingSpinner />
+  if (isLoading) {
+    return <LoadingSpinner />;
   }
 
   return (
     <>
       <form className={css.eform} onSubmit={editUserProfile}>
         <main className={css.eform_main}>
+          <div className={css.img__wrapper}>
+          <div className={css.dpchange}>
+            <img
+              src={editProfile.profilepic}
+              alt={profile.name}
+              className={css.dp}
+              onClick={() => setShow(true)}
+            />
+          </div></div>
           <div className={css.username}>
             <label htmlFor="username">Username</label>
             <input
@@ -61,7 +75,7 @@ const EditProfileForm = () => {
               onChange={profileChange}
             />
           </div>
-          <div className={css.mobileNo}>
+          {/* <div className={css.mobileNo}>
             <label htmlFor="Mobile No">Mobile No.</label>
             <input
               type="text"
@@ -71,7 +85,7 @@ const EditProfileForm = () => {
               value={editProfile.phone}
               onChange={profileChange}
             />
-          </div>
+          </div> */}
           <div className={css.email}>
             <label htmlFor="Email address">Email Address</label>
             <input
@@ -90,7 +104,7 @@ const EditProfileForm = () => {
               placeholder="Enter Password"
               id="password"
               name="password"
-              value={profile.username}
+              value={editProfile.username}
               onChange={handleRegisterChange}
             />
           </div>
@@ -104,11 +118,10 @@ const EditProfileForm = () => {
               onChange={handleRegisterChange}
             />
           </div> */}
-          <button className={css.saveChanges}>
-            Save Changes
-          </button>
+          <button className={css.saveChanges}>Save Changes</button>
         </main>
       </form>
+      {show && <DpModal setShow={setShow} profile={profile && profile} />}
     </>
   );
 };

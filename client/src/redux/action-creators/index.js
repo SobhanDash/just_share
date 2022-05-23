@@ -363,12 +363,12 @@ export const addDp = (image) => async (dispatch) => {
     );
 
     if (res.data.success) {
-      localStorage.setItem("just_profile", JSON.stringify(res.data.savedUser));
+      localStorage.setItem("just_profile", JSON.stringify(res.data.user));
       localStorage.removeItem("just_error");
       dispatch({
         type: "add-dp",
         payload: {
-          profile: res.data.savedUser,
+          profile: res.data.user,
           error: null,
         },
       });
