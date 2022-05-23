@@ -5,7 +5,7 @@ import { faTh, faCamera } from "@fortawesome/free-solid-svg-icons";
 import nodpImg from "../../images/nodp.jpg";
 import css from "./profile.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { actionCreators } from "../../redux";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
@@ -16,23 +16,28 @@ const ProfilePage = () => {
   // eslint-disable-next-line no-unused-vars
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, profile, isLoading } = useSelector(state => state.userReducer);
+  const { user, profile, isLoading } = useSelector(
+    (state) => state.userReducer
+  );
 
   const redirectToPost = (id) => {
     history.push(`/post/${id}`);
-  }
+  };
+  const onEditClick = (e) => {
+    e.preventDefault();
+    history.push("/editprofile");
+  };
 
   useEffect(() => {
     if (!user) {
-      history.push('/login');
-    }
-    else {
+      history.push("/login");
+    } else {
       dispatch(actionCreators.getProfile());
     }
   }, [dispatch, history, user]);
 
   if (isLoading) {
-    return <LoadingSpinner />
+    return <LoadingSpinner />;
   }
 
   return (
@@ -50,27 +55,41 @@ const ProfilePage = () => {
               <img src={nodpImg} alt={profile.username} />
             )}
           </div>
-          <div className={css.name}>
-            <h1>{profile.name}</h1>
+          <div className={css.details}>
+            <div className={css.pbtns}>
+              <div className={css.uname}>
+                <h1>@{profile.username}</h1>
+              </div>
+
+              <button className={css.epl} onClick={onEditClick}>
+                Edit Profile
+              </button>
+            </div>
+            <div className={css.about}>
+              <h5 className={css.name}>{profile.name}</h5>
+              <p className={css.about__text}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+                nihil rem quaerat?
+              </p>
+            </div>
           </div>
-          <span>@{profile.username}</span>
         </div>
 
-        {/* About */}
-        <div className={css.about}>
-          <div className={css.box}>
+        {/* Numbers */}
+        <ul className={css.numbers}>
+          <li className={css.box}>
             <h3>{profile.posts.length}</h3>
             <span>Posts</span>
-          </div>
-          <div className={css.box}>
+          </li>
+          <li className={css.box}>
             <h3>{profile.followers.length}</h3>
             <span>Followers</span>
-          </div>
-          <div className={css.box}>
+          </li>
+          <li className={css.box}>
             <h3>{profile.following.length}</h3>
             <span>Following</span>
-          </div>
-        </div>
+          </li>
+        </ul>
 
         {/* Posts */}
         <div className={css.posts}>
@@ -82,7 +101,11 @@ const ProfilePage = () => {
               profile.posts.map((post) => {
                 // const timeDif = (new Date().getTime() - post.createdAt);
                 return (
-                  <div className={css.card} key={post._id} onClick={() => redirectToPost(post._id)}>
+                  <div
+                    className={css.card}
+                    key={post._id}
+                    onClick={() => redirectToPost(post._id)}
+                  >
                     <img src={post.image} alt={post.caption} />
                     {/* {timeDif < 60000 && <p>{((new Date().getTime() - post.createdAt) / 1000).toFixed(0)} seconds ago</p>}
                     {(timeDif >= 60000 && timeDif < 3.6e+6) && <p>{((new Date().getTime() - post.createdAt) / 60000).toFixed(0)} minutes ago</p>}

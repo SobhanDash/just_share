@@ -28,11 +28,13 @@
 
 .cicon {
   font-size: 0.8rem;
-  opacity: 0.6;
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 .cicon:hover {
   opacity: 1;
+  font-size: 0.9rem;
   transition: 0.2s all ease-in;
 }
 
