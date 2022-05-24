@@ -74,7 +74,8 @@
 .mobileNo,
 .email,
 .password,
-.confirmPassword {
+.confirmPassword,
+.bio {
   padding: 0.55rem;
 }
 

@@ -18,6 +18,7 @@ const EditProfileForm = () => {
     email: profile && profile.email,
     phone: profile && profile.phone,
     profilepic: profile && profile.about.profilepic,
+    bio: profile && profile.about.bio
   });
 
   const profileChange = (e) => {
@@ -40,8 +41,9 @@ const EditProfileForm = () => {
       email: profile && profile.email,
       phone: profile && profile.phone,
       profilepic: profile && profile.about.profilepic,
+      bio: profile && profile.about.bio
     });
-  }, [profile.username, profile.name, profile.email, profile.about.profilepic, dispatch]);
+  }, [profile.username, profile.name, profile.email, profile.about.profilepic, profile.about.bio, dispatch]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -94,13 +96,24 @@ const EditProfileForm = () => {
             />
           </div> */}
           <div className={css.email}>
-            <label htmlFor="Email address">Email Address</label>
+            <label htmlFor="email">Email Address</label>
             <input
               type="email"
               placeholder="email@example.com"
               id="email"
               name="email"
               value={editProfile.email}
+              onChange={profileChange}
+            />
+          </div>
+          <div className={css.bio}>
+            <label htmlFor="bio">Bio</label>
+            <input
+              type="text"
+              placeholder="Enter Bio"
+              id="bio"
+              name="bio"
+              value={editProfile.bio}
               onChange={profileChange}
             />
           </div>
