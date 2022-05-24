@@ -57,7 +57,8 @@
   margin: 1rem 1rem 0.7rem 0;
 }
 
-.pbtns {
+.pbtns,
+.upbtns {
   display: flex;
   align-items: flex-start;
 }
@@ -220,6 +221,12 @@
 @media screen and (min-width: 500px) and (max-width: 1200px) {
   .profile {
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .upbtns {
+    flex-direction: column;
   }
 }
 

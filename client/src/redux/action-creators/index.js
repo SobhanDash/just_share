@@ -441,7 +441,6 @@ export const getUser = (id) => async (dispatch) => {
   dispatch({
     type: "user-loading",
   });
-  console.log(id, "redux");
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(`http://localhost:5000/api/auth/user/${id}`, {
