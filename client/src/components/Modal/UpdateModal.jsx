@@ -6,62 +6,19 @@ import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudUploadAlt, faImages } from "@fortawesome/free-solid-svg-icons";
 import css from "./modal.module.css";
+import { useDispatch } from "react-redux";
+import { actionCreators } from "../../redux";
 
 toast.configure();
 const cloud = <FontAwesomeIcon icon={faCloudUploadAlt} />;
 const imgIcon = <FontAwesomeIcon icon={faImages} />;
 
 const UpdateModal = ({ ushow, setUShow, post }) => {
+  const dispatch = useDispatch();
   // eslint-disable-next-line no-unused-vars
-  const [image, setImage] = useState("");
-  const [cap, setCap] = useState("");
+  const [image, setImage] = useState(post.image ? post.image : '');
+  const [cap, setCap] = useState(post.caption ? post.caption : '');
   const imageRef = useRef();
-  // -----------------UPDATE POST--------------//
-  useEffect(() => {
-    if (cap) {
-      fetch(`/api/posts/updatepost/${post._id}`, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          caption: cap,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            toast.error(data.error, {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          } else {
-            toast.success("Post Updated", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [ushow,cap,post._id]);
 
   if (!ushow) {
     return null;
@@ -79,12 +36,8 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
   };
 
   const updateDetails = (e) => {
-    try {
-      setCap(cap);
-      setUShow(false);
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(actionCreators.updatePost({id: post._id, image: image, caption: cap}));
+    setUShow(false);
   };
   // --------------
 
@@ -118,13 +71,13 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
           value={cap}
           type="text"
           name="caption"
-          placeholder={post.caption}
+          placeholder="Enter caption"
           onChange={(e) => setCap(e.target.value)}
         />
         <button
           className={css.uploadBtn}
-          onClick={() => {
-            updateDetails();
+          onClick={(e) => {
+            updateDetails(e);
           }}
         >
           Update

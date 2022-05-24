@@ -82,6 +82,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
             <span className={css.icon} onClick={() => setFShow(!fshow)}>
               {more}
               <FeatModal
+                post={post}
                 id={postid}
                 userid={userid}
                 fshow={fshow}

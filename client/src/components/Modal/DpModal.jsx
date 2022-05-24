@@ -32,7 +32,7 @@ const DpModal = ({ setShow, profile }) => {
     } else if (image === profile.about.profilepic) {
       setShow(false);
     } else {
-      dispatch(actionCreators.addDp(image));
+      dispatch(actionCreators.addDp(dp));
       setShow(false);
     }
   };

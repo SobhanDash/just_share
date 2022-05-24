@@ -34,7 +34,14 @@ const EditProfileForm = () => {
 
   useEffect(() => {
     dispatch(actionCreators.getProfile());
-  }, [dispatch]);
+    setEditProfile({
+      username: profile && profile.username,
+      name: profile && profile.name,
+      email: profile && profile.email,
+      phone: profile && profile.phone,
+      profilepic: profile && profile.about.profilepic,
+    });
+  }, [profile.username, profile.name, profile.email, profile.about.profilepic, dispatch]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -45,14 +52,14 @@ const EditProfileForm = () => {
       <form className={css.eform} onSubmit={editUserProfile}>
         <main className={css.eform_main}>
           <div className={css.img__wrapper}>
-          <div className={css.dpchange}>
-            <img
-              src={editProfile.profilepic}
-              alt={profile.name}
-              className={css.dp}
-              onClick={() => setShow(true)}
-            />
-          </div></div>
+            <div className={css.dpchange}>
+              <img
+                src={editProfile.profilepic}
+                alt={profile.name}
+                className={css.dp}
+                onClick={() => setShow(true)}
+              />
+            </div></div>
           <div className={css.username}>
             <label htmlFor="username">Username</label>
             <input

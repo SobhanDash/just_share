@@ -153,10 +153,11 @@ router.get("/profile", fetchUser, async (req, res) => {
   let success = false;
   try {
     const userId = req.user.id;
-    const user = await User.findById(userId).populate(
-      "posts",
-      "_id image caption likes comments"
-    );
+    const user = await User.findById(userId)
+      .populate("posts","_id image caption likes comments")
+      .populate("followers", "_id name username about")
+      .populate("following", "_id name username about");
+
     // TODO: Might add followers and following
     success = true;
     return res.json({ success, user, status: 200 });
@@ -217,8 +218,8 @@ router.put("/follow/:id", fetchUser, async (req, res) => {
     }
 
     user = await User.findById(userId)
-      .populate("followers", "_id name username profilepic")
-      .populate("following", "_id name username profilepic")
+      .populate("followers", "_id name username about")
+      .populate("following", "_id name username about")
       .populate("posts", "_id images caption");
 
     success = true;
@@ -279,8 +280,8 @@ router.put("/unfollow/:id", fetchUser, async (req, res) => {
     }
 
     user = await User.findById(userId)
-      .populate("followers", "_id name username profilepic")
-      .populate("following", "_id name username profilepic")
+      .populate("followers", "_id name username about")
+      .populate("following", "_id name username about")
       .populate("posts", "_id images caption");
 
     success = true;
@@ -420,6 +421,9 @@ router.put(
   fetchUser,
   async (req, res) => {
     let success = false;
+    const userId = req.user.id;
+    const image = req.body.image;
+
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       success = false;
@@ -437,7 +441,7 @@ router.put(
 
       user = await User.findByIdAndUpdate(
         userId,
-        { profilepic: image },
+        { about : {profilepic: image} },
         { new: true }
       )
         .populate("followers", "_id name username profilepic")

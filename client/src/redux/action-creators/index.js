@@ -634,6 +634,15 @@ export const updatePost =
       if (res.data.success) {
         localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
         localStorage.removeItem("just_error");
+        toast.success("Post Updated", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         dispatch({
           type: "update-post",
           payload: {
@@ -645,6 +654,15 @@ export const updatePost =
 
       if (res.data.error) {
         localStorage.setItem("just_error", res.data.error);
+        toast.error(res.data.error, {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         dispatch({
           type: "update-post",
           payload: {
@@ -679,6 +697,15 @@ export const deletePost = (id) => async (dispatch) => {
       localStorage.setItem("just_profile", JSON.stringify(res.data.user));
       localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
       localStorage.removeItem("just_error");
+      toast.success("Post Deleted", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       dispatch({
         type: "delete-post",
         payload: {
@@ -691,6 +718,15 @@ export const deletePost = (id) => async (dispatch) => {
 
     if (res.data.error) {
       localStorage.setItem("just_error", res.data.error);
+      toast.error("Something Occured, Try Again!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       dispatch({
         type: "delete-post",
         payload: {

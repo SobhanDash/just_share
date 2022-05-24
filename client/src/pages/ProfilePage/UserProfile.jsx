@@ -16,11 +16,8 @@ const UserProfile = () => {
   const { userid } = useParams();
   // eslint-disable-next-line no-unused-vars
   const [isProfile, setIsProfile] = useState(true);
+  const [isFollowing, setIsFollowing] = useState(false);
   const history = useHistory();
-
-  const redirectToPost = (id) => {
-    history.push(`/post/${id}`);
-  };
 
   const dispatch = useDispatch();
   const { otherUser, isLoading, profile } = useSelector(
@@ -28,9 +25,9 @@ const UserProfile = () => {
     shallowEqual
   );
 
-  useEffect(() => {
-    dispatch(actionCreators.getUser(userid));
-  }, [dispatch, userid]);
+  const redirectToPost = (id) => {
+    history.push(`/post/${id}`);
+  };
 
   const follow = (e, id) => {
     e.preventDefault();
@@ -41,6 +38,23 @@ const UserProfile = () => {
     e.preventDefault();
     dispatch(actionCreators.unfollow(id));
   };
+
+  useEffect(() => {
+    dispatch(actionCreators.getUser(userid));
+  }, [dispatch, userid , profile.following.length]);
+
+  useEffect(() => {
+    for (let i = 0; i < profile.following.length; i++) {
+      if (profile.following[i]._id === userid) {
+        setIsFollowing(true);
+        break;
+      }
+      else {
+        setIsFollowing(false);
+      }
+    }
+    // eslint-disable-next-line
+  }, [dispatch, userid, profile.following.length]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -67,7 +81,7 @@ const UserProfile = () => {
                 <h1>@{otherUser?.username}</h1>
               </div>
               <div className={css.upBtn}>
-                {profile.following.includes(otherUser?._id) ? (
+                {isFollowing ? (
                   <button
                     className={css.epl}
                     onClick={(e) => unfollow(e, otherUser?._id)}
