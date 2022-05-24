@@ -26,14 +26,6 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
   // ----------
 
   // --------CLOUDINARY UPLOAD----------
-  const getImagePreview = (event) => {
-    var image = post.image;
-    setImage(post.image);
-    var imagediv = document.querySelector("#image");
-    var newimg = document.createElement("img");
-    newimg.src = image;
-    imagediv.appendChild(newimg);
-  };
 
   const updateDetails = (e) => {
     dispatch(actionCreators.updatePost({id: post._id, image: image, caption: cap}));
@@ -46,26 +38,13 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
       <div className={css.backdrop}></div>
       <section className={css.modal}>
         <div className={css.wrapper}>
-          <div className={css.image} id="image"></div>
-          <div className={css.content}>
-            <div className={css.icon}>{imgIcon}</div>
-            <div className={css.text}>No File Chosen</div>
+          <div className={css.image} id="image">
+            <img src={post.image} alt={post._id} />
           </div>
         </div>
         {imageRef.current !== undefined && (
           <div className={css.picDisplay}></div>
         )}
-        <label htmlFor="update_file" className={css.customLabel}>
-          <span> {cloud} </span> Get Image
-        </label>
-        <input
-          className={css.getImgBtn}
-          id="update_file"
-          type="button"
-          name="post"
-          onClick={getImagePreview}
-          ref={imageRef}
-        />
         <input
           className={css.caption}
           value={cap}
