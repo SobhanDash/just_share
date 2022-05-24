@@ -128,7 +128,7 @@ export const login =
 
 export const getProfile = () => async (dispatch) => {
   dispatch({
-    type: "set-loading",
+    type: "user-loading",
   });
 
   const token = localStorage.getItem("just_token");
@@ -173,7 +173,7 @@ export const editProfile =
   ({ username, name, email, phone, profilepic, bio }) =>
     async (dispatch) => {
       dispatch({
-        type: "set-loading",
+        type: "user-loading",
       });
 
       const token = localStorage.getItem("just_token");
@@ -218,7 +218,7 @@ export const editProfile =
 
 export const follow = (id) => async (dispatch) => {
   // dispatch({
-  //     type: "set-loading"
+  //     type: "user-loading"
   // });
 
   const token = localStorage.getItem("just_token");
@@ -263,7 +263,7 @@ export const follow = (id) => async (dispatch) => {
 
 export const unfollow = (id) => async (dispatch) => {
   // dispatch({
-  //     type: "set-loading"
+  //     type: "user-loading"
   // });
 
   const token = localStorage.getItem("just_token");
@@ -351,7 +351,7 @@ export const getSuggestion = () => async (dispatch) => {
 
 export const addDp = (image) => async (dispatch) => {
   dispatch({
-    type: "set-loading",
+    type: "user-loading",
   });
 
   const data = new FormData();
@@ -403,7 +403,7 @@ export const addDp = (image) => async (dispatch) => {
 
 export const searchUsers = (name) => async (dispatch) => {
   dispatch({
-    type: "set-loading",
+    type: "user-loading",
   });
 
   const token = localStorage.getItem("just_token");
@@ -448,6 +448,7 @@ export const getUser = (id) => async (dispatch) => {
   dispatch({
     type: "user-loading",
   });
+
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(`http://localhost:5000/api/auth/user/${id}`, {
@@ -482,6 +483,12 @@ export const getUser = (id) => async (dispatch) => {
     });
   }
 };
+
+export const resetUser = ()=> (dispatch)=> {
+  dispatch({
+    type: 'reset-user'
+  });
+}
 
 export const logout = () => async (dispatch) => {
   localStorage.clear();

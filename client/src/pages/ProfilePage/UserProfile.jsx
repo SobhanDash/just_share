@@ -41,6 +41,9 @@ const UserProfile = () => {
 
   useEffect(() => {
     dispatch(actionCreators.getUser(userid));
+    // return ()=> {
+    //   dispatch(actionCreators.resetUser());
+    // }
   }, [dispatch, userid , profile.following.length]);
 
   useEffect(() => {
@@ -78,7 +81,7 @@ const UserProfile = () => {
           <div className={css.details}>
             <div className={css.upbtns}>
               <div className={css.uname}>
-                <h1>@{otherUser?.username}</h1>
+                <h1>{otherUser?.username}</h1>
               </div>
               <div className={css.upBtn}>
                 {isFollowing ? (
@@ -101,10 +104,9 @@ const UserProfile = () => {
               </div>
             </div>
             <div className={css.about}>
-              <h5 className={css.name}>{otherUser?.name}</h5>
+              <h2 className={css.name}>{otherUser?.name}</h2>
               <p className={css.about__text}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-                nihil rem quaerat?
+                {otherUser?.about.bio ? otherUser?.about.bio : "bio"}
               </p>
             </div>
           </div>

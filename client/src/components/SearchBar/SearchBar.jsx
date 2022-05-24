@@ -60,7 +60,7 @@ const SearchBar = () => {
                   <Link
                     className={css.list__li}
                     key={item._id}
-                    to={`/userprofile/${profile._id}`}
+                    to={`/userprofile/${item._id}`}
                   >
                     <div className={css.li__details}>
                       <img

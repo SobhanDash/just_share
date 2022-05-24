@@ -38,7 +38,7 @@ const initState = {
 };
 
 const userReducer = (state = initState, action) => {
-  if (action.type === "set-loading") {
+  if (action.type === "user-loading") {
     return {
       ...state,
       isLoading: true,
@@ -235,7 +235,14 @@ const userReducer = (state = initState, action) => {
         error: null,
       };
     }
-  } else if (action.type === "logout") {
+  } 
+  else if(action.type === 'reset-user') {
+    return {
+      ...state,
+      otherUser: null
+    }
+  }
+  else if (action.type === "logout") {
     return {
       ...state,
       user: null,
