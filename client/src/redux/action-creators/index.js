@@ -363,12 +363,12 @@ export const addDp = (image) => async (dispatch) => {
     );
 
     if (res.data.success) {
-      localStorage.setItem("just_profile", JSON.stringify(res.data.savedUser));
+      localStorage.setItem("just_profile", JSON.stringify(res.data.user));
       localStorage.removeItem("just_error");
       dispatch({
         type: "add-dp",
         payload: {
-          profile: res.data.savedUser,
+          profile: res.data.user,
           error: null,
         },
       });
@@ -441,7 +441,6 @@ export const getUser = (id) => async (dispatch) => {
   dispatch({
     type: "user-loading",
   });
-  console.log(id, "redux");
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(`http://localhost:5000/api/auth/user/${id}`, {

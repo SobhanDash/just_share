@@ -23,7 +23,7 @@ const UserProfile = () => {
   };
 
   const dispatch = useDispatch();
-  const { otherUser, isLoading } = useSelector(
+  const { otherUser, isLoading, profile } = useSelector(
     (state) => state.userReducer,
     shallowEqual
   );
@@ -31,6 +31,16 @@ const UserProfile = () => {
   useEffect(() => {
     dispatch(actionCreators.getUser(userid));
   }, [dispatch, userid]);
+
+  const follow = (e, id) => {
+    e.preventDefault();
+    dispatch(actionCreators.follow(id));
+  };
+
+  const unfollow = (e, id) => {
+    e.preventDefault();
+    dispatch(actionCreators.unfollow(id));
+  };
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -50,16 +60,44 @@ const UserProfile = () => {
             ) : (
               <img src={nodpImg} alt={otherUser?.username} />
             )}
-            {/* <img src={nodpImg} alt={profile.username} /> */}
           </div>
-          <div className={css.name}>
-            <h1>{otherUser?.name}</h1>
+          <div className={css.details}>
+            <div className={css.upbtns}>
+              <div className={css.uname}>
+                <h1>@{otherUser?.username}</h1>
+              </div>
+              <div className={css.upBtn}>
+                {profile.following.includes(otherUser?._id) ? (
+                  <button
+                    className={css.epl}
+                    onClick={(e) => unfollow(e, otherUser?._id)}
+                  >
+                    UnFollow
+                  </button>
+                ) : (
+                  <button
+                    className={css.epl}
+                    onClick={(e) => follow(e, otherUser?._id)}
+                  >
+                    Follow
+                  </button>
+                )}
+
+                <button className={css.epl}>Message</button>
+              </div>
+            </div>
+            <div className={css.about}>
+              <h5 className={css.name}>{otherUser?.name}</h5>
+              <p className={css.about__text}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+                nihil rem quaerat?
+              </p>
+            </div>
           </div>
-          <span>@{otherUser?.username}</span>
         </div>
 
-        {/* About */}
-        <div className={css.about}>
+        {/* Numbers */}
+        <div className={css.numbers}>
           <div className={css.box}>
             <h3>{otherUser?.posts.length}</h3>
             <span>Posts</span>
