@@ -484,12 +484,6 @@ export const getUser = (id) => async (dispatch) => {
   }
 };
 
-export const resetUser = ()=> (dispatch)=> {
-  dispatch({
-    type: 'reset-user'
-  });
-}
-
 export const logout = () => async (dispatch) => {
   localStorage.clear();
   dispatch({

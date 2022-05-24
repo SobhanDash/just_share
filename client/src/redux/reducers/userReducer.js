@@ -236,12 +236,6 @@ const userReducer = (state = initState, action) => {
       };
     }
   } 
-  else if(action.type === 'reset-user') {
-    return {
-      ...state,
-      otherUser: null
-    }
-  }
   else if (action.type === "logout") {
     return {
       ...state,

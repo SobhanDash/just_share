@@ -41,9 +41,6 @@ const UserProfile = () => {
 
   useEffect(() => {
     dispatch(actionCreators.getUser(userid));
-    // return ()=> {
-    //   dispatch(actionCreators.resetUser());
-    // }
   }, [dispatch, userid , profile.following.length]);
 
   useEffect(() => {
