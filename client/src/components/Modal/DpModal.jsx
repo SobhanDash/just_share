@@ -16,8 +16,8 @@ const DpModal = ({ setShow, profile }) => {
   const [error, setError] = useState("");
 
   const onPicChange = (e) => {
-    setImage(e.target.files[0]);
-    setDp(URL.createObjectURL(e.target.files[0]));
+    setImage(URL.createObjectURL(e.target.files[0]));
+    setDp(e.target.files[0]);
   };
 
   const onRemove = (e) => {
@@ -48,7 +48,7 @@ const DpModal = ({ setShow, profile }) => {
             </div>
           )}
           {dp !== "" ? (
-            <img src={dp} alt="Profile" className={css.dimage} />
+            <img src={image} alt="Profile" className={css.dimage} />
           ) : (
             <label htmlFor="dp">
               <span className={css.icon}>{imgIcon}</span>

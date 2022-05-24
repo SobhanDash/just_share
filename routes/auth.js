@@ -154,7 +154,7 @@ router.get("/profile", fetchUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findById(userId)
-      .populate("posts","_id image caption likes comments")
+      .populate("posts", "_id image caption likes comments")
       .populate("followers", "_id name username about")
       .populate("following", "_id name username about");
 
@@ -350,11 +350,11 @@ router.put(
         name: name,
         username: username,
         email: email,
-        about: {
-          profilepic: user.profilepic,
-          bio: user.bio
-        }
+        profilepic: profilepic,
+        bio: bio
       };
+
+      console.log(updateduser);
 
       if (profilepic && profilepic !== user.profilepic) {
         updateduser.profilepic = profilepic;
@@ -399,8 +399,10 @@ router.put(
           name: updateduser.name,
           username: updateduser.username,
           email: updateduser.email,
-          profilepic: updateduser.profilepic,
-          bio: updateduser.bio,
+          about: {
+            profilepic: updateduser.profilepic,
+            bio: updateduser.bio,
+          }
         },
         { new: true }
       )
@@ -443,7 +445,7 @@ router.put(
 
       user = await User.findByIdAndUpdate(
         userId,
-        { about : {profilepic: image} },
+        { about: { profilepic: image } },
         { new: true }
       )
         .populate("followers", "_id name username profilepic")

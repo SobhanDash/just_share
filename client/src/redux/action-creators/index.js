@@ -6,125 +6,125 @@ toast.configure();
 
 export const register =
   ({ username, name, email, phone, password }) =>
-  async (dispatch) => {
-    dispatch({
-      type: "set-loading",
-    });
-
-    try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
-        username,
-        name,
-        email,
-        phone,
-        password,
-      });
-      if (res.data.success) {
-        localStorage.setItem("just_token", res.data.authToken);
-        // localStorage.setItem("just_profile",JSON.stringify(res.data.user));
-        localStorage.removeItem("just_error");
-        dispatch({
-          type: "register",
-          payload: {
-            user: res.data.authToken,
-            error: null,
-          },
-        });
-      }
-
-      if (res.data.error) {
-        localStorage.setItem("just_error", res.data.error);
-        dispatch({
-          type: "register",
-          payload: {
-            error: res.data.error,
-          },
-        });
-      }
-    } catch (error) {
-      // console.log(error.message);
+    async (dispatch) => {
       dispatch({
-        type: "register",
-        payload: {
-          error: error.message,
-        },
+        type: "set-loading",
       });
-    }
-  };
+
+      try {
+        const res = await axios.post("http://localhost:5000/api/auth/register", {
+          username,
+          name,
+          email,
+          phone,
+          password,
+        });
+        if (res.data.success) {
+          localStorage.setItem("just_token", res.data.authToken);
+          // localStorage.setItem("just_profile",JSON.stringify(res.data.user));
+          localStorage.removeItem("just_error");
+          dispatch({
+            type: "register",
+            payload: {
+              user: res.data.authToken,
+              error: null,
+            },
+          });
+        }
+
+        if (res.data.error) {
+          localStorage.setItem("just_error", res.data.error);
+          dispatch({
+            type: "register",
+            payload: {
+              error: res.data.error,
+            },
+          });
+        }
+      } catch (error) {
+        // console.log(error.message);
+        dispatch({
+          type: "register",
+          payload: {
+            error: error.message,
+          },
+        });
+      }
+    };
 
 export const login =
   ({ email, password }) =>
-  async (dispatch) => {
-    dispatch({
-      type: "set-loading",
-    });
-
-    try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
-
-      if (res.data.success) {
-        localStorage.setItem("just_token", res.data.authToken);
-        // localStorage.setItem("just_profile",JSON.stringify(res.data.user));
-        toast.success("Welcome Back", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        localStorage.removeItem("just_error");
-        dispatch({
-          type: "login",
-          payload: {
-            user: res.data.authToken,
-            error: null,
-          },
-        });
-      }
-
-      if (res.data.error) {
-        localStorage.setItem("just_error", res.data.error);
-        toast.error("Login Failed", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        dispatch({
-          type: "login",
-          payload: {
-            error: res.data.error,
-          },
-        });
-      }
-    } catch (error) {
-      // console.log(error.message);
-      toast.error("Error with Login", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-
+    async (dispatch) => {
       dispatch({
-        type: "login",
-        payload: {
-          error: error.message,
-        },
+        type: "set-loading",
       });
-    }
-  };
+
+      try {
+        const res = await axios.post("http://localhost:5000/api/auth/login", {
+          email,
+          password,
+        });
+
+        if (res.data.success) {
+          localStorage.setItem("just_token", res.data.authToken);
+          // localStorage.setItem("just_profile",JSON.stringify(res.data.user));
+          toast.success("Welcome Back", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          localStorage.removeItem("just_error");
+          dispatch({
+            type: "login",
+            payload: {
+              user: res.data.authToken,
+              error: null,
+            },
+          });
+        }
+
+        if (res.data.error) {
+          localStorage.setItem("just_error", res.data.error);
+          toast.error("Login Failed", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          dispatch({
+            type: "login",
+            payload: {
+              error: res.data.error,
+            },
+          });
+        }
+      } catch (error) {
+        // console.log(error.message);
+        toast.error("Error with Login", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+        dispatch({
+          type: "login",
+          payload: {
+            error: error.message,
+          },
+        });
+      }
+    };
 
 export const getProfile = () => async (dispatch) => {
   dispatch({
@@ -170,51 +170,51 @@ export const getProfile = () => async (dispatch) => {
 };
 
 export const editProfile =
-  ({ username, name, email, phone, profilePic }) =>
-  async (dispatch) => {
-    dispatch({
-      type: "set-loading",
-    });
-
-    const token = localStorage.getItem("just_token");
-    try {
-      const res = await axios.put(
-        "http://localhost:5000/api/auth/editProfile",
-        { username, name, email, phone, profilePic },
-        { headers: { "auth-token": token } }
-      );
-
-      if (res.data.success) {
-        localStorage.setItem("just_profile", JSON.stringify(res.data.user));
-        localStorage.removeItem("just_error");
-        dispatch({
-          type: "edit-profile",
-          payload: {
-            profile: res.data.user,
-            error: null,
-          },
-        });
-      }
-
-      if (res.data.error) {
-        localStorage.setItem("just_error", res.data.error);
-        dispatch({
-          type: "edit-profile",
-          payload: {
-            error: res.data.error,
-          },
-        });
-      }
-    } catch (error) {
-      // console.log(error.message);
+  ({ username, name, email, phone, profilepic, bio }) =>
+    async (dispatch) => {
       dispatch({
-        type: "edit-profile",
-        payload: {
-          error: error.message,
-        },
+        type: "set-loading",
       });
-    }
-  };
+
+      const token = localStorage.getItem("just_token");
+      try {
+        const res = await axios.put(
+          "http://localhost:5000/api/auth/editProfile",
+          { username, name, email, phone, profilepic, bio },
+          { headers: { "auth-token": token } }
+        );
+
+        if (res.data.success) {
+          localStorage.setItem("just_profile", JSON.stringify(res.data.user));
+          localStorage.removeItem("just_error");
+          dispatch({
+            type: "edit-profile",
+            payload: {
+              profile: res.data.user,
+              error: null,
+            },
+          });
+        }
+
+        if (res.data.error) {
+          localStorage.setItem("just_error", res.data.error);
+          dispatch({
+            type: "edit-profile",
+            payload: {
+              error: res.data.error,
+            },
+          });
+        }
+      } catch (error) {
+        // console.log(error.message);
+        dispatch({
+          type: "edit-profile",
+          payload: {
+            error: error.message,
+          },
+        });
+      }
+    };
 
 export const follow = (id) => async (dispatch) => {
   // dispatch({
@@ -354,11 +354,18 @@ export const addDp = (image) => async (dispatch) => {
     type: "set-loading",
   });
 
+  const data = new FormData();
+  data.append("file", image);
+  data.append("upload_preset", "just_connect");
+  data.append("cloud_name", "alpha2625");
+  const response = await axios.post("https://api.cloudinary.com/v1_1/alpha2625/image/upload", data);
+  const url = response.data.secure_url;
+
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
       "http://localhost:5000/api/auth/adddp",
-      { image },
+      { image: url },
       { headers: { "auth-token": token } }
     );
 
@@ -618,68 +625,68 @@ export const addPost = (image, caption) => async (dispatch) => {
 
 export const updatePost =
   ({ id, image, caption }) =>
-  async (dispatch) => {
-    dispatch({
-      type: "set-loading",
-    });
-
-    const token = localStorage.getItem("just_token");
-    try {
-      const res = await axios.put(
-        `http://localhost:5000/api/posts/updatepost/${id}`,
-        { image, caption },
-        { headers: { "auth-token": token } }
-      );
-
-      if (res.data.success) {
-        localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
-        localStorage.removeItem("just_error");
-        toast.success("Post Updated", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        dispatch({
-          type: "update-post",
-          payload: {
-            posts: res.data.posts,
-            error: null,
-          },
-        });
-      }
-
-      if (res.data.error) {
-        localStorage.setItem("just_error", res.data.error);
-        toast.error(res.data.error, {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        dispatch({
-          type: "update-post",
-          payload: {
-            error: res.data.error,
-          },
-        });
-      }
-    } catch (error) {
-      // console.log(error.message);
+    async (dispatch) => {
       dispatch({
-        type: "update-post",
-        payload: {
-          error: error.message,
-        },
+        type: "set-loading",
       });
-    }
-  };
+
+      const token = localStorage.getItem("just_token");
+      try {
+        const res = await axios.put(
+          `http://localhost:5000/api/posts/updatepost/${id}`,
+          { image, caption },
+          { headers: { "auth-token": token } }
+        );
+
+        if (res.data.success) {
+          localStorage.setItem("just_posts", JSON.stringify(res.data.posts));
+          localStorage.removeItem("just_error");
+          toast.success("Post Updated", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          dispatch({
+            type: "update-post",
+            payload: {
+              posts: res.data.posts,
+              error: null,
+            },
+          });
+        }
+
+        if (res.data.error) {
+          localStorage.setItem("just_error", res.data.error);
+          toast.error(res.data.error, {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          dispatch({
+            type: "update-post",
+            payload: {
+              error: res.data.error,
+            },
+          });
+        }
+      } catch (error) {
+        // console.log(error.message);
+        dispatch({
+          type: "update-post",
+          payload: {
+            error: error.message,
+          },
+        });
+      }
+    };
 
 export const deletePost = (id) => async (dispatch) => {
   dispatch({
@@ -1054,47 +1061,47 @@ export const receiveMessages = (receiverId, senderId) => async (dispatch) => {
 
 export const sendMessage =
   ({ socket, text, images, receiverId, senderId }) =>
-  async (dispatch) => {
-    // dispatch({
-    //     type: 'loading'
-    // });
+    async (dispatch) => {
+      // dispatch({
+      //     type: 'loading'
+      // });
 
-    const token = localStorage.getItem("just_token");
-    try {
-      // console.log("Sender: ",senderId);
-      // console.log("Receiver: ",receiverId);
-      const res = await axios.post(
-        `http://localhost:5000/api/message/${senderId}/${receiverId}`,
-        { text, images },
-        { headers: { "auth-token": token } }
-      );
+      const token = localStorage.getItem("just_token");
+      try {
+        // console.log("Sender: ",senderId);
+        // console.log("Receiver: ",receiverId);
+        const res = await axios.post(
+          `http://localhost:5000/api/message/${senderId}/${receiverId}`,
+          { text, images },
+          { headers: { "auth-token": token } }
+        );
 
-      if (res.data.success) {
-        socket.current.emit("sendMessage", res.data.message);
+        if (res.data.success) {
+          socket.current.emit("sendMessage", res.data.message);
+          dispatch({
+            type: "send-msg",
+            payload: {
+              msgs: res.data.messages,
+              error: null,
+            },
+          });
+        }
+
+        if (res.data.error) {
+          localStorage.setItem("just_error", res.data.error);
+          dispatch({
+            type: "send-msg",
+            payload: {
+              error: res.data.error,
+            },
+          });
+        }
+      } catch (error) {
         dispatch({
           type: "send-msg",
           payload: {
-            msgs: res.data.messages,
-            error: null,
+            error: error.message,
           },
         });
       }
-
-      if (res.data.error) {
-        localStorage.setItem("just_error", res.data.error);
-        dispatch({
-          type: "send-msg",
-          payload: {
-            error: res.data.error,
-          },
-        });
-      }
-    } catch (error) {
-      dispatch({
-        type: "send-msg",
-        payload: {
-          error: error.message,
-        },
-      });
-    }
-  };
+    };

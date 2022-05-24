@@ -58,7 +58,7 @@ const ProfilePage = () => {
           <div className={css.details}>
             <div className={css.pbtns}>
               <div className={css.uname}>
-                <h1>@{profile.username}</h1>
+                <h1>{profile.username}</h1>
               </div>
 
               <button className={css.epl} onClick={onEditClick}>
@@ -66,10 +66,9 @@ const ProfilePage = () => {
               </button>
             </div>
             <div className={css.about}>
-              <h5 className={css.name}>{profile.name}</h5>
+              <h2 className={css.name}>{profile.name}</h2>
               <p className={css.about__text}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-                nihil rem quaerat?
+                {profile.about.bio}
               </p>
             </div>
           </div>

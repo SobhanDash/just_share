@@ -57,6 +57,10 @@
   margin: 1rem 1rem 0.7rem 0;
 }
 
+.uname h1 {
+  font-weight: normal;
+}
+
 .pbtns,
 .upbtns {
   display: flex;
@@ -81,13 +85,14 @@
 
 .about {
   display: flex;
+  flex-direction: column;
   text-align: start;
-  flex-flow: row wrap;
+  /* flex-flow: row wrap; */
 }
 
 .name {
   font-weight: 500;
-  font-size: 1.2rem;
+  /* font-size: 1.2rem; */
   opacity: 0.9;
 }
 

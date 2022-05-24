@@ -12,6 +12,8 @@ const EditProfileForm = () => {
     (state) => state.userReducer,
     shallowEqual
   );
+  // console.log(profile.about.profilepic);
+  // console.log(profile.about.bio);
   const [editProfile, setEditProfile] = useState({
     username: profile && profile.username,
     name: profile && profile.name,
@@ -30,6 +32,8 @@ const EditProfileForm = () => {
   };
 
   const editUserProfile = () => {
+    // console.log(editProfile.profilepic);
+    // console.log(editProfile.bio);
     dispatch(actionCreators.editProfile(editProfile));
   };
 
