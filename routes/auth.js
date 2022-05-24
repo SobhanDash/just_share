@@ -350,8 +350,10 @@ router.put(
         name: name,
         username: username,
         email: email,
-        profilepic: user.profilepic,
-        bio: user.bio,
+        about: {
+          profilepic: user.profilepic,
+          bio: user.bio
+        }
       };
 
       if (profilepic && profilepic !== user.profilepic) {
