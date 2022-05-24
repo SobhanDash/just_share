@@ -47,6 +47,7 @@ const EditProfileForm = () => {
       profilepic: profile && profile.about.profilepic,
       bio: profile && profile.about.bio
     });
+    // eslint-disable-next-line
   }, [profile.username, profile.name, profile.email, profile.about.profilepic, profile.about.bio, dispatch]);
 
   if (isLoading) {

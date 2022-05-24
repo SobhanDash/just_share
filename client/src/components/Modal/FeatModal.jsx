@@ -1,23 +1,15 @@
 /* eslint-disable eqeqeq */
-import React, { useContext } from "react";
-import axios from "axios";
+import React from "react";
 import css from "./modal.module.css";
 import reactDom from "react-dom";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link, useHistory } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import useForm from "../../services/useForm";
-import { UserContext } from "../../App";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux";
 
 const FeatModal = ({ post, id, fshow, fn, setUShow, userid }) => {
   const dispatch = useDispatch();
-  const {posts} = useSelector(state=> state.postReducer,shallowEqual);
-  // const { userposts } = useForm();
-  // const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
-  const location = useLocation();
 
   if (!fshow) {
     return null;

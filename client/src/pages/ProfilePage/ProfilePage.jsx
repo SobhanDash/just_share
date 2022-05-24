@@ -5,7 +5,7 @@ import { faTh, faCamera } from "@fortawesome/free-solid-svg-icons";
 import nodpImg from "../../images/nodp.jpg";
 import css from "./profile.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { actionCreators } from "../../redux";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 

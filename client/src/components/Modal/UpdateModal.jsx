@@ -1,17 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import reactDom from "react-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCloudUploadAlt, faImages } from "@fortawesome/free-solid-svg-icons";
 import css from "./modal.module.css";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux";
 
 toast.configure();
-const cloud = <FontAwesomeIcon icon={faCloudUploadAlt} />;
-const imgIcon = <FontAwesomeIcon icon={faImages} />;
 
 const UpdateModal = ({ ushow, setUShow, post }) => {
   const dispatch = useDispatch();
