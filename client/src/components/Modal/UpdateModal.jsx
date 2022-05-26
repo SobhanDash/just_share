@@ -16,18 +16,14 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
   const [cap, setCap] = useState(post.caption ? post.caption : '');
   const imageRef = useRef();
 
-  if (!ushow) {
-    return null;
-  }
-  // ----------
-
-  // --------CLOUDINARY UPLOAD----------
-
   const updateDetails = (e) => {
     dispatch(actionCreators.updatePost({id: post._id, image: image, caption: cap}));
     setUShow(false);
   };
-  // --------------
+
+  if (!ushow) {
+    return null;
+  }
 
   return reactDom.createPortal(
     <>

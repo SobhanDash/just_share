@@ -14,6 +14,9 @@ import Modal from "../Modal/Modal";
 import UpdateModal from "../Modal/UpdateModal";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.addDefaultLocale(en)
 
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const commentIcon = <FontAwesomeIcon icon={faComment} />;
@@ -21,6 +24,7 @@ const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
 const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
   // const history = useHistory();
+  const timeAgo = new TimeAgo('en-US');
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.userReducer);
   const [show, setShow] = useState(false);
@@ -90,17 +94,9 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
                 setUShow={setUShow}
               />
             </span>
-            {/* {console.log("post date: ",post.createdAt)}
-            {console.log("current: ",new Date().getTime())} */}
-            {/* {console.log("difference: ",((new Date().getTime()-post.createdAt)/3.6e+6).toFixed(2))} */}
-            {/* {console.log("difference: ",((new Date().getTime()-post.createdAt)/1000))} */}
           </div>
         </div>
-        {/* {timeDif < 60000 && <h3 style={{ color: "white" }}>{((new Date().getTime() - post.createdAt) / 1000).toFixed(0)} seconds ago</h3>}
-        {(timeDif >= 60000 && timeDif < 3.6e+6) && <h3 style={{ color: "white" }}>{((new Date().getTime() - post.createdAt) / 60000).toFixed(0)} minutes ago</h3>}
-        {(timeDif >= 3.6e+6 && timeDif < 8.64e+7) && <h3 style={{ color: "white" }}>{((new Date().getTime() - post.createdAt) / 3.6e+6).toFixed(0)} hours ago</h3>}
-        {(timeDif >= 8.64e+7 && timeDif < 6.048e+8) && <h3 style={{ color: "white" }}>{((new Date().getTime() - post.createdAt) / 8.64e+7).toFixed(0)} days ago</h3>}
-        {timeDif >= 6.048e+8 && <h3 style={{ color: "white" }}>{((new Date().getTime() - post.createdAt) / 6.048e+8).toFixed(0)} weeks ago</h3>} */}
+        <p className={css.timeago}>{timeAgo.format(post.createdAt)}</p>
       </section>
     </>
   );
