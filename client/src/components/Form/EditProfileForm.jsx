@@ -20,7 +20,7 @@ const EditProfileForm = () => {
     email: profile && profile.email,
     phone: profile && profile.phone,
     profilepic: profile && profile.about.profilepic,
-    bio: profile && profile.about.bio
+    bio: profile && profile.about.bio,
   });
 
   const profileChange = (e) => {
@@ -45,7 +45,7 @@ const EditProfileForm = () => {
       email: profile && profile.email,
       phone: profile && profile.phone,
       profilepic: profile && profile.about.profilepic,
-      bio: profile && profile.about.bio
+      bio: profile && profile.about.bio,
     });
     // eslint-disable-next-line
   }, [profile.username, profile.name, profile.email, profile.about.profilepic, profile.about.bio, dispatch]);
@@ -66,7 +66,8 @@ const EditProfileForm = () => {
                 className={css.dp}
                 onClick={() => setShow(true)}
               />
-            </div></div>
+            </div>
+          </div>
           <div className={css.username}>
             <label htmlFor="username">Username</label>
             <input

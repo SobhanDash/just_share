@@ -2,7 +2,6 @@ import React, { useEffect, useContext } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import WithPageTitle from "./services/WithPageTitle";
 import axios from "axios";
-// import MessagePage from "./pages/MessagePage/MessagePage";
 
 const LoginPage = React.lazy(() => import("./pages/LoginPage/LoginPage"));
 
@@ -27,6 +26,10 @@ const UserProfilePage = React.lazy(() =>
 );
 
 const MsgPage = React.lazy(() => import("./pages/MessagePage/MessagePage"));
+
+const Following = React.lazy(() => import("./pages/FollowList/Following"));
+
+const Followers = React.lazy(() => import("./pages/FollowList/Followers"));
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
@@ -68,6 +71,16 @@ const MsgPageComponent = WithPageTitle({
   title: "Message",
 });
 
+const FollowingComponent = WithPageTitle({
+  component: Following,
+  title: "Following",
+});
+
+const FollowersComponent = WithPageTitle({
+  component: Followers,
+  title: "Followers",
+});
+
 const RouteConfig = ({ UserContext }) => {
   const history = useHistory();
   // eslint-disable-next-line no-unused-vars
@@ -99,7 +112,13 @@ const RouteConfig = ({ UserContext }) => {
       <Route exact path="/message" component={MsgPageComponent} />
       <Route exact path="/editProfile" component={EditProfileComponent} />
       <Route exact path="/post/:postid" component={CommentsComponent} />
-      <Route exact path="/userprofile/:userid" component={UserProfileComponent} />
+      <Route
+        exact
+        path="/userprofile/:userid"
+        component={UserProfileComponent}
+      />
+      <Route exact path="/following" component={FollowingComponent} />
+      <Route exact path="/followers" component={FollowersComponent} />
     </Switch>
   );
 };

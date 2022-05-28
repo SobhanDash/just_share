@@ -57,7 +57,13 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
             )}
           </div>
           <div className={css.username}>
-            <span>{username}</span>
+            {/* <span>{username}</span> */}
+            {/* {console.log(post.user._id, "post")} */}
+            {post.user._id === userid ? (
+              <Link to={`/profile`}>{username}</Link>
+            ) : (
+              <Link to={`/userprofile/${post.user._id}`}>{username}</Link>
+            )}
           </div>
         </div>
         <div className={css.post}>

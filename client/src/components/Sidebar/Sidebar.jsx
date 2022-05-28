@@ -23,9 +23,9 @@ const logout = <FontAwesomeIcon icon={faSignOutAlt} />;
 const messageIcon = <FontAwesomeIcon icon={faMessage} />;
 
 const Sidebar = () => {
-  const [show,setShow] = useState(false);
+  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const {profile} = useSelector(state=> state.userReducer,shallowEqual);
+  const { profile } = useSelector((state) => state.userReducer, shallowEqual);
   // const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
@@ -44,20 +44,18 @@ const Sidebar = () => {
   //   return <LoadingSpinner />
   // }
 
-  if(show) {
-    return <Modal show={show} setShow={setShow} />
+  if (show) {
+    return <Modal show={show} setShow={setShow} />;
   }
 
   return (
     <>
       <div className={css.sidebar}>
-        <div className={css.logo}>
-          {/* <img src={logo} alt="logo" /> */}
-        </div>
+        <div className={css.logo}>{/* <img src={logo} alt="logo" /> */}</div>
         {/* profile details */}
         {/* {console.log(profile)} */}
-      {profile.length !== {} && (
-        <div className={css.sideProf}>
+        {profile.length !== {} && (
+          <div className={css.sideProf}>
             {/* profile img */}
             <div className={css.profile}>
               <div className={css.profile_img}>
@@ -77,15 +75,23 @@ const Sidebar = () => {
             </div>
             {/* about */}
             <div className={css.about}>
-              <div className={css.box}>
+              <div className={css.box} aria-label=" posts ">
                 <h3>{profile.posts.length}</h3>
                 <span>Posts</span>
               </div>
-              <div className={css.box}>
+              <div
+                className={css.box}
+                aria-label=" followers "
+                onClick={() => history.push("/followers")}
+              >
                 <h3>{profile.followers.length}</h3>
                 <span>Followers</span>
               </div>
-              <div className={css.box}>
+              <div
+                className={css.box}
+                aria-label=" following "
+                onClick={() => history.push("/following")}
+              >
                 <h3>{profile.following.length}</h3>
                 <span>Following</span>
               </div>
@@ -113,7 +119,7 @@ const Sidebar = () => {
             <div className={css.icon_func}>Message</div>
           </Link>
           {profile && (
-            <Link to="" onClick={()=> setShow(true)}>
+            <Link to="" onClick={() => setShow(true)}>
               <span className={css.icon}>{addPostIcon}</span>
               <div className={css.icon_func}>Add Post</div>
             </Link>

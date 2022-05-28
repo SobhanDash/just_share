@@ -41,15 +41,14 @@ const UserProfile = () => {
 
   useEffect(() => {
     dispatch(actionCreators.getUser(userid));
-  }, [dispatch, userid , profile.following.length]);
+  }, [dispatch, userid, profile.following.length]);
 
   useEffect(() => {
     for (let i = 0; i < profile.following.length; i++) {
       if (profile.following[i]._id === userid) {
         setIsFollowing(true);
         break;
-      }
-      else {
+      } else {
         setIsFollowing(false);
       }
     }
@@ -59,7 +58,7 @@ const UserProfile = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  // return <h1>{console.log(otherUser)} </h1>;
+
   return (
     <section className={css.profileContainer}>
       <div>
