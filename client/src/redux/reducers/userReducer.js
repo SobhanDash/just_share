@@ -139,6 +139,22 @@ const userReducer = (state = initState, action) => {
         error: null,
       };
     }
+  } else if (action.type === "remove") {
+    const { profile, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
+    }
   } else if (action.type === "get-suggestion") {
     const { suggestions, error } = action.payload;
     if (error) {
@@ -235,8 +251,7 @@ const userReducer = (state = initState, action) => {
         error: null,
       };
     }
-  } 
-  else if (action.type === "logout") {
+  } else if (action.type === "logout") {
     return {
       ...state,
       user: null,
