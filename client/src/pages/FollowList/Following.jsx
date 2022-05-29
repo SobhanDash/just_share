@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import css from "./followlist.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { actionCreators } from "../../redux";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -9,34 +9,22 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 const Following = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const [isFollowing, setIsFollowing] = useState(false);
-
-  const { profile, isLoading } = useSelector((state) => state.userReducer);
+  const { user, profile, isLoading } = useSelector((state) => state.userReducer,shallowEqual);
 
   const following = profile.following;
-
-  const follow = (e, id) => {
-    e.preventDefault();
-    dispatch(actionCreators.follow(id));
-  };
 
   const unfollow = (e, id) => {
     e.preventDefault();
     dispatch(actionCreators.unfollow(id));
   };
 
-  // useEffect(() => {
-  //   for (let i = 0; i < profile.following.length; i++) {
-  //     if (profile.following[i]._id === userid) {
-  //       setIsFollowing(true);
-  //       break;
-  //     } else {
-  //       setIsFollowing(false);
-  //     }
-  //   }
-  //   // eslint-disable-next-line
-  // }, [dispatch, userid, profile.following.length]);
+  useEffect(() => {
+    if (!user) {
+      history.push("/login");
+    } else {
+      dispatch(actionCreators.getProfile());
+    }
+  }, [user, following.length, dispatch]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -72,21 +60,12 @@ const Following = () => {
                   </div>
                 </div>
                 <div className={css.btnDiv}>
-                  {isFollowing ? (
-                    <button
-                      className={css.followBtn}
-                      onClick={(e) => follow(e, user?._id)}
-                    >
-                      Follow
-                    </button>
-                  ) : (
-                    <button
-                      className={css.followBtn}
-                      onClick={(e) => unfollow(e, user?._id)}
-                    >
-                      Unfollow
-                    </button>
-                  )}
+                  <button
+                    className={css.followBtn}
+                    onClick={(e) => unfollow(e, user?._id)}
+                  >
+                    Unfollow
+                  </button>
                 </div>
               </li>
             );

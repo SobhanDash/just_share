@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import css from "./followlist.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,13 +10,22 @@ const Followers = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { profile, isLoading } = useSelector((state) => state.userReducer);
+  const { user, profile, isLoading } = useSelector((state) => state.userReducer);
   const followers = profile.followers;
 
   const remove = (e, id) => {
     e.preventDefault();
-    dispatch(actionCreators.unfollow(id));
+    dispatch(actionCreators.remove(id));
   };
+
+  useEffect(()=> {
+    if(!user) {
+      history.push('/login');
+    }
+    else {
+      dispatch(actionCreators.getProfile());
+    }
+  },[user, followers.length, dispatch]);
 
   if (isLoading) {
     return <LoadingSpinner />;

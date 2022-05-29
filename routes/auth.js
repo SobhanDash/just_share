@@ -291,7 +291,69 @@ router.put("/unfollow/:id", fetchUser, async (req, res) => {
   }
 });
 
-// ROUTE-6: Get user suggestion: GET "/api/auth/getSuggestion". Require Login
+// ROUTE-6: Remove a user from followers list using PUT "/api/auth/remove/:id". Login required
+router.put("/remove/:id", fetchUser, async (req, res) => {
+  let success = false;
+  const userId = req.user.id;
+  const followerId = req.params.id;
+
+  try {
+    let user = await User.findById(userId);
+    if (!user) {
+      success = false;
+      return res.json({ success, error: "User not found!", status: 404 });
+    }
+
+    let follower = await User.findById(followerId);
+    if (!follower) {
+      success = false;
+      return res.json({ success, error: "User not found!", status: 404 });
+    }
+
+    if (user.followers.includes(follower._id)) {
+      user = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { followers: follower._id } },
+        { new: true }
+      );
+    } else {
+      success = false;
+      return res.json({
+        success,
+        error: "This user is not following you!",
+        status: 400,
+      });
+    }
+
+    if (follower.following.includes(user._id)) {
+      follower = await User.findByIdAndUpdate(
+        followerId,
+        { $pull: { following: user._id } },
+        { new: true }
+      );
+    } else {
+      success = false;
+      return res.json({
+        success,
+        error: "The user is not following you!",
+        status: 400,
+      });
+    }
+
+    user = await User.findById(userId)
+      .populate("followers", "_id name username about")
+      .populate("following", "_id name username about")
+      .populate("posts", "_id images caption");
+
+    success = true;
+    return res.json({ success, user, status: 200 });
+  } catch (error) {
+    success = false;
+    return res.json({ success, error: error.message, status: 500 });
+  }
+});
+
+// ROUTE-7: Get user suggestion: GET "/api/auth/getSuggestion". Require Login
 router.get("/getSuggestion", fetchUser, async (req, res) => {
   let success = false;
   const userId = req.user.id;
@@ -316,7 +378,7 @@ router.get("/getSuggestion", fetchUser, async (req, res) => {
   }
 });
 
-// ROUTE-7: Edit user details using: PUT "/api/auth/editProfile". Require Login
+// ROUTE-8: Edit user details using: PUT "/api/auth/editProfile". Require Login
 router.put(
   "/editProfile",
   fetchUser,
@@ -415,7 +477,7 @@ router.put(
   }
 );
 
-// ROUTE-8: Add Profile Picture using: PUT "/api/auth/adddp". Require Login
+// ROUTE-9: Add Profile Picture using: PUT "/api/auth/adddp". Require Login
 router.put(
   "/adddp",
   [body("image", "Enter a valid image").exists()],
@@ -457,7 +519,7 @@ router.put(
   }
 );
 
-// ROUTE-9: Search for users by their name using: GET "/api/auth/users/${name}". Require Login
+// ROUTE-10: Search for users by their name using: GET "/api/auth/users/${name}". Require Login
 router.get("/users/:name", fetchUser, async (req, res) => {
   let success = false;
   try {
@@ -480,7 +542,7 @@ router.get("/users/:name", fetchUser, async (req, res) => {
   }
 });
 
-// ROUTE-10: Get other user profile using: GET "/api/auth/users/:id". Require Login
+// ROUTE-11: Get other user profile using: GET "/api/auth/users/:id". Require Login
 router.get("/user/:id", fetchUser, async (req, res) => {
   let success = false;
   try {

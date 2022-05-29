@@ -306,6 +306,51 @@ export const unfollow = (id) => async (dispatch) => {
   }
 };
 
+export const remove = (id) => async (dispatch) => {
+  // dispatch({
+  //     type: "user-loading"
+  // });
+
+  const token = localStorage.getItem("just_token");
+  try {
+    const res = await axios.put(
+      `http://localhost:5000/api/auth/remove/${id}`,
+      {},
+      { headers: { "auth-token": token } }
+    );
+
+    if (res.data.success) {
+      localStorage.setItem("just_profile", JSON.stringify(res.data.user));
+      localStorage.removeItem("just_error");
+      dispatch({
+        type: "remove",
+        payload: {
+          profile: res.data.user,
+          error: null,
+        },
+      });
+    }
+
+    if (res.data.error) {
+      localStorage.setItem("just_error", res.data.error);
+      dispatch({
+        type: "remove",
+        payload: {
+          error: res.data.error,
+        },
+      });
+    }
+  } catch (error) {
+    // console.log(error.message);
+    dispatch({
+      type: "remove",
+      payload: {
+        error: error.message,
+      },
+    });
+  }
+};
+
 export const getSuggestion = () => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
