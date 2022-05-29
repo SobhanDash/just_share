@@ -58,7 +58,7 @@ const ProfilePage = () => {
           <div className={css.details}>
             <div className={css.pbtns}>
               <div className={css.uname}>
-                <h1>{profile.username}</h1>
+                <h1>@{profile.username}</h1>
               </div>
 
               <button className={css.epl} onClick={onEditClick}>
@@ -76,15 +76,23 @@ const ProfilePage = () => {
 
         {/* Numbers */}
         <ul className={css.numbers}>
-          <li className={css.box}>
+          <li className={css.box} aria-label=" posts ">
             <h3>{profile.posts.length}</h3>
             <span>Posts</span>
           </li>
-          <li className={css.box}>
+          <li
+            className={css.box}
+            aria-label=" followers "
+            onClick={() => history.push("/followers")}
+          >
             <h3>{profile.followers.length}</h3>
             <span>Followers</span>
           </li>
-          <li className={css.box}>
+          <li
+            className={css.box}
+            aria-label=" following "
+            onClick={() => history.push("/following")}
+          >
             <h3>{profile.following.length}</h3>
             <span>Following</span>
           </li>

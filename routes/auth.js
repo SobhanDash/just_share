@@ -158,7 +158,6 @@ router.get("/profile", fetchUser, async (req, res) => {
       .populate("followers", "_id name username about")
       .populate("following", "_id name username about");
 
-    // TODO: Might add followers and following
     success = true;
     return res.json({ success, user, status: 200 });
   } catch (err) {
@@ -351,10 +350,8 @@ router.put(
         username: username,
         email: email,
         profilepic: profilepic,
-        bio: bio
+        bio: bio,
       };
-
-      console.log(updateduser);
 
       if (profilepic && profilepic !== user.profilepic) {
         updateduser.profilepic = profilepic;
@@ -402,7 +399,7 @@ router.put(
           about: {
             profilepic: updateduser.profilepic,
             bio: updateduser.bio,
-          }
+          },
         },
         { new: true }
       )

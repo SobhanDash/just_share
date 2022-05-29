@@ -107,6 +107,18 @@
   margin-left: 4vh;
 }
 
+div[aria-label=" following "],
+div[aria-label=" followers "] {
+  cursor: pointer;
+}
+
+div[aria-label=" following "]:hover,
+div[aria-label=" followers "]:hover,
+div[aria-label=" posts "]:hover {
+  transform: scale(1.02);
+  color: var(--white-2);
+}
+
 @media screen and (max-width: 1200px) {
   .sidebar {
     position: fixed;
