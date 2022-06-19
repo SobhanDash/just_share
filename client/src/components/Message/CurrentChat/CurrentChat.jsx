@@ -103,10 +103,10 @@ const CurrentChat = ({
 
   return (
     <div className={css.currentChat}>
-      {click && receiver && messages.length !== 0 && (
+      {click && sender && receiver && (
         <div className={css.receiver}>
-          <img src={receiver.about.profilepic} alt={receiver.username} />
-          <h2>{receiver.name}</h2>
+          <img src={receiver._id === profile._id ? sender.about.profilepic : receiver.about.profilepic} alt={receiver.username} />
+          <h2>{receiver._id === profile._id ? sender.name : receiver.name}</h2>
         </div>
       )}
       <div className={css.messageArea}>

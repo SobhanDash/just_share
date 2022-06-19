@@ -1086,7 +1086,7 @@ export const getMessages = (receiverId, senderId) => async (dispatch) => {
     }
 
     if (res.data.error) {
-      console.log("error in getMessages");
+      // console.log("error in getMessages");
       localStorage.setItem("just_error", res.data.error);
       dispatch({
         type: "get-msgs",
@@ -1128,7 +1128,7 @@ export const receiveMessages = (receiverId, senderId) => async (dispatch) => {
     }
 
     if (res.data.error) {
-      console.log("error in receiveMessages");
+      // console.log("error in receiveMessages");
       localStorage.setItem("just_error", res.data.error);
       dispatch({
         type: "get-msgs",

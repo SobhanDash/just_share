@@ -6,6 +6,7 @@ import { actionCreators } from "../../redux";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import OnlineUsers from "./OnlineUsers";
 import Suggestions from "../Suggestions/Suggestions";
+import BackButton from "./BackButton";
 
 const Message = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const Message = () => {
 
   return (
     <>
+      <BackButton />
       <div className={css.msg_container}>
         <Conversations
           profile={profile}

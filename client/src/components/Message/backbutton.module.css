@@ -1,0 +1,11 @@
+.backbutton {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+}
+
+.backbutton .backbtn {
+    font-size: 2rem;
+    color: var(--secondary-2);
+    cursor: pointer;
+}
