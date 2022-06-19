@@ -15,8 +15,6 @@ router.get("/msg/:senderId/:receiverId", fetchUser, async (req, res) => {
     const userId = req.user.id;
     const receiverId = req.params.receiverId;
     const senderId = req.params.senderId;
-    console.log("senderid: ",senderId);
-    console.log("receiverid: ",receiverId);
     try {
         let user = await User.findById(userId);
         if (!user) {
@@ -71,8 +69,6 @@ router.post("/:senderId/:receiverId", fetchUser, async (req, res) => {
     const receiverId = req.params.receiverId;
     const senderId = req.params.senderId;
     const { text, images } = req.body;
-    // console.log("senderid: ",senderId);
-    // console.log("receiverid: ",receiverId);
     try {
         let user = await User.findById(userId);
         if (!user) {
@@ -197,10 +193,9 @@ router.post("/newcnv/:senderId/:receiverId", fetchUser, async (req, res) => {
                 .populate("recipients", "_id name username about")
                 .sort("-updatedAt");
 
-            const messages = await Message.find()
+            const messages = await Message.find({ $or: [{ $and: [{ sender: senderId }, { receiver: receiverId }] }, { $and: [{ sender: receiverId }, { receiver: senderId }] }] })
                 .populate("sender", "_id name username about")
                 .populate("receiver", "_id name username about");
-            // .sort("-createdAt");
 
             success = true;
             return res.json({ success, messages, conversations, status: 200 });
@@ -224,10 +219,9 @@ router.post("/newcnv/:senderId/:receiverId", fetchUser, async (req, res) => {
             .populate("recipients", "_id name username about")
             .sort("-updatedAt");
 
-        const messages = await Message.find()
+        const messages = await Message.find({ $or: [{ $and: [{ sender: senderId }, { receiver: receiverId }] }, { $and: [{ sender: receiverId }, { receiver: senderId }] }] })
             .populate("sender", "_id name username about")
             .populate("receiver", "_id name username about");
-        // .sort("-createdAt");
 
         success = true;
         return res.json({ success, messages, conversations, status: 200 });

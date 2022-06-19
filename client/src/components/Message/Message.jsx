@@ -5,7 +5,6 @@ import CurrentChat from "./CurrentChat/CurrentChat";
 import { actionCreators } from "../../redux";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import OnlineUsers from "./OnlineUsers";
-import Suggestions from "../Suggestions/Suggestions";
 import BackButton from "./BackButton";
 
 const Message = () => {

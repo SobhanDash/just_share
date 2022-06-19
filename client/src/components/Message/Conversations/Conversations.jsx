@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../../redux";
 import css from "./convos.module.css";
@@ -8,19 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 const oncircle = <FontAwesomeIcon icon={faCircle} />;
 
-const Conversations = ({
-  profile,
-  setClick,
-  setReceiver,
-  onlineUsers,
-  setSender,
-}) => {
+const Conversations = ({profile,setClick,setReceiver,onlineUsers,setSender}) => {
   const dispatch = useDispatch();
-  const { conversations, messages } = useSelector(
-    (state) => state.messagereducer,
-    shallowEqual
-  );
-
+  const { conversations, messages } = useSelector((state) => state.messagereducer,shallowEqual);
+  
   const myconvos =
     conversations &&
     [...conversations].filter(
@@ -31,7 +22,7 @@ const Conversations = ({
 
   useEffect(() => {
     dispatch(actionCreators.getConversations());
-  }, [messages, conversations.length, dispatch]);
+  }, [messages, conversations?.length, dispatch]);
 
   const onCnvClick = (receiver, sender) => {
     setReceiver(receiver);

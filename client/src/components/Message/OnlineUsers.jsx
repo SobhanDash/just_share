@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { actionCreators } from "../../redux";
@@ -25,7 +25,7 @@ const OnlineUsers = ({ users, setClick, setSender, setReceiver }) => {
     else {
       dispatch(actionCreators.getOnlineUsers(users));
     }
-  }, [users]);
+  }, [user,users,dispatch,history]);
 
   return (
     <div className={styles.online_wrap}>
@@ -39,10 +39,6 @@ const OnlineUsers = ({ users, setClick, setSender, setReceiver }) => {
             {onlineUsers && onlineUsers.length > 1 && onlineUsers.map((user) => {
                 return(
                     <Fragment key={user._id}>
-                        {user._id !== profile._id && <div className={styles.onlineUser} onClick={(e)=> redirect(e,user)}>
-                            <img src={user.about.profilepic} alt={user.username} />
-                            <h4>{user.username}</h4>
-                        </div>}
                         {user._id !== profile._id && <div className={styles.onlineUser} onClick={(e)=> redirect(e,user)}>
                             <img src={user.about.profilepic} alt={user.username} />
                             <h4>{user.username}</h4>
