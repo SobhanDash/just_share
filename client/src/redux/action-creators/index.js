@@ -1199,14 +1199,14 @@ export const newCnv = (senderId, receiverId) => async (dispatch) => {
     type: 'convo-loading'
   });
 
-  const token = localStorage.getItem("youth_token");
+  const token = localStorage.getItem("just_token");
   try {
     const res = await axios.post(`http://localhost:5000/api/message/newcnv/${senderId}/${receiverId}`,
       {},
       { headers: { 'auth-token': token } });
 
     if (res.data.success) {
-      localStorage.setItem("youth_conversations", JSON.stringify(res.data.conversations));
+      localStorage.setItem("just_conversations", JSON.stringify(res.data.conversations));
       dispatch({
         type: 'new-cnv',
         payload: {
@@ -1218,7 +1218,7 @@ export const newCnv = (senderId, receiverId) => async (dispatch) => {
     }
 
     if (res.data.error) {
-      localStorage.setItem("youth_error", res.data.error);
+      localStorage.setItem("just_error", res.data.error);
       dispatch({
         type: 'new-cnv',
         payload: {

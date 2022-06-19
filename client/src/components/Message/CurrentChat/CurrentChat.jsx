@@ -169,7 +169,7 @@ const CurrentChat = ({
           </div>
         )}
       </div>
-      {click && receiver && messages.length !== 0 && (
+      {click && receiver && (
         <div className={css.messageBox} onClick={onInputClick}>
           <input
             type="text"

@@ -609,16 +609,6 @@ router.put("/onlineusers/", [
       }
     }
 
-    // let otherUser = await User.findById(otherId)
-    //   .populate("followers", "_id name username about")
-    //   .populate("following", "_id name username about")
-    //   .populate("posts", "_id image caption");
-
-    // if (!otherUser) {
-    //   success = false;
-    //   return res.json({ success, error: "Not Found", status: 404 });
-    // }
-
     success = true;
     return res.json({ success, onlineUsers, status: 200 });
   } catch (error) {

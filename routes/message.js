@@ -15,8 +15,8 @@ router.get("/msg/:senderId/:receiverId", fetchUser, async (req, res) => {
     const userId = req.user.id;
     const receiverId = req.params.receiverId;
     const senderId = req.params.senderId;
-    // console.log("senderid: ",senderId);
-    // console.log("receiverid: ",receiverId);
+    console.log("senderid: ",senderId);
+    console.log("receiverid: ",receiverId);
     try {
         let user = await User.findById(userId);
         if (!user) {

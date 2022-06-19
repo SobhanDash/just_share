@@ -5,15 +5,17 @@ import { actionCreators } from "../../redux";
 
 import styles from "./onlineUsers.module.css";
 
-const OnlineUsers = ({ users }) => {
+const OnlineUsers = ({ users, setClick, setSender, setReceiver }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { user, profile, onlineUsers } = useSelector(state => state.userReducer,shallowEqual);
 
-  const redirect = (e,userid) => {
+  const redirect = (e,user) => {
     e.preventDefault();
-    dispatch(actionCreators.newCnv(profile._id, userid));
-    history.push('/message');
+    dispatch(actionCreators.newCnv(profile._id, user._id));
+    setReceiver(user);
+    setSender(profile);
+    setClick(true);
   }
 
   useEffect(() => {
@@ -27,11 +29,17 @@ const OnlineUsers = ({ users }) => {
 
   return (
     <div className={styles.online_wrap}>
-      <h2>Online Users</h2>
+      <h2 className={styles.head}>Online Users</h2>
+      {onlineUsers && onlineUsers.length === 0 && 
+        <div className={styles.no_user}>
+            <h2>No user is online!</h2>
+        </div>
+      }
       {onlineUsers && onlineUsers.length > 0 && onlineUsers.map((user) => {
+        // console.log(user);
           return(
             <Fragment key={user._id}>
-                {user._id !== profile._id && <div className={styles.onlineUser} onClick={(e)=> redirect(e,user._id)}>
+                {user._id !== profile._id && <div className={styles.onlineUser} onClick={(e)=> redirect(e,user)}>
                     <img src={user.about.profilepic} alt={user.username} />
                     <h4>{user.username}</h4>
                 </div>}

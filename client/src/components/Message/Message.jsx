@@ -39,7 +39,7 @@ const Message = () => {
           setOnlineUsers={setOnlineUsers}
         />
       </div>
-      <OnlineUsers users={onlineUsers} />
+      <OnlineUsers users={onlineUsers} setClick={setClick} setReceiver={setReceiver} setSender={setSender} />
       {/* <Suggestions /> */}
     </>
   );
