@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { actionCreators } from "../../redux";
@@ -30,12 +30,12 @@ const OnlineUsers = ({ users }) => {
       <h2>Online Users</h2>
       {onlineUsers && onlineUsers.length > 0 && onlineUsers.map((user) => {
           return(
-            <>
-                {user._id !== profile._id && <div key={user._id} className={styles.onlineUser} onClick={(e)=> redirect(e,user._id)}>
+            <Fragment key={user._id}>
+                {user._id !== profile._id && <div className={styles.onlineUser} onClick={(e)=> redirect(e,user._id)}>
                     <img src={user.about.profilepic} alt={user.username} />
                     <h4>{user.username}</h4>
                 </div>}
-            </>
+            </Fragment>
           );
       })}
     </div>
