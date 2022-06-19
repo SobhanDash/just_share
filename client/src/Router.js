@@ -112,11 +112,7 @@ const RouteConfig = ({ UserContext }) => {
       <Route exact path="/message" component={MsgPageComponent} />
       <Route exact path="/editProfile" component={EditProfileComponent} />
       <Route exact path="/post/:postid" component={CommentsComponent} />
-      <Route
-        exact
-        path="/userprofile/:userid"
-        component={UserProfileComponent}
-      />
+      <Route exact path="/userprofile/:userid" component={UserProfileComponent} />
       <Route exact path="/following" component={FollowingComponent} />
       <Route exact path="/followers" component={FollowersComponent} />
     </Switch>

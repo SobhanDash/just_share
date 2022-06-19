@@ -61,11 +61,11 @@ const Conversations = ({
                     <img
                       src={
                         cnv.recipients[0]._id === profile._id
-                          ? cnv.recipients[1].profilepic
-                            ? cnv.recipients[1].profilepic
+                          ? cnv.recipients[1].about.profilepic
+                            ? cnv.recipients[1].about.profilepic
                             : nodp
-                          : cnv.recipients[0].profilepic
-                          ? cnv.recipients[0].profilepic
+                          : cnv.recipients[0].about.profilepic
+                          ? cnv.recipients[0].about.profilepic
                           : nodp
                       }
                       alt=""

@@ -35,6 +35,7 @@ const initState = {
   suggestions: isSuggestions,
   otherUser: null,
   searchedUsers: [],
+  onlineUsers: []
 };
 
 const userReducer = (state = initState, action) => {
@@ -251,7 +252,25 @@ const userReducer = (state = initState, action) => {
         error: null,
       };
     }
-  } else if (action.type === "logout") {
+  } 
+  else if (action.type === "get-online-users") {
+    const { onlineUsers, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        onlineUsers: onlineUsers,
+        isLoading: false,
+        error: null,
+      };
+    }
+  }
+  else if (action.type === "logout") {
     return {
       ...state,
       user: null,

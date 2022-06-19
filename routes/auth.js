@@ -573,4 +573,58 @@ router.get("/user/:id", fetchUser, async (req, res) => {
   }
 });
 
+// ROUTE-12: Get all the online user details using: GET "/api/auth/onlineusers/". Require Login
+router.put("/onlineusers/", [
+  body('users', "Invalid users list").isArray()
+], fetchUser, async (req, res) => {
+  let success = false;
+  const { users } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    success = false;
+    console.log(
+      `Error in onlineusers route: Body is empty ${errors.array()[0].msg}`
+    );
+    return res.json({ success, errors: errors.array()[0].msg, status: 400 });
+  }
+  try {
+    const userId = req.user.id;
+    let onlineUsers = [];
+    let user = await User.findById(userId);
+    if (!user) {
+      success = false;
+      return res.json({ success, error: "Not Found", status: 404 });
+    }
+
+    for (let i = 0; i < users.length; i++) {
+      const otherId = users[i];
+      let otherUser = await User.findById(otherId);
+
+      if (!otherUser) {
+        success = false;
+        return res.json({ success, error: "Not Found", status: 404 });
+      }
+      else {
+        onlineUsers.push(otherUser);
+      }
+    }
+
+    // let otherUser = await User.findById(otherId)
+    //   .populate("followers", "_id name username about")
+    //   .populate("following", "_id name username about")
+    //   .populate("posts", "_id image caption");
+
+    // if (!otherUser) {
+    //   success = false;
+    //   return res.json({ success, error: "Not Found", status: 404 });
+    // }
+
+    success = true;
+    return res.json({ success, onlineUsers, status: 200 });
+  } catch (error) {
+    success = false;
+    return res.json({ success, error: error.message, status: 500 });
+  }
+});
+
 module.exports = router;

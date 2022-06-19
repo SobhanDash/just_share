@@ -4,6 +4,8 @@ import Conversations from "./Conversations/Conversations";
 import CurrentChat from "./CurrentChat/CurrentChat";
 import { actionCreators } from "../../redux";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import OnlineUsers from "./OnlineUsers";
+import Suggestions from "../Suggestions/Suggestions";
 
 const Message = () => {
   const dispatch = useDispatch();
@@ -16,26 +18,30 @@ const Message = () => {
   useEffect(() => {
     dispatch(actionCreators.getProfile());
   }, [dispatch]);
-  
+
   return (
-    <div className={css.msg_container}>
-      <Conversations
-        profile={profile}
-        setClick={setClick}
-        setReceiver={setReceiver}
-        setSender={setSender}
-        onlineUsers={onlineUsers}
-      />
-      <CurrentChat
-        profile={profile}
-        receiver={receiver}
-        setReceiver={setReceiver}
-        sender={sender}
-        setSender={setSender}
-        click={click}
-        setOnlineUsers={setOnlineUsers}
-      />
-    </div>
+    <>
+      <div className={css.msg_container}>
+        <Conversations
+          profile={profile}
+          setClick={setClick}
+          setReceiver={setReceiver}
+          setSender={setSender}
+          onlineUsers={onlineUsers}
+        />
+        <CurrentChat
+          profile={profile}
+          receiver={receiver}
+          setReceiver={setReceiver}
+          sender={sender}
+          setSender={setSender}
+          click={click}
+          setOnlineUsers={setOnlineUsers}
+        />
+      </div>
+      <OnlineUsers users={onlineUsers} />
+      {/* <Suggestions /> */}
+    </>
   );
 };
 

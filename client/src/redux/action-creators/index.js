@@ -529,6 +529,48 @@ export const getUser = (id) => async (dispatch) => {
   }
 };
 
+export const getOnlineUsers = (users) => async (dispatch) => {
+  dispatch({
+    type: "user-loading",
+  });
+
+  const token = localStorage.getItem("just_token");
+  try {
+    const res = await axios.put(`http://localhost:5000/api/auth/onlineusers/`, {
+      users: users
+    }, {
+      headers: { "auth-token": token },
+    });
+
+    if (res.data.success) {
+      dispatch({
+        type: "get-online-users",
+        payload: {
+          onlineUsers: res.data.onlineUsers,
+          error: null,
+        },
+      });
+    }
+
+    if (res.data.error) {
+      localStorage.setItem("just_error", res.data.error);
+      dispatch({
+        type: "get-online-users",
+        payload: {
+          error: res.data.error,
+        },
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: "get-online-users",
+      payload: {
+        error: error.message,
+      },
+    });
+  }
+};
+
 export const logout = () => async (dispatch) => {
   localStorage.clear();
   dispatch({
@@ -1151,3 +1193,46 @@ export const sendMessage =
         });
       }
     };
+
+export const newCnv = (senderId, receiverId) => async (dispatch) => {
+  dispatch({
+    type: 'convo-loading'
+  });
+
+  const token = localStorage.getItem("youth_token");
+  try {
+    const res = await axios.post(`http://localhost:5000/api/message/newcnv/${senderId}/${receiverId}`,
+      {},
+      { headers: { 'auth-token': token } });
+
+    if (res.data.success) {
+      localStorage.setItem("youth_conversations", JSON.stringify(res.data.conversations));
+      dispatch({
+        type: 'new-cnv',
+        payload: {
+          cnv: res.data.conversations,
+          msgs: res.data.messages,
+          error: null
+        }
+      });
+    }
+
+    if (res.data.error) {
+      localStorage.setItem("youth_error", res.data.error);
+      dispatch({
+        type: 'new-cnv',
+        payload: {
+          error: res.data.error
+        }
+      });
+    }
+
+  } catch (error) {
+    dispatch({
+      type: 'new-cnv',
+      payload: {
+        error: error.message
+      }
+    });
+  }
+}
