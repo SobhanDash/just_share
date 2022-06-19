@@ -30,22 +30,28 @@ const OnlineUsers = ({ users, setClick, setSender, setReceiver }) => {
   return (
     <div className={styles.online_wrap}>
       <h2 className={styles.head}>Online Users</h2>
-      {onlineUsers && onlineUsers.length === 0 && 
-        <div className={styles.no_user}>
+      {onlineUsers && onlineUsers.length === 1 ? 
+        (<div className={styles.no_user}>
             <h2>No user is online!</h2>
-        </div>
+        </div>)
+        :
+        (<div className={styles.user_list}>
+            {onlineUsers && onlineUsers.length > 1 && onlineUsers.map((user) => {
+                return(
+                    <Fragment key={user._id}>
+                        {user._id !== profile._id && <div className={styles.onlineUser} onClick={(e)=> redirect(e,user)}>
+                            <img src={user.about.profilepic} alt={user.username} />
+                            <h4>{user.username}</h4>
+                        </div>}
+                        {user._id !== profile._id && <div className={styles.onlineUser} onClick={(e)=> redirect(e,user)}>
+                            <img src={user.about.profilepic} alt={user.username} />
+                            <h4>{user.username}</h4>
+                        </div>}
+                    </Fragment>
+                );
+            })}
+        </div>)
       }
-      {onlineUsers && onlineUsers.length > 0 && onlineUsers.map((user) => {
-        // console.log(user);
-          return(
-            <Fragment key={user._id}>
-                {user._id !== profile._id && <div className={styles.onlineUser} onClick={(e)=> redirect(e,user)}>
-                    <img src={user.about.profilepic} alt={user.username} />
-                    <h4>{user.username}</h4>
-                </div>}
-            </Fragment>
-          );
-      })}
     </div>
   );
 };
