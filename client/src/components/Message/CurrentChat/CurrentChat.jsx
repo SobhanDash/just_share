@@ -62,7 +62,7 @@ const CurrentChat = ({
     }
   };
 
-  const socket_url = process.env.REACT_APP_SOCKET_URL;
+  const socket_url = process.env.REACT_APP_URL;
 
   useEffect(() => {
     socket.current = io(socket_url);

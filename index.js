@@ -29,8 +29,6 @@ app.use("/api/message", messageRoutes);
 
 let users = [];
 
-console.log("connected!");
-
 const addUser = (userId,socketId)=> {
     // console.log(users.length);
     !users.some((user) => user.userId === userId) &&
