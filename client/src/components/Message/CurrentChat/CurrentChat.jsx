@@ -75,6 +75,7 @@ const CurrentChat = ({
   useEffect(() => {
     socket.current.emit("addUser", profile._id);
     socket.current.on("getUsers", (users) => {
+      console.log(users);
       setOnlineUsers(users);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
