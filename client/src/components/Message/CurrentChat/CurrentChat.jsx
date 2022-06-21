@@ -66,6 +66,7 @@ const CurrentChat = ({
 
   useEffect(() => {
     socket.current = io(socket_url);
+    console.log(socket.current);
     socket.current.on("getMessage", (data) => {
       setArrivedmsg(data);
     });
