@@ -8,8 +8,9 @@ const commentRoutes = require("./routes/comment");
 const messageRoutes = require("./routes/message");
 const connectToMongo = require("./db");
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io')(server);
 const port = process.env.PORT || 5000;
 
 connectToMongo();
