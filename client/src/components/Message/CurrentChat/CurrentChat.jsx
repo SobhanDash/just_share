@@ -62,8 +62,10 @@ const CurrentChat = ({
     }
   };
 
+  const socket_url = process.env.REACT_APP_SOCKET_URL;
+
   useEffect(() => {
-    socket.current = io("ws://localhost:9000");
+    socket.current = io(socket_url);
     socket.current.on("getMessage", (data) => {
       setArrivedmsg(data);
     });
