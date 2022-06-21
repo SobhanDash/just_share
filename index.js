@@ -97,10 +97,10 @@ if (process.env.NODE_ENV == "production") {
   });
 }
 
-app.listen(port, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(`Server started successfully at port ${port}`);
-  }
-});
+// app.listen(port, (err) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(`Server started successfully at port ${port}`);
+//   }
+// });
