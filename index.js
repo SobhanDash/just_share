@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
     // Take userId and socketId from user
     socket.on("addUser", (userId)=> {
         addUser(userId, socket.id);
-        console.log(users);
+        console.log("users");
         let myusers = [];
         for(let i=0; i<users.length; i++) {
             myusers.push(users[i].userId);
