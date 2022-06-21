@@ -84,6 +84,11 @@ io.on("connection", (socket) => {
     })
 });
 
+server.listen(port, (error) => {
+  if (error) console.log(error);
+  console.log(`Server started on port ${port}`);
+});
+
 if (process.env.NODE_ENV == "production") {
   app.use(express.static("client/build"));
   const path = require("path");
