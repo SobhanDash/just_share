@@ -13,6 +13,8 @@ else if(process.env.NODE_ENV === "production") {
   url = "";
 }
 
+console.log(url);
+
 export const register =
   ({ username, name, email, phone, password }) =>
     async (dispatch) => {
