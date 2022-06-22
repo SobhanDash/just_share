@@ -147,6 +147,7 @@ export const getProfile = () => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    console.log(url);
     const res = await axios.get(`${url}/api/auth/profile`, {
       headers: { "auth-token": token },
     });
