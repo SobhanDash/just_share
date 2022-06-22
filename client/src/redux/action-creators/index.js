@@ -4,6 +4,15 @@ import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
 
+let url;
+
+if(process.env.NODE_ENV === "development") {
+  url = "http://localhost:5000";
+}
+else if(process.env.NODE_ENV === "production") {
+  url = "";
+}
+
 export const register =
   ({ username, name, email, phone, password }) =>
     async (dispatch) => {
@@ -12,7 +21,7 @@ export const register =
       });
 
       try {
-        const res = await axios.post("/api/auth/register", {
+        const res = await axios.post(`${url}/api/auth/register`, {
           username,
           name,
           email,
@@ -60,7 +69,7 @@ export const login =
       });
 
       try {
-        const res = await axios.post("/api/auth/login", {
+        const res = await axios.post(`${url}/api/auth/login`, {
           email,
           password,
         });
@@ -133,7 +142,7 @@ export const getProfile = () => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
-    const res = await axios.get("/api/auth/profile", {
+    const res = await axios.get(`${url}/api/auth/profile`, {
       headers: { "auth-token": token },
     });
     // console.log(res.data);
@@ -179,7 +188,7 @@ export const editProfile =
       const token = localStorage.getItem("just_token");
       try {
         const res = await axios.put(
-          "/api/auth/editProfile",
+          `${url}/api/auth/editProfile`,
           { username, name, email, phone, profilepic, bio },
           { headers: { "auth-token": token } }
         );
@@ -224,7 +233,7 @@ export const follow = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
-      `/api/auth/follow/${id}`,
+      `${url}/api/auth/follow/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -269,7 +278,7 @@ export const unfollow = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
-      `/api/auth/unfollow/${id}`,
+      `${url}/api/auth/unfollow/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -314,7 +323,7 @@ export const remove = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
-      `/api/auth/remove/${id}`,
+      `${url}/api/auth/remove/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -355,7 +364,7 @@ export const getSuggestion = () => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(
-      "/api/auth/getSuggestion",
+      `${url}/api/auth/getSuggestion`,
       { headers: { "auth-token": token } }
     );
 
@@ -409,7 +418,7 @@ export const addDp = (image) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
-      "/api/auth/adddp",
+      `${url}/api/auth/adddp`,
       { image: url },
       { headers: { "auth-token": token } }
     );
@@ -454,7 +463,7 @@ export const searchUsers = (name) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(
-      `/api/auth/users/${name}`,
+      `${url}/api/auth/users/${name}`,
       { headers: { "auth-token": token } }
     );
 
@@ -496,7 +505,7 @@ export const getUser = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
-    const res = await axios.get(`/api/auth/user/${id}`, {
+    const res = await axios.get(`${url}/api/auth/user/${id}`, {
       headers: { "auth-token": token },
     });
 
@@ -536,7 +545,7 @@ export const getOnlineUsers = (users) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
-    const res = await axios.put(`/api/auth/onlineusers/`, {
+    const res = await axios.put(`${url}/api/auth/onlineusers/`, {
       users: users
     }, {
       headers: { "auth-token": token },
@@ -586,7 +595,7 @@ export const getPosts = () => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
-    const res = await axios.get("/api/posts/getposts", {
+    const res = await axios.get(`${url}/api/posts/getposts`, {
       headers: { "auth-token": token },
     });
 
@@ -629,7 +638,7 @@ export const fetchPost = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
-    const res = await axios.get(`/api/posts/${id}`, {
+    const res = await axios.get(`${url}/api/posts/${id}`, {
       headers: { "auth-token": token },
     });
     // console.log(res.data);
@@ -672,7 +681,7 @@ export const addPost = (image, caption) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.post(
-      "/api/posts/addpost",
+      `${url}/api/posts/addpost`,
       { image, caption },
       { headers: { "auth-token": token } }
     );
@@ -721,7 +730,7 @@ export const updatePost =
       const token = localStorage.getItem("just_token");
       try {
         const res = await axios.put(
-          `/api/posts/updatepost/${id}`,
+          `${url}/api/posts/updatepost/${id}`,
           { image, caption },
           { headers: { "auth-token": token } }
         );
@@ -784,7 +793,7 @@ export const deletePost = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.delete(
-      `/api/posts/deletepost/${id}`,
+      `${url}/api/posts/deletepost/${id}`,
       { headers: { "auth-token": token } }
     );
 
@@ -848,7 +857,7 @@ export const likePost = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
-      `/api/posts/like/${id}`,
+      `${url}/api/posts/like/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -894,7 +903,7 @@ export const unlikePost = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.put(
-      `/api/posts/unlike/${id}`,
+      `${url}/api/posts/unlike/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -936,7 +945,7 @@ export const getComments = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(
-      `/api/comments/post/${id}`,
+      `${url}/api/comments/post/${id}`,
       { headers: { "auth-token": token } }
     );
 
@@ -979,7 +988,7 @@ export const addComment = (id, text) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.post(
-      `/api/comments/addcomment/${id}`,
+      `${url}/api/comments/addcomment/${id}`,
       { comment: text },
       { headers: { "auth-token": token } }
     );
@@ -1025,7 +1034,7 @@ export const getConversations = () => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(
-      "/api/message/conversations",
+      `${url}/api/message/conversations`,
       { headers: { "auth-token": token } }
     );
 
@@ -1071,7 +1080,7 @@ export const getMessages = (receiverId, senderId) => async (dispatch) => {
   try {
     // console.log(senderId);
     const res = await axios.get(
-      `/api/message/msg/${senderId}/${receiverId}`,
+      `${url}/api/message/msg/${senderId}/${receiverId}`,
       { headers: { "auth-token": token } }
     );
     if (res.data.success) {
@@ -1113,7 +1122,7 @@ export const receiveMessages = (receiverId, senderId) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     const res = await axios.get(
-      `/api/message/msg/${senderId}/${receiverId}`,
+      `${url}/api/message/msg/${senderId}/${receiverId}`,
       { headers: { "auth-token": token } }
     );
     if (res.data.success) {
@@ -1159,7 +1168,7 @@ export const sendMessage =
         // console.log("Sender: ",senderId);
         // console.log("Receiver: ",receiverId);
         const res = await axios.post(
-          `/api/message/${senderId}/${receiverId}`,
+          `${url}/api/message/${senderId}/${receiverId}`,
           { text, images },
           { headers: { "auth-token": token } }
         );
@@ -1201,7 +1210,7 @@ export const newCnv = (senderId, receiverId) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
-    const res = await axios.post(`/api/message/newcnv/${senderId}/${receiverId}`,
+    const res = await axios.post(`${url}/api/message/newcnv/${senderId}/${receiverId}`,
       {},
       { headers: { 'auth-token': token } });
 
