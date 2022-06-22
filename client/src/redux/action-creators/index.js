@@ -4,16 +4,16 @@ import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
 
-let url;
+// let url;
 
-if(process.env.NODE_ENV === "development") {
-  url = "http://localhost:5000";
-}
-else if(process.env.NODE_ENV === "production") {
-  url = "";
-}
+// if(process.env.NODE_ENV === "development") {
+//   url = "http://localhost:5000";
+// }
+// else if(process.env.NODE_ENV === "production") {
+//   url = "";
+// }
 
-console.log(url);
+// console.log(url);
 
 export const register =
   ({ username, name, email, phone, password }) =>
@@ -23,6 +23,7 @@ export const register =
       });
 
       try {
+        const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
         const res = await axios.post(`${url}/api/auth/register`, {
           username,
           name,
@@ -71,6 +72,7 @@ export const login =
       });
 
       try {
+        const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
         const res = await axios.post(`${url}/api/auth/login`, {
           email,
           password,
@@ -144,6 +146,7 @@ export const getProfile = () => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(`${url}/api/auth/profile`, {
       headers: { "auth-token": token },
     });
@@ -189,6 +192,7 @@ export const editProfile =
 
       const token = localStorage.getItem("just_token");
       try {
+        const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
         const res = await axios.put(
           `${url}/api/auth/editProfile`,
           { username, name, email, phone, profilepic, bio },
@@ -234,6 +238,7 @@ export const follow = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
       `${url}/api/auth/follow/${id}`,
       {},
@@ -279,6 +284,7 @@ export const unfollow = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
       `${url}/api/auth/unfollow/${id}`,
       {},
@@ -324,6 +330,7 @@ export const remove = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
       `${url}/api/auth/remove/${id}`,
       {},
@@ -365,6 +372,7 @@ export const remove = (id) => async (dispatch) => {
 export const getSuggestion = () => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(
       `${url}/api/auth/getSuggestion`,
       { headers: { "auth-token": token } }
@@ -419,8 +427,9 @@ export const addDp = (image) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const backend_url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
-      `${url}/api/auth/adddp`,
+      `${backend_url}/api/auth/adddp`,
       { image: url },
       { headers: { "auth-token": token } }
     );
@@ -464,6 +473,7 @@ export const searchUsers = (name) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(
       `${url}/api/auth/users/${name}`,
       { headers: { "auth-token": token } }
@@ -507,6 +517,7 @@ export const getUser = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(`${url}/api/auth/user/${id}`, {
       headers: { "auth-token": token },
     });
@@ -547,6 +558,7 @@ export const getOnlineUsers = (users) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(`${url}/api/auth/onlineusers/`, {
       users: users
     }, {
@@ -597,6 +609,7 @@ export const getPosts = () => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(`${url}/api/posts/getposts`, {
       headers: { "auth-token": token },
     });
@@ -640,6 +653,7 @@ export const fetchPost = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(`${url}/api/posts/${id}`, {
       headers: { "auth-token": token },
     });
@@ -682,6 +696,7 @@ export const addPost = (image, caption) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.post(
       `${url}/api/posts/addpost`,
       { image, caption },
@@ -731,6 +746,7 @@ export const updatePost =
 
       const token = localStorage.getItem("just_token");
       try {
+        const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
         const res = await axios.put(
           `${url}/api/posts/updatepost/${id}`,
           { image, caption },
@@ -794,6 +810,7 @@ export const deletePost = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.delete(
       `${url}/api/posts/deletepost/${id}`,
       { headers: { "auth-token": token } }
@@ -858,6 +875,7 @@ export const likePost = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
       `${url}/api/posts/like/${id}`,
       {},
@@ -904,6 +922,7 @@ export const unlikePost = (id) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
       `${url}/api/posts/unlike/${id}`,
       {},
@@ -946,6 +965,7 @@ export const unlikePost = (id) => async (dispatch) => {
 export const getComments = (id) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(
       `${url}/api/comments/post/${id}`,
       { headers: { "auth-token": token } }
@@ -989,6 +1009,7 @@ export const addComment = (id, text) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.post(
       `${url}/api/comments/addcomment/${id}`,
       { comment: text },
@@ -1035,6 +1056,7 @@ export const getConversations = () => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(
       `${url}/api/message/conversations`,
       { headers: { "auth-token": token } }
@@ -1081,6 +1103,7 @@ export const getMessages = (receiverId, senderId) => async (dispatch) => {
   const token = localStorage.getItem("just_token");
   try {
     // console.log(senderId);
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(
       `${url}/api/message/msg/${senderId}/${receiverId}`,
       { headers: { "auth-token": token } }
@@ -1123,6 +1146,7 @@ export const receiveMessages = (receiverId, senderId) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(
       `${url}/api/message/msg/${senderId}/${receiverId}`,
       { headers: { "auth-token": token } }
@@ -1169,6 +1193,7 @@ export const sendMessage =
       try {
         // console.log("Sender: ",senderId);
         // console.log("Receiver: ",receiverId);
+        const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
         const res = await axios.post(
           `${url}/api/message/${senderId}/${receiverId}`,
           { text, images },
@@ -1212,6 +1237,7 @@ export const newCnv = (senderId, receiverId) => async (dispatch) => {
 
   const token = localStorage.getItem("just_token");
   try {
+    const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.post(`${url}/api/message/newcnv/${senderId}/${receiverId}`,
       {},
       { headers: { 'auth-token': token } });
