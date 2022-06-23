@@ -124,7 +124,17 @@
   transition: 0.2s all ease-in;
 }
 
-@media screen and (max-width: 600px) {
+@media only screen and (max-width: 480px) {
+  .wrapper {
+    max-width: 85%;
+    /* background-color: orange; */
+  }
+  .search_text {
+    min-width: 85%;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 600px) {
   .wrapper {
     max-width: 70%;
   }

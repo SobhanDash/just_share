@@ -158,3 +158,55 @@
   margin: auto;
   color: white;
 }
+
+@media only screen and (max-width: 480px) {
+  .post_container {
+    width: 22rem;
+    height: 27rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .profile_img {
+    height: 3rem;
+    width: 3rem;
+    border: 0.1rem solid var(--primary);
+    margin-left: 0;
+  }
+  
+  .profile_img img {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .username {
+    display: flex;
+    font-size: 1.1rem;
+  }
+
+  .post img {
+    width: 20rem;
+    height: 12rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+  }
+
+  .img_caption {
+    padding: 0.3rem 0;
+    width: 100%;
+  }
+
+  .post_icons {
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+
+  .post_icons .post_icon {
+    padding: 0 0.5rem 0.5rem 0;
+  }
+
+  .timeago {
+    width: 100%;
+    padding-left: 0;
+  }
+}
