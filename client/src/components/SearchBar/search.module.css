@@ -124,7 +124,7 @@
   transition: 0.2s all ease-in;
 }
 
-@media only screen and (min-width: 350px) and (max-width: 400px) {
+@media only screen and (min-width: 350px) and (max-width: 430px) {
   .wrapper {
     max-width: 85%;
   }
@@ -133,7 +133,7 @@
   }
 }
 
-@media screen and (min-width: 401px) and (max-width: 600px) {
+@media screen and (min-width: 431px) and (max-width: 600px) {
   .wrapper {
     max-width: 75%;
   }
