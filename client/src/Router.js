@@ -83,12 +83,13 @@ const FollowersComponent = WithPageTitle({
 
 const RouteConfig = ({ UserContext }) => {
   const history = useHistory();
+  const url = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
   // eslint-disable-next-line no-unused-vars
   const { state, dispatch } = useContext(UserContext);
   const tokenFetch = async () => {
     const token = window.localStorage.getItem("just_token");
     if (token) {
-      const res = await axios.get("http://localhost:5000/api/auth/profile", {
+      const res = await axios.get(`${url}/api/auth/profile`, {
         headers: { "auth-token": token },
       });
       if (res.data.user) {
