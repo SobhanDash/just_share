@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import css from "./followlist.module.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";

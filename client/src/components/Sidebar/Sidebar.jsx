@@ -26,7 +26,6 @@ const Sidebar = () => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.userReducer, shallowEqual);
-  // const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
 

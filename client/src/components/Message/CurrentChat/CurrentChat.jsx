@@ -3,7 +3,7 @@ import css from "./currchat.module.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../../redux";
 import { io } from "socket.io-client";
-import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
+// import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 // const sendicon = <FontAwesomeIcon icon={faPaperPlane} />;
@@ -22,10 +22,10 @@ const CurrentChat = ({
     (state) => state.messagereducer.messages,
     shallowEqual
   );
-  const isLoading = useSelector(
-    (state) => state.messagereducer.isLoading,
-    shallowEqual
-  );
+  // const isLoading = useSelector(
+  //   (state) => state.messagereducer.isLoading,
+  //   shallowEqual
+  // );
   const [newmsg, setNewmsg] = useState("");
   const [arrivedmsg, setArrivedmsg] = useState(null);
   const socket = useRef();

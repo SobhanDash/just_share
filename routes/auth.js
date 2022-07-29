@@ -537,7 +537,7 @@ router.get("/users/:name", fetchUser, async (req, res) => {
     return res.json({ success, users, status: 200 });
   } catch (err) {
     success = false;
-    console.log(`Error in adddp route: ${err}`);
+    console.log(`Error in users/:name route: ${err}`);
     res.send({ success, error: "Internal Server Error", status: 500 });
   }
 });

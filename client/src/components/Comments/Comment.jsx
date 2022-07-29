@@ -1,5 +1,4 @@
 import React from "react";
-import nodpImg from "../../images/nodp.jpg";
 
 import css from "./comments.module.css";
 
